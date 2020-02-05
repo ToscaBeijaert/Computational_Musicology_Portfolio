@@ -1,2 +1,2 @@
-# Portfolio_Computational_Musicology
+# Computational_Musicology_Portfolio
 Computational Musicoloy Course @ UvA
