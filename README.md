@@ -17,18 +17,19 @@ Here are some interesting features of the three playlists. I picked danceability
 I picked danceability because Alex's playlist contains mostly techno/house/electronic music, whereas my favourites also contains quite some guitar/punk/metal music from some years back, but also  techno/house/electronic music from the recent years, which could thus be interesting to look at. I was also interested in the average tempo and energy of the songs, is I thought they would be rather the same for my favourites and Alex's favourites, however I think Discover Weekly in general tends to also give me songs with lower BPM's than I usually listen to. Instrumentalness also seemed interesting as I nowadays listen mostly to songs without vocals, and I think Alex's playlist also contains mostly no vocals, but discover weekly I think will have a bit more.
 
 ## The Measurements of Spotify 
+
 <table>
-<tr><th> My Favourites </th><th> Alex's Favourites </th><th> Discover Weekly </th></tr>
+<tr><th> My Favourites </th> <th> Alex's Favourites </th><th> Discover Weekly </th></tr>
+
 <tr><td>
-
-
-
+  
 |Feature   |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.567  |0.184   |
 | Energy  | 0.635  |  0.265  |
 | Instrumentalness  | 0.329   | 0.373  |
 | Tempo  |  124  | 31  |
+  
 </td><td>
 
 | Feature  |Mean   |SD   |
@@ -37,6 +38,7 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
 | Energy  | 0.664   |  0.167  |
 | Instrumentalness  | 0.530    | 0.351  |
 | Tempo  |   116   | 16   |
+
 </td><td>
 
 |Feature   |Mean   |SD   |
@@ -45,7 +47,9 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
 | Energy  | 0.681  |  0.184  |
 | Instrumentalness  | 0.505  | 0.391  |
 | Tempo  |  121 | 19.8   |
-</td></tr> </table>
+
+</td></tr></table>
+
 
 ### Some differences
 You can see that for Danceability my Favourites have the lowest value (M = 0.567, SD = 0.184), discover weekly slightly bigger (M = 0.693, SD = 0.123) and Alex's songs even bigger (M = 0.717, SD = 0.138). Why, I'm not sure.
