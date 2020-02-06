@@ -12,7 +12,7 @@ To test this idea I will first give you a summary of some interesting features o
 You don't have to worry about the fact that I could also listen to my discover weekly, as the discover weekly algorithm does not take listening behavior of the discover weekly songs itself into account when calculating what new songs to give you for you Discover Weekly.
 
 
-
+**My Favorites**
 |   |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.567  |0.184   |
@@ -20,7 +20,7 @@ You don't have to worry about the fact that I could also listen to my discover w
 | Instrumentalness  | 0.329   | 0.373  |
 | Tempo  |  124  | 31.0   |
 
-
+**Discover Weekly**
 |   |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.693   |0.125   |
@@ -28,10 +28,11 @@ You don't have to worry about the fact that I could also listen to my discover w
 | Instrumentalness  | 0.530    | 0.351  |
 | Tempo  |   116   | 16   |
 
+**Alex's Favorites**
 |   |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.717   |0.138   |
 | Energy  | 0.681  |  0.184  |
 | Instrumentalness  | 0.505  | 0.391  |
-| Tempo  |  121. | 19.8   |
+| Tempo  |  121 | 19.8   |
 
