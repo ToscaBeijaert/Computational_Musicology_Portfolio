@@ -13,3 +13,7 @@ You don't have to worry about the fact that I could also listen to my discover w
 
 
 
+First Header | Second Header
+------------ | -------------
+Content from cell 1 | Content from cell 2
+Content in the first column | Content in the second column
