@@ -42,7 +42,7 @@ Here are some interesting features of the three playlists. I picked danceability
 | Instrumentalness  | 0.505  | 0.391  |
 | Tempo  |  121 | 19.8   |
 
-You can see that for Danceability my Favourites have the lowest value, discover weekly slightly bigger and Alex's songs even bigger.
-For Energy my Favourites also has the lowest value, then discover weekly and then Alex again.
-For Instrumentalness my favourites is very low in comparison to my discover weekly and Alex's playlist.
-The tempo is the highest for my favourites, the lowest for discover weekly and in the middle for Alex's favourites.
+You can see that for Danceability my Favourites have the lowest value (M = 0.567, SD = 0.184), discover weekly slightly bigger  (M = 0.693, SD = 0.123) and Alex's songs even bigger  (M = 0.717, SD = 0.138).
+For Energy my Favourites also has the lowest value (M = 0.635, SD = 0.265, then discover weekly (M = 0.664, SD = 0.167)and then Alex (M = 0.681, SD = 0.184) again.
+For Instrumentalness my favourites is very low(M = 0.329, SD = 0.373) in comparison to my discover weekly (M = 0.530, SD = 0.351)and Alex's playlist(M = 0.505, SD = 0.391).
+The tempo is the highest for my favourites(M = 124, SD = 31), the lowest for discover weekly (M = 116, SD = 16)and in the middle for Alex's favourites(M = 121, SD = 19.8).
