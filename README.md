@@ -18,7 +18,7 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
 
 # The Measurements of Spotify 
 <table>
-<tr><th>Table 1 Heading 1 </th><th>Table 1 Heading 2</th></tr>
+<tr><th>Table 1 Heading 1 </th><th>Table 1 Heading 2</th><th>Table 1 Heading 2</th></tr>
 <tr><td>
 
 **My Favourites**
