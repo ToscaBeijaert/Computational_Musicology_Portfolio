@@ -18,7 +18,7 @@ You don't have to worry about the fact that I could also listen to my discover w
 | Danceability  | 0.567  |0.184   |
 | Energy  | 0.635  |  0.265  |
 | Instrumentalness  | 0.329   | 0.373  |
-| Tempo  |  124  | 31.0   |
+| Tempo  |  124  | 31  |
 
 **Discover Weekly**
 |   |Mean   |SD   |
