@@ -18,12 +18,12 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
 
 # The Measurements of Spotify 
 <table>
-<tr><th> **My Favourites** </th><th> **Alex's Favourites** </th><th> **Discover Weekly** </th></tr>
+<tr><th> My Favourites </th><th> Alex's Favourites </th><th> Discover Weekly </th></tr>
 <tr><td>
 
 
 
-|   |Mean   |SD   |
+|Feature   |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.567  |0.184   |
 | Energy  | 0.635  |  0.265  |
@@ -31,7 +31,7 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
 | Tempo  |  124  | 31  |
 </td><td>
 
-|   |Mean   |SD   |
+| Feature  |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.693   |0.125   |
 | Energy  | 0.664   |  0.167  |
@@ -39,8 +39,7 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
 | Tempo  |   116   | 16   |
 </td><td>
 
-
-|   |Mean   |SD   |
+|Feature   |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.717   |0.138   |
 | Energy  | 0.681  |  0.184  |
