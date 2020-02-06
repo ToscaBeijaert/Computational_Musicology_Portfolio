@@ -55,4 +55,18 @@ For Instrumentalness my favourites is very low (M = 0.329, SD = 0.373) in compar
 
 The tempo is the highest for my favourites (M = 124, SD = 31), the lowest for discover weekly (M = 116, SD = 16) and in the middle for Alex's favourites (M = 121, SD = 19.8). 
 
+<table>
+<tr><th>Table 1 Heading 1 </th><th>Table 1 Heading 2</th></tr>
+<tr><td>
 
+|Table 1| Middle | Table 2|
+|--|--|--|
+|a| not b|and c |
+
+</td><td>
+
+|b|1|2|3| 
+|--|--|--|--|
+|a|s|d|f|
+
+</td></tr> </table>
