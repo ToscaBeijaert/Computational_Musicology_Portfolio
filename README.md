@@ -17,7 +17,28 @@ Here are some interesting features of the three playlists. I picked danceability
 I picked danceability because Alex's playlist contains mostly techno/house/electronic music, whereas my favourites also contains quite some guitar/punk/metal music from some years back, but also  techno/house/electronic music from the recent years, which could thus be interesting to look at. I was also interested in the average tempo and energy of the songs, is I thought they would be rather the same for my favourites and Alex's favourites, however I think Discover Weekly in general tends to also give me songs with lower BPM's than I usually listen to. Instrumentalness also seemed interesting as I nowadays listen mostly to songs without vocals, and I think Alex's playlist also contains mostly no vocals, but discover weekly I think will have a bit more.
 
 # The Measurements of Spotify 
+<table>
+<tr><th>Table 1 Heading 1 </th><th>Table 1 Heading 2</th></tr>
+<tr><td>
 
+**My Favourites**
+
+|   |Mean   |SD   |
+|---|---|---|
+| Danceability  | 0.567  |0.184   |
+| Energy  | 0.635  |  0.265  |
+| Instrumentalness  | 0.329   | 0.373  |
+| Tempo  |  124  | 31  |
+</td><td>
+
+|   |Mean   |SD   |
+|---|---|---|
+| Danceability  | 0.693   |0.125   |
+| Energy  | 0.664   |  0.167  |
+| Instrumentalness  | 0.530    | 0.351  |
+| Tempo  |   116   | 16   |
+
+</td></tr> </table>
 **My Favourites**
 
 |   |Mean   |SD   |
@@ -55,18 +76,4 @@ For Instrumentalness my favourites is very low (M = 0.329, SD = 0.373) in compar
 
 The tempo is the highest for my favourites (M = 124, SD = 31), the lowest for discover weekly (M = 116, SD = 16) and in the middle for Alex's favourites (M = 121, SD = 19.8). 
 
-<table>
-<tr><th>Table 1 Heading 1 </th><th>Table 1 Heading 2</th></tr>
-<tr><td>
 
-|Table 1| Middle | Table 2|
-|--|--|--|
-|a| not b|and c |
-
-</td><td>
-
-|b|1|2|3| 
-|--|--|--|--|
-|a|s|d|f|
-
-</td></tr> </table>
