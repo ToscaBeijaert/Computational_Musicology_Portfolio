@@ -60,4 +60,5 @@ For Instrumentalness my favourites is very low (M = 0.329, SD = 0.373) in compar
 
 The tempo is the highest for my favourites (M = 124, SD = 31), the lowest for discover weekly (M = 116, SD = 16) and in the middle for Alex's favourites (M = 121, SD = 19.8). 
 
-
+## The Planning
+Now that we have this baseline comparison, I will start listening only to ALex's playlist. I will add songs of this playlist, that I like ofcourse, to my favourites. I will keep checking and saving my Discover Weekly playlists. Then hopefully over time, we will see some kind of change in my Discover Weekly playlist, and at the end we can look at the progress over time and compare it to the baseline, again and see if there are any changes for values of the features.
