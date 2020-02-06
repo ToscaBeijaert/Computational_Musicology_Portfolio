@@ -32,6 +32,7 @@ Here are some interesting features of the three playlists. I picked danceability
 | Tempo  |   116   | 16   |
 
 **Alex's Favourites**
+
 |   |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.717   |0.138   |
