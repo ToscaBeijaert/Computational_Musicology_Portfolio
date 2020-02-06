@@ -37,8 +37,17 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
 | Energy  | 0.664   |  0.167  |
 | Instrumentalness  | 0.530    | 0.351  |
 | Tempo  |   116   | 16   |
+</td><td>
+**Alex's Favourites**
 
+|   |Mean   |SD   |
+|---|---|---|
+| Danceability  | 0.717   |0.138   |
+| Energy  | 0.681  |  0.184  |
+| Instrumentalness  | 0.505  | 0.391  |
+| Tempo  |  121 | 19.8   |
 </td></tr> </table>
+
 **My Favourites**
 
 |   |Mean   |SD   |
