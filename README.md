@@ -13,15 +13,25 @@ You don't have to worry about the fact that I could also listen to my discover w
 
 
 
-Mean         | Standard Deviation
------------- | -------------
-Content from cell 1 | Content from cell 2
-Content in the first column | Content in the second column
-
 |   |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.567  |0.184   |
 | Energy  | 0.635  |  0.265  |
 | Instrumentalness  | 0.329   | 0.373  |
-| Tempo  |  124.  | 31.0   |
+| Tempo  |  124  | 31.0   |
+
+
+|   |Mean   |SD   |
+|---|---|---|
+| Danceability  | 0.693   |0.125   |
+| Energy  | 0.664   |  0.167  |
+| Instrumentalness  | 0.530    | 0.351  |
+| Tempo  |   116   | 16   |
+
+|   |Mean   |SD   |
+|---|---|---|
+| Danceability  | 0.717   |0.138   |
+| Energy  | 0.681  |  0.184  |
+| Instrumentalness  | 0.505  | 0.391  |
+| Tempo  |  121. | 19.8    |
 
