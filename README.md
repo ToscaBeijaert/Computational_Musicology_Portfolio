@@ -50,13 +50,6 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
 
 </td></tr></table>
 
-|Feature   |Mean   |SD   |
-|---|---|---|
-| Danceability  | 0.567  |0.184   |
-| Energy  | 0.635  |  0.265  |
-| Instrumentalness  | 0.329   | 0.373  |
-| Tempo  |  124  | 31  |
-
 ### Some differences
 You can see that for Danceability my Favourites have the lowest value (M = 0.567, SD = 0.184), discover weekly slightly bigger (M = 0.693, SD = 0.123) and Alex's songs even bigger (M = 0.717, SD = 0.138). Why, I'm not sure.
 
