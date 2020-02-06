@@ -11,8 +11,11 @@ To test this idea I will first give you a summary of some interesting features o
 
 You don't have to worry about the fact that I could also listen to my discover weekly, as the discover weekly algorithm does not take listening behavior of the discover weekly songs itself into account when calculating what new songs to give you for you Discover Weekly.
 
+Here are some interesting features of the three playlists. I picked danceability, energy, instrumentalness and tempo. **Danceability** shows how suitable a track is for dancing based on tempo, rhythm stability, beat strength and overall regularity.A value of 0.0 is least danceable and 1.0 is most danceable. **Energy** shows a measure of intensity and activity. Energetic songs are supposed to be fast, loud and noisy. This is measured from 0 to 1, with 1 being a very energitic song. **Instrumentalness** shows if a track contains no vocals. This ranges from 0 to 1, where values closer to 1 would mean that it's more likely that the track contains no vocals. Lastly **tempo**, this is just measure in beats per minute (BPM). Thus the speed/pace of the song.
 
-**My Favorites**
+
+
+**My Favourites**
 |   |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.567  |0.184   |
@@ -28,7 +31,7 @@ You don't have to worry about the fact that I could also listen to my discover w
 | Instrumentalness  | 0.530    | 0.351  |
 | Tempo  |   116   | 16   |
 
-**Alex's Favorites**
+**Alex's Favourites**
 |   |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.717   |0.138   |
