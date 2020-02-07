@@ -18,11 +18,8 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
 
 ## The Measurements of Spotify 
 
-<table>
-<tr><th> My Favourites </th> <th> Alex's Favourites </th><th> Discover Weekly </th></tr>
 
-<tr><td>
-  
+**My Favourites**
 |Feature   |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.567  |0.184   |
@@ -30,8 +27,8 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
 | Instrumentalness  | 0.329   | 0.373  |
 | Tempo  |  124  | 31  |
   
-</td><td>
 
+**Alex's Favourites**
 | Feature  |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.693   |0.125   |
@@ -39,16 +36,14 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
 | Instrumentalness  | 0.530    | 0.351  |
 | Tempo  |   116   | 16   |
 
-</td><td>
 
+**Discover Weekly**
 |Feature   |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.717   |0.138   |
 | Energy  | 0.681  |  0.184  |
 | Instrumentalness  | 0.505  | 0.391  |
 | Tempo  |  121 | 19.8   |
-
-</td></tr></table>
 
 ### Some differences
 You can see that for Danceability my Favourites have the lowest value (M = 0.567, SD = 0.184), discover weekly slightly bigger (M = 0.693, SD = 0.123) and Alex's songs even bigger (M = 0.717, SD = 0.138). Why, I'm not sure.
