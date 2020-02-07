@@ -18,7 +18,6 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
 
 ## The Measurements of Spotify 
 
-
 **My Favourites**
 
 |Feature   |Mean   |SD   |
@@ -49,13 +48,14 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
 | Tempo  |  121 | 19.8   |
 
 ### Some differences
-You can see that for Danceability my Favourites have the lowest value (M = 0.567, SD = 0.184), discover weekly slightly bigger (M = 0.693, SD = 0.123) and Alex's songs even bigger (M = 0.717, SD = 0.138). Why, I'm not sure.
 
-For Energy my Favourites also has the lowest value (M = 0.635, SD = 0.265, then discover weekly (M = 0.664, SD = 0.167) and then Alex (M = 0.681, SD = 0.184) again. Which I guess would make sence, is it probably is somewhat correlated to danceability.
+**Danceability** has the lowest value for my Favourites (M = 0.567, SD = 0.184), discover weekly is slightly bigger (M = 0.693, SD = 0.123) and Alex's favourites even bigger (M = 0.717, SD = 0.138). Why, I'm not sure.
 
-For Instrumentalness my favourites is very low (M = 0.329, SD = 0.373) in comparison to my discover weekly (M = 0.530, SD = 0.351) and Alex's playlist (M = 0.505, SD = 0.391). Indicating that I probably have more songs with vocals in my favourites compared to the other playlists. Which could make sense as there are old songs in my favourites (metal/punk/rock), whilst in Alex's there are not a lot, and discover weekly is mostly based on recent listenings (which are mostly electronic/house/techno for me, thus there will probably be less vocals in my discover weekly).
+For **Energy** my Favourites also has the lowest value (M = 0.635, SD = 0.265, then discover weekly (M = 0.664, SD = 0.167) and then Alex (M = 0.681, SD = 0.184) again. Which I guess would make sence, is it probably is somewhat correlated to danceability.
 
-The tempo is the highest for my favourites (M = 124, SD = 31), the lowest for discover weekly (M = 116, SD = 16) and in the middle for Alex's favourites (M = 121, SD = 19.8). 
+For **Instrumentalness** my favourites is very low (M = 0.329, SD = 0.373) in comparison to my discover weekly (M = 0.530, SD = 0.351) and Alex's playlist (M = 0.505, SD = 0.391). Indicating that I probably have more songs with vocals in my favourites compared to the other playlists. Which could make sense as there are old songs in my favourites (metal/punk/rock), whilst in Alex's there are not a lot, and discover weekly is mostly based on recent listenings (which are mostly electronic/house/techno for me, thus there will probably be less vocals in my discover weekly).
+
+The **tempo** is the highest for my favourites (M = 124, SD = 31), the lowest for discover weekly (M = 116, SD = 16) and in the middle for Alex's favourites (M = 121, SD = 19.8). 
 
 I also looked at the popularity of the playlists, however when comparing them I found out that there is a huge difference between my favourties (M=16.2, SD=22.0) and Alex's playlist (M=18.9, SD=21.2) compared to the discover weekly playlist (M=35.3, SD=7.19). Appareantly this is because the Discover Weekly algorithm is biased to provide you with songs that are populair in general. You can also see this in the SD, as for mine and Alex's playlist the SD is huge and for the Discover Weekly it is less big.
 
