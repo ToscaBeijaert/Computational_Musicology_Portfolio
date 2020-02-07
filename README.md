@@ -59,6 +59,8 @@ For Instrumentalness my favourites is very low (M = 0.329, SD = 0.373) in compar
 
 The tempo is the highest for my favourites (M = 124, SD = 31), the lowest for discover weekly (M = 116, SD = 16) and in the middle for Alex's favourites (M = 121, SD = 19.8). 
 
+I also looked at the popularity of the playlists, however when comparing them I found out that there is a huge difference between my favourties (M=16.2, SD=22.0) and Alex's playlist (M=18.9, SD=21.2) compared to the discover weekly playlist (M=35.3, SD=7.19). Appareantly this is because the Discover Weekly algorithm is biased to provide you with songs that are populair in general. You can also see this in the SD, as for mine and Alex's playlist the SD is huge and for the Discover Weekly it is less big.
+
 ### Outliers
 As my Favourites consist of 2663 songs, outliers are not gonna have a lot of impact on the results. The same holds for Alex's Favourites, as this playlist contains 1704 songs. However Discover Weekly, right now, only contains 30 songs, thus outliers could have a big influence. Looking at some plots of the Discover Weekly we see that overall danceability, energy and instrumentalness are all very spread out over the values. However for tempo, most of the songs are 105-135 BPM, with two outliers, 1 song has a BPM of only 77 and one song has a BPM of 175! After finding out which song it was that had 175 BPM (Umboweti - Original Mix) I concluded it was a miscalculation of the BPM value. However, if you take out these 2 outliers, it could be possible that the mean and the SD will change.
 
