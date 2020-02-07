@@ -9,6 +9,8 @@ As my Discover Weekly playlists are based on songs I save and play often, I ther
 ## How to find out?
 To test this idea I will first give you a summary of some interesting features of my "Favorites" playlist. I will compare this to a summary of features of my discover weekly playlist, to see if they are sort of the same. If they are not totally the same, this is not a weird thing, as the Discover Weekly playlist is also based on more recent listening behavior and my "Favorites" playlist has been going on since 2014, see article. Then I will give a summary of some features of my boyfriends playlist. We will compare the three and look at the differences. The next step would be that for the coming 8 weeks, I will listen only to my boyfriends playlist and see if my Discover Weekly playlist will change over time and will start looking more like my boyfriends playlist. I will automitaclly save my Discover Weekly's in a playlist, as there actually is a setting for that, if you're interested: https://ifttt.com/applets/313481p-save-your-discover-weekly-tracks-to-a-playlist.
 
+[I'm an inline-style link](https://www.google.com)
+
 You don't have to worry about the fact that I could also listen to my discover weekly, as the discover weekly algorithm does not take listening behavior of the discover weekly songs itself into account when calculating what new songs to give you for you Discover Weekly.
 
 ## The features I chose (might add more later)
@@ -20,6 +22,7 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
 
 
 **My Favourites**
+
 |Feature   |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.567  |0.184   |
@@ -29,6 +32,7 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
   
 
 **Alex's Favourites**
+
 | Feature  |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.693   |0.125   |
@@ -38,6 +42,7 @@ I picked danceability because Alex's playlist contains mostly techno/house/elect
 
 
 **Discover Weekly**
+
 |Feature   |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.717   |0.138   |
