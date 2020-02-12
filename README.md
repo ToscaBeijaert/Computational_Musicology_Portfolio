@@ -66,3 +66,18 @@ As my Favourites consist of 2663 songs, outliers are not gonna have a lot of imp
 ## The Planning
 Now that we have this baseline comparison, I will start listening only to ALex's playlist. I will add songs of this playlist, that I like ofcourse, to my Favourites. I will keep checking and saving my Discover Weekly playlists. Then hopefully over time, we will see some kind of change in my Discover Weekly playlist, and at the end we can look at the progress over time and compare it to the baseline, again and see if there are any changes for values of the features.
 
+
+
+fdsajkfds
+
+fdjak;fdjsaklkdkjdsadsa
+
+fdskla
+
+
+
+
+DID THIS CHANGE??
+
+fdsafdsafdsa
+
