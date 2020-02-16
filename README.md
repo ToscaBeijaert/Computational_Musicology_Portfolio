@@ -73,6 +73,8 @@ There are 3 things I want to visualize.
 2. The changes over time for discover weekly.
 3.
 
+
+
 1. The baseline differences:
 These are the visualisations for the features danceability, energy, tempo and instrumentalness for the different playlists: Alex's favourites, my favourites, and the discover weekly of week We use these plots to look at the baseline differences.
 
@@ -84,6 +86,13 @@ These are the visualisations for the features danceability, energy, tempo and in
 
 ![The Instrumentalness](instrumentalness_week7.png)
 
+We can also plot multiple of these features in 1 graph.
+
+![Multiple Features](features_per_playlist_week7.png)
+
+However because Alex's and my playlist have so many songs, it becomes a bit hard to see what's going on. Therefore we take a sample of 500 songs from Alex's and my playlist and reconstruct this plot.
+
+![Multiple Features Sample](better_features_week7.png)
 
 2. The changes over time for discover weekly.
 This will be a plot showing how the features will change for the discover weekly playlist over time.
