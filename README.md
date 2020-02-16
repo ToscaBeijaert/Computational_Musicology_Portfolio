@@ -84,10 +84,11 @@ These are the visualisations for the features danceability, energy, tempo and in
 
 ![The Instrumentalness](instrumentalness_week7.png)
 
-
+.
 
 2. The changes over time for discover weekly.
 This will be a plot showing how the features will change for the discover weekly playlist over time.
 
 
 
+Ditto.
