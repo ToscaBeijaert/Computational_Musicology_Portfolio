@@ -66,6 +66,28 @@ As my Favourites consist of 2663 songs, outliers are not gonna have a lot of imp
 ## The Planning
 Now that we have this baseline comparison, I will start listening only to ALex's playlist. I will add songs of this playlist, that I like ofcourse, to my Favourites. I will keep checking and saving my Discover Weekly playlists. Then hopefully over time, we will see some kind of change in my Discover Weekly playlist, and at the end we can look at the progress over time and compare it to the baseline, again and see if there are any changes for values of the features.
 
-hallo
+## Visualisation
 
-![Energy per Playlist Week 7](Energy_Per_Playlist_Week_7.png)
+There are 3 things I want to visualize. 
+1. The baseline differences.
+2. The changes over time for discover weekly.
+3.
+
+1. The baseline differences:
+These are the visualisations for the features danceability, energy, tempo and instrumentalness for the different playlists: Alex's favourites, my favourites, and the discover weekly of week We use these plots to look at the baseline differences.
+
+![The energy](energy_week7.png)
+
+![The Tempo](tempo_week7.png)
+
+![The Danceability](danceability_week7.png)
+
+![The Instrumentalness](instrumentalness_week7.png)
+
+
+
+2. The changes over time for discover weekly.
+This will be a plot showing how the features will change for the discover weekly playlist over time.
+
+
+
