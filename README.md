@@ -95,7 +95,5 @@ However because Alex's and my playlist have so many songs, it becomes a bit hard
 ![Multiple Features Sample](better_features_week7.png)
 
 2. The changes over time for discover weekly.
-This will be a plot showing how the features will change for the discover weekly playlist over time.
-
-Here will
+This will be a plot showing how the features will change for the discover weekly playlist over time. However I'm couldn't totally figure out yet how to make the plot look nice, so I'm currently still working on that.
 
