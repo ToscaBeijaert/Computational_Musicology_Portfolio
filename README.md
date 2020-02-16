@@ -68,3 +68,4 @@ Now that we have this baseline comparison, I will start listening only to ALex's
 
 
 
+![Energy per Playlist Week 7](Energy per Playlist Week 7.png)
