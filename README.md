@@ -68,16 +68,3 @@ Now that we have this baseline comparison, I will start listening only to ALex's
 
 
 
-fdsajkfds
-
-fdjak;fdjsaklkdkjdsadsa
-
-fdskla
-
-
-
-
-DID THIS CHANGE??
-
-fdsafdsafdsa
-
