@@ -69,13 +69,13 @@ Now that we have this baseline comparison, I will start listening only to ALex's
 ## Visualisation
 
 There are 3 things I want to visualize. 
-1. The baseline differences.
-2. The changes over time for discover weekly.
-3.
+__1.__ The baseline differences.
+__2.__ The changes over time for discover weekly.
+__3.__
 
 
 
-1. The baseline differences:
+#### 1. The baseline differences:
 These are the visualisations for the features danceability, energy, tempo and instrumentalness for the different playlists: Alex's favourites, my favourites, and the discover weekly of week We use these plots to look at the baseline differences.
 
 ![The energy](energy_week7.png)
@@ -94,8 +94,8 @@ However because Alex's and my playlist have so many songs, it becomes a bit hard
 
 ![Multiple Features Sample](better_features_week7.png)
 
-2. The changes over time for discover weekly.
+#### 2. The changes over time for discover weekly.
 This will be a plot showing how the features will change for the discover weekly playlist over time.
 
-Here will
+
 
