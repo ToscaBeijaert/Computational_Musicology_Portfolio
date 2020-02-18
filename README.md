@@ -78,13 +78,13 @@ __3.__
 #### 1. The baseline differences:
 These are the visualisations for the features danceability, energy, tempo and instrumentalness for the different playlists: Alex's favourites, my favourites, and the discover weekly of week We use these plots to look at the baseline differences.
 
-![The energy](energy_week7.png)
+![The energy](energy_w7.png)
 
-![The Tempo](tempo_week7.png)
+![The Tempo](tempo_w7.png)
 
-![The Danceability](danceability_week7.png)
+![The Danceability](danceability_w7.png)
 
-![The Instrumentalness](instrumentalness_week7.png)
+![The Instrumentalness](instrumentalness_w7.png)
 
 We can also plot multiple of these features in 1 graph.
 
@@ -98,4 +98,5 @@ However because Alex's and my playlist have so many songs, it becomes a bit hard
 This will be a plot showing how the features will change for the discover weekly playlist over time.
 
 
+We change the read me
 
