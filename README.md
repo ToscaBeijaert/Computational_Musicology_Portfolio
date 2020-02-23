@@ -100,7 +100,4 @@ This will be a plot showing how the features will change for the discover weekly
 #### 3. The end differences.
 
 
-<<<<<<< HEAD
 
-=======
->>>>>>> e813e6074071579cea7748da996f9596d3005c09
