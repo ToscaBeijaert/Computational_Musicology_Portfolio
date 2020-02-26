@@ -1,0 +1,471 @@
+---
+title:  "Discover Weekly's Butterfly Transformation"
+author: 'Tosca Beijaert'
+date:   'February--March 2020'
+output: 
+    flexdashboard::flex_dashboard:
+        storyboard: true
+        theme: flatly
+---
+
+```{r setup}
+# In order to use these packages, we need to install flexdashboard, plotly, and Cairo.
+library(tidyverse)
+library(plotly)
+library(spotifyr)
+library(Cairo)
+library(ggplot2)
+library(compmus)
+source('spotify.R')
+library(CGPfunctions)
+library(viridis)
+```
+
+### Will my Discover Weekly transform into Alex? {data-commentary-width=300}
+
+```{r}
+
+
+# My Spotify Favorites
+favorites=get_playlist_audio_features("Tosca Beijaert","16OAuKPZYr8YM4a9n1V6kf")
+
+# Because there were local files in the list, spotify added extra columns, which i removed as the other
+# playlists don't have these comments, so it will be useless for compariosn.
+favorites=favorites[-c(59:63)]
+
+# We also have to remove the local files, as i cannot  compare them as there is no analysis for these tracks.
+favorites=subset(favorites, track.is_local==FALSE) # we delete the local files
+
+
+
+# Alex favorites 
+alex=get_playlist_audio_features("Alexander Keijser","59c8tug3WdwODj6gV0ierq")
+
+# Discover weekly Favorites week 1
+discover_weekly1=get_playlist_audio_features("Tosca Beijaert","1RGiBzoNLHf0GkTYRxDhpY")
+
+# Discover weekly favorites week 2
+
+discover_weekly2=get_playlist_audio_features("Tosca Beijaert", "24kpxnb8oyQykp71Gn3sge")
+
+discover_weekly3=get_playlist_audio_features("Tosca Beijaert","1vOSG6EzDsKLNlvRFEhcjF")
+
+discover_weekly4=get_playlist_audio_features("Tosca Beijaert","2XhLwoBvdUK38ROYUwR1Mg")
+
+# Discover weekly 1 & 2 combined (combined playlists)
+
+# discover_weekly_combined_week2=merge(discover_weekly1[6:16],discover_weekly2.1[6:16])
+#View(discover_weekly_combined_week2) # WHY DOES THIS NOT WORK???A
+
+
+# Discover Weekly Archive
+
+discover_weekly_archive=get_playlist_audio_features("Tosca Beijaert", "4jLB65Tpbt91Ta2QrypTFV")
+
+playlists=
+  alex %>% mutate(playlist = "Alex") %>%
+  bind_rows(favorites %>% mutate(playlist = "Favorites")) %>%
+  bind_rows(discover_weekly1%>% mutate(playlist = "Discover Weekly 1")) 
+
+
+# We need some samples of the playlists of the favorites as they are too big.
+fav_sample=favorites[sample(nrow(favorites),500),]
+alex_sample=alex[sample(nrow(alex),500),]
+
+playlists_sample=
+  alex_sample %>% mutate(playlist = "Alex Sample") %>%
+  bind_rows(fav_sample %>% mutate(playlist = "Favorites Sample")) %>%
+  bind_rows(discover_weekly1%>% mutate(playlist = "Discover Weekly Base")) 
+
+
+# The Plot of 3 variables
+
+playlists_sample %>%
+  ggplot(aes(x = energy, y=danceability, col=instrumentalness)) + # Add tempo to size here
+  geom_point() +
+  geom_rug(size = 0.1)+ 
+  facet_wrap(~ playlist)+
+  labs(title='Energy, Danceability, Instrumentalness and Tempo per Playlist') +
+  scale_x_continuous(          # Fine-tune the x axis.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),  # Use grid-lines for quadrants only.
+    minor_breaks = NULL      # Remove 'minor' grid-lines.
+  ) +
+  scale_y_continuous(          # Fine-tune the y axis in the same way.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),
+    minor_breaks = NULL
+  ) +
+  theme_classic() +              # Use a simpler them.
+  labs(                        # Make the titles nice.
+    x = "Energy",
+    y = "Danceability",
+    colour = "Instrumentalness",
+    size="Tempo"
+  ) + scale_color_viridis( option = "D")
+
+# Second plot
+ggplot(playlists_sample, aes(energy, danceability, col=playlist))+
+  geom_jitter(alpha=0.5)+ 
+  geom_smooth() +
+  labs(
+    title = "Energy & Danceability Per Playlist",
+    x = "Energy",
+    y = "Danceability",
+    col="Playlist"
+  ) 
+  
+```
+
+
+***
+
+My Favourites playlist in Spotify, the playlist of my boyfriend Alex and my discover weekly differ quite a lot. Assuming that discover weekly adapts to what you listen to (the most  [this article](https://qz.com/571007/the-magic-that-makes-spotifys-discover-weekly-playlists-so-damn-good/)), 
+
+I will perform an experiment where I will listen __ONLY__ to my boyfriends playlist for the coming 8 weeks, to see if my Discover Weekly will transform to look lilke my Boyfriends playlist. 
+
+The most interesting features to me seem to be Danceability, Energy, Instrumentalness and Tempo.
+
+On the left we see a plot for the Energy, Danceability and Instrumentalness for each playlist, where we use the data of week 1 for discover weekly. The plot wasn't very interpretable when using all the data from Alex's and my playlist, as they have so many songs. Thus, I have sampled 500 songs from Alex's and my Favorites, to make it more clear-cut. Also we can observe that my Favorite's has some more songs which are less danceable than Alex's playlist and discover weekly. And that in general, discover weakly has less of a spread for danceability and energy.
+
+The left plot however is hard to interpret, therefore we could look for instance just at the danceability and energy of each playlist. This is what we see on the right.
+This shows us very clearly that spotify weekly's data isn't very spread. For instance, looking at the green line, we can see that the danceability nor the energy go below 0.3 for discover weekly. However, these two plots don't show us that well how any of the variables are distributed. THus we will look at some histograms per feature.
+
+### The Baseline differences
+
+```{r}
+
+
+
+# MAKING PLOTS.
+
+# We will now start making plots. We want 1 plot that compares the 3 playlists & 1 plot that compares the
+# discover weekly playlists over time.
+
+# Comparing the 3 playlists.
+# we combine the 3 data sets favorites, alex and discover weekly archive.
+
+
+
+# 1. We start with the baseline differences for alex's favourties, my faovrites and discover weekly week 1.
+
+playlists %>%
+  ggplot(aes(x = energy, col=playlist)) +
+  geom_histogram() +
+  facet_wrap(~ playlist, scales="free_y")+
+  scale_x_continuous(
+    limits=c(0,1),
+    breaks=c(0,0.5,1)
+  )+
+  labs(color='Playlist', title='Energy per Playlist') +
+  xlab('Energy') +
+  ylab("Count")+
+  theme_get()
+
+playlists %>%
+ggplot(aes(x = tempo,  col=playlist)) +
+geom_histogram() +
+facet_wrap(~ playlist, scales="free_y")+
+scale_x_continuous(
+limits=c(0,250),
+breaks=c(0,125,250)
+)+
+labs(color='Playlist', title='Tempo per Playlist') +
+xlab('Tempo')+
+ylab("Count")+
+theme_get()
+
+
+playlists %>%
+ggplot(aes(x = danceability, col=playlist)) +
+geom_histogram() +
+facet_wrap(~ playlist, scales="free_y")+
+scale_x_continuous(
+limits=c(0,1),
+breaks=c(0,0.5,1)
+)+
+labs(color='Playlist', title='Danceability per Playlist') +
+xlab('Danceability') +
+ylab("Count")+
+theme_get()
+
+
+playlists %>%
+ggplot(aes(x = instrumentalness, col=playlist)) +
+geom_histogram() +
+facet_wrap(~ playlist, scales="free_y")+
+scale_x_continuous(
+limits=c(0,1),
+breaks=c(0,0.5,1)
+)+
+labs(color='Playlist', title='Instrumentalness per Playlist') +
+xlab('Instumentalness') +
+ylab("Count")+
+theme_get()
+
+
+
+
+```
+
+***
+
+Here we look at some baseline comparisons, as these are important to look at them later on again. For every plot you get a specific feature on the x-axis and the amount on the y-axis. Note that the values of the y-axes differ for the playlists, as discover weekly only has 30 songs and the other 2 have around 3000 songs. These plots clearly show the differences of how the songs are distributed for the different playlists.
+
+For instance, Discover weekly has less energetic songs than the other two. The tempo mostly lies around 125 bmp, whereas the other 2 are more spread. 
+
+We now see that only information on the mean of the data, does not give us enough.
+
+### The transformation so far?! {data-commentary-width=300}
+
+```{r fig.height=10, fig.width=10}
+
+library(lubridate)
+discover_weekly_archive$week=isoweek(discover_weekly_archive$added_at)
+
+ # discover_weekly_archive=cbind(discover_weekly_archive, week): WAS NIET NODIG
+
+# Make a new data.frame of the archive with only important features you want to look at.
+discover_weekly_archive_features=discover_weekly_archive[c(6,7,13,16,62)]
+
+
+# We give this new table a new: means_all
+
+means_all=aggregate(x=discover_weekly_archive_features, by=list(discover_weekly_archive_features$week), FUN =mean)
+
+
+# without tempo
+means_all_2=means_all[-5]
+
+# Dividning tempo by 100
+means_all_3=means_all
+means_all_3$tempo=means_all_3$tempo/100
+
+
+# Orignial
+features_longer=pivot_longer(means_all,c(danceability,instrumentalness,tempo,energy), names_to = "feature")
+
+# Without tempo
+features_longer_2=pivot_longer(means_all,c(danceability,instrumentalness,energy), names_to = "feature")
+
+# Tempo/100
+features_longer_3=pivot_longer(means_all_3,c(danceability,instrumentalness,energy, tempo), names_to = "feature")
+
+# Make week a chracter
+features_longer$week=as.character(features_longer$week)
+features_longer_2$week=as.character(features_longer_2$week)
+features_longer_3$week=as.character(features_longer_3$week)
+features_longer_3$value=round(features_longer_3$value,2)
+
+features_longer_3$week <- factor(features_longer_3$week, levels = c("6","7","8","9"), labels = c("Week 1","Week 2","Week 3","Week 4"))
+
+require(dplyr)
+library(CGPfunctions)
+
+
+# Lijnen onderscheiden zich niet omdat tempo te hoog ligt
+# Plot voor als je tempo erin wil geeft leijke plot: newggslopegraph(dataframe=features_longer, Times=week, Measurement = value, Grouping = feature)
+
+# Tempo eruit getyft
+# Plot voor als je tempo eruit wilt: newggslopegraph(dataframe=features_longer_2, Times=week, Measurement = value, Grouping = feature)
+
+# Tempo/100
+newggslopegraph(dataframe=features_longer_3, Times=week, Measurement = value, Grouping = feature, Title= "Mean Changes per Week", SubTitle = NULL, WiderLabels = TRUE, YTextSize = 4, DataTextSize = 4, DataLabelPadding = 0.0001, LineThickness = 2)
+
+
+# HOW TO FIX THIS IN GODS NAME...
+
+
+```
+
+***
+
+
+This Plot shows us the changes over the 3 weeks for each feature. The values shown are the means of the absolute. The tempo values are devided by 100, else they wouldn't fit on the plot. Thus tempo= 1.16 equals tempo=116 (am still figuring out how to solve this). The first thing to notice is the big increase in instrumentalness. Whereas the other variables are still fluctuating a lot over time. However, these values only show us the mean values and we have seen before that the distribution of the data might be skewed, therefore we should look at other measures, like the median (I have not had time for this yet, will work on it the coming week).
+
+
+### More plots of mean changes
+
+```{r}
+
+
+ggplot(means_all, aes(week, danceability, col=instrumentalness, size=energy))+
+  geom_point()+
+  labs(title='Mean Changes per Week',                       
+    x = "Week",
+    y = "Danceability",
+    colour = "Instrumentalness",
+    size="Energy")  +
+    scale_x_continuous(          # Fine-tune the x axis.
+    breaks = c(6,7,8,9),  # Use grid-lines for quadrants only.
+    minor_breaks = NULL      # Remove 'minor' grid-lines.
+  )
+  
+
+
+
+```
+
+   
+  
+***
+
+Another visualisation here showing the Energy in size, the instrumentalness in color and the Danceability on the y-axis. Where the weeks are given as the week number of the year. Where week 6 equals week 1 of this experiment.
+
+
+### Changes of the absolute values
+
+```{R}
+ggplot(discover_weekly1, aes(energy, danceability, col=instrumentalness, size=tempo))+
+  geom_point()+
+  labs(title='Discover Weekly 1',                       
+    x = "Energy",
+    y = "Danceability",
+    colour = "Instrumentalness",
+    size="Tempo")+ 
+  scale_color_viridis( option = "D")
+
+
+ggplot(discover_weekly3, aes(energy, danceability, col=instrumentalness, size=tempo))+
+  geom_point()+
+  labs(title='Discover Weekly 3',                       
+    x = "Energy",
+    y = "Danceability",
+    colour = "Instrumentalness",
+    size="Tempo")  + 
+  scale_color_viridis( option = "D")
+
+
+```
+
+***
+
+These plot respresent week 1 and week 3 of discover weekly, showing the distribution of all 4 features.
+
+
+### The Chroma of Alex's least Danceable Song
+
+
+```{r}
+
+lacrimosa = 
+    get_tidy_audio_analysis("1UvaZaHkh3D9AkmBrrnbFg") %>% 
+    select(segments) %>% unnest(segments) %>% 
+    select(start, duration, pitches)
+
+lacrimosa2 =
+    get_tidy_audio_analysis("3oHSL6pt9LpNrQZuQGu9wL") %>% 
+    select(segments) %>% unnest(segments) %>% 
+    select(start, duration, pitches)
+
+lacrimosa %>% 
+    mutate(pitches = map(pitches, compmus_normalise, 'euclidean')) %>% # Change Euclidean to something you want: manhattan, euclidean or chebyshev
+    compmus_gather_chroma %>% 
+    ggplot(
+        aes(
+            x = start + duration / 2, 
+            width = duration, 
+            y = pitch_class, 
+            fill = value)) + 
+    geom_tile() +
+    labs(title= "Alex's Lacrimosa",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
+    theme_classic()
+
+lacrimosa2 %>% 
+    mutate(pitches = map(pitches, compmus_normalise, 'euclidean')) %>% # Change Euclidean to something you want: manhattan, euclidean or chebyshev
+    compmus_gather_chroma %>% 
+    ggplot(
+        aes(
+            x = start + duration / 2, 
+            width = duration, 
+            y = pitch_class, 
+            fill = value)) + 
+    geom_tile() +
+    labs(title= "My Lacrimosa",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
+    theme_classic()
+```
+
+
+
+***
+
+After doing some research, I found out that Alex's least danceable song is Lacrimosa, from Amadeus Mozart, which is quite funny as it is one of our favorite classical music songs, which we sing all the time. Looking at the chroma plots, where we can sort of see that this song is played in d minor, which consists of D, E, F, G, A, B♭, and C.Luckily for me, I also have this song in my playlist, a slightly different version from the Choir of King's College, meaning there might be some more polyphonic parts in this version. However you can clearly see the similarities of the two chroma plots.
+
+
+### Dynamic Time Warping Lacrimosa?
+
+
+```{r}
+
+compmus_long_distance(
+    lacrimosa %>% mutate(pitches = map(pitches, compmus_normalise, 'manhattan')), # You only need to change the names of your trakcs, so in this case the tallis and chapelle. Also change your norm to what you want, bv euclidean and change the distances (method)
+    lacrimosa2 %>% mutate(pitches = map(pitches, compmus_normalise, 'manhattan')),
+    feature = pitches,
+    method = 'manhattan') %>% 
+    ggplot(
+        aes(
+            x = xstart + xduration / 2, 
+            width = xduration,
+            y = ystart + yduration / 2,
+            height = yduration,
+            fill = d)) + 
+    geom_tile() +
+    scale_fill_continuous(type = 'viridis', guide = 'none') +
+    labs(title= "Dynamic Time Warp",x = 'Alex his Lacrimosa', y = 'My Lacrimosa') +
+    theme_classic() # The diagnoal line represent the dynamic time warp.
+
+```
+
+***
+
+
+Now we can use Dynamic Time Warping to compute the most optimal alignment between the two features sequences. As hroma norm and distance measure manhattan was chosen, the other options did not seem to work well for this data. We can see the black line diagonally, expressing the optimal warping path.
+
+### Week 9: Timbre
+
+```{r}
+
+lacrimosa <- 
+    get_tidy_audio_analysis("1UvaZaHkh3D9AkmBrrnbFg") %>% 
+    compmus_align(bars, segments) %>% # aligns everything at a higher lvl of the spotify fpi, he first argument of compmus align can be bars, beats or section.
+    select(bars) %>% unnest(bars) %>% 
+    mutate(
+        pitches = # gives pitch information
+            map(segments, 
+                compmus_summarise, pitches, 
+                method = 'rms', norm = 'euclidean')) %>% # You can change the method to rms, mean, max and so on, see table (method summary). You can also change the norm again, see table
+    mutate(
+        timbre = #gives timbre information
+            map(segments, 
+                compmus_summarise, timbre, 
+                method = 'mean')) # You can change the method again.
+
+lacrimosa %>% 
+    compmus_gather_timbre %>% # You can leave this alon, you don't need to change anything here.
+    ggplot(
+        aes(
+            x = start + duration / 2, 
+            width = duration, 
+            y = basis, 
+            fill = value)) + 
+    geom_tile() +
+    labs(x = 'Time (s)', y = NULL, fill = 'Magnitude') +
+    scale_fill_viridis_c(option = 'E') + # You can change this color, this one is very nice.
+    theme_classic()
+
+
+lacrimosa %>%  # Timbre self similairity matrix
+    compmus_self_similarity(timbre, 'cosine') %>%  # Here you can change the secon argument again, meaning you change the distance.
+    ggplot(
+        aes(
+            x = xstart + xduration / 2, 
+            width = xduration,
+            y = ystart + yduration / 2,
+            height = yduration,
+            fill = d)) + 
+    geom_tile() +
+    coord_fixed() +
+    scale_fill_viridis_c(option = 'E', guide = 'none') +
+    theme_classic() +
+    labs(x = '', y = '')
+```
