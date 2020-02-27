@@ -21,6 +21,224 @@ library(CGPfunctions)
 library(viridis)
 ```
 
+### Chroma plots don't work well for Techno/Breakbeat songs. Timbre  to the rescue, showing us the breakdown of the song!
+
+```{r}
+
+Brainstorm_Chroma= 
+    get_tidy_audio_analysis("4GdOWNJzpTWoKdA4LEbXDa") %>% 
+    select(segments) %>% unnest(segments) %>% 
+    select(start, duration, pitches)
+
+# Chroma using Euclidean: Werkt
+Brainstorm_Chroma%>% 
+    mutate(pitches = map(pitches, compmus_normalise, 'euclidean')) %>% # Change Euclidean to something you want: manhattan, euclidean or chebyshev
+    compmus_gather_chroma %>% 
+    ggplot(
+        aes(
+            x = start + duration / 2, 
+            width = duration, 
+            y = pitch_class, 
+            fill = value)) + 
+    geom_tile() +
+    labs(title= "Brainstorm by Special Request Chroma",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
+    scale_fill_viridis_c(option = 'A') + # You can change this color, this one is very nice.
+    theme_classic() 
+
+moments=c("Buildup","Bass Block", "Bass Block + High Heads", "Piano", "Bass Block + High Heads", "Piano", "Outro")
+
+# The timbre plots of Brainstorm Special Request, which has a big difference at 60 seconds, 100sec,130sec (piano), 145 (vocal), repeat brainstorm, 244 (vocal again), 304 (new thing).We can also see that around 130 second a new block starts (2:10), this is were the piano comes in. At like 190sec (3:08) the same part is repeated that starts at 60 seconds! Listen to the file to find out!
+
+Brainstorm_Timbre <- 
+    get_tidy_audio_analysis('4GdOWNJzpTWoKdA4LEbXDa') %>% 
+    compmus_align(bars,segments) %>% # aligns everything at a higher lvl of the spotify fpi, he first argument of compmus align can be bars, beats or section.
+    select(bars) %>% unnest(bars) %>% 
+    mutate(
+        pitches = # gives pitch information
+            map(segments, 
+                compmus_summarise, pitches, 
+                method = 'mean', norm ='euclidean' )) %>% # You can change the method to rms, mean, max and so on, see table (method summary). You can also change the norm again, see table
+    mutate(
+        timbre = #gives timbre information
+            map(segments, 
+                compmus_summarise, timbre, 
+                method = 'rms')) # You can change the method again.
+
+Brainstorm_Timbre %>% 
+    compmus_gather_timbre %>% # You can leave this alone, you don't need to change anything here.
+    ggplot(
+        aes(
+            x = start + duration / 2, 
+            width = duration, 
+            y = basis, 
+            fill = value)) + 
+    geom_tile() +
+    labs(title="Brainstorm by Special Request Timbre",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
+    scale_fill_viridis_c(option = 'A') + # You can change this color, this one is very nice.
+    theme_classic()
+
+# Pairwise SImilarity Matrix: Werkt
+
+
+```
+
+***
+
+We are going to look at a song called Brainstorm from Special Request. This is an techno-like song which has a lot of changes troughout the song. There is some piano involved and some singing, however not troughout the whole song. Therefore it is difficult to see something out of the chroma plot, as it's not as easy as with classical music.
+This can be seen from the chroma plot. On the x-axis we have the time and on the y-axis the chroma. It's hard to conclude anything from this plot at all.
+
+The timbre shows a little bit better what's going on. The song starts with a slow buildup with some high heads and some minimal vocals (Kicking up in the brainstorm), which you can see in the beginning. Then you can see a very big change around 60 seconds, this is where a very heavy bass kicks in. It also shows a single weird moment around 240 seconds, this is because here there is 1 small sample of a vocal which has not been in the song before and is only played here.
+
+### SSM matrixes Showing us what's actually going on.
+
+```{r}
+# The SSM of the Chroma
+
+SSM_Chroma=Brainstorm_Chroma %>%  
+    compmus_self_similarity(pitches, 'cosine') %>%  # Here you can change the secon argument again, meaning you change the distance.
+    ggplot(
+        aes(
+            x = xstart + xduration / 2, 
+            width = xduration,
+            y = ystart + yduration / 2,
+            height = yduration,
+            fill = d)) + 
+    geom_tile() +
+    coord_fixed() +
+    scale_fill_viridis_c(option = 'B', guide = 'none') +
+      theme_classic() +
+  scale_x_continuous(
+    breaks = c(0,60,100,130,190,244,305),  # Use grid-lines for quadrants only.
+    labels=moments,
+    minor_breaks = NULL      # Remove 'minor' grid-lines.
+    ) +
+  scale_y_continuous(          # Fine-tune the y axis in the same way.
+    breaks = c(0,60,100,130,190,244,305),
+    labels=moments,
+    minor_breaks = NULL
+  ) +
+  labs(title='Chroma SSM', x="", y="") 
+
+
+SSM_Chroma + theme(axis.text.x= element_text(face="plain" ,angle=45))
+
+# Euclidean as distance: You can see the big change at 60 seconds very well.
+
+Brainstorm_Timbre %>%  # Timbre self similairity matrix
+    compmus_self_similarity(timbre, 'euclidean') %>%  # Here you can change the secon argument again, meaning you change the distance.
+    ggplot(
+        aes(
+            x = xstart + xduration / 2, 
+            width = xduration,
+            y = ystart + yduration / 2,
+            height = yduration,
+            fill = d)) + 
+    geom_tile() +
+    coord_fixed() +
+    scale_fill_viridis_c(option = 'B', guide = 'none') +
+    theme_classic() +
+    labs(title="Timbre SSM",x = 'Time (s)', y = 'Time (s)')+
+  scale_x_continuous(
+    breaks = c(0,60,100,130,190,244,305), minor_breaks=NULL) +
+  scale_y_continuous(
+    breaks = c(0,60,100,130,190,244,305),minor_breaks=NULL)
+
+
+
+
+```
+
+***
+
+The chroma plot did not give us much information, however the Chroma SSM gives us loads of info.
+On the x-axis and the y-axis we can see the names describing the __start__ of a new music block. For instance, the song starts with a slow buildup at 0 sec untill around 60 sec (1:00), here a new block starts with some heavy bass, then at 100 sec (1:40) the block is still the same as before, but the high heads kick in. At 130 sec (2:10) the Piano block starts, where at 190 sec (3:08) the Bass block with high heads is repeated. Then at 244 sec (4:05) the Piano block is repeated and at 305 sec (5:02) the autro block starts.
+
+Listen to the file to find out!
+
+![Brainstorm Special Request](Brainstorm Special Request.mp3)
+
+If we look at the Timbre SSM again we see the breakdown at 60 seconds, this time even more clearly. As the song starts with some bass, high heads and some low vocals all of a sudden at 60 seconds a lot of low bass is added and this is easy to see by the yellow line at 60 seconds. Also we see a clear change at 244 seconds (4:02-4:05). This is because of that one weird vocal sample that is only played here.
+
+### Interactive Timbre SSM
+
+```{r}
+brain_active=Brainstorm_Timbre %>%  # Timbre self similairity matrix
+    compmus_self_similarity(timbre, 'euclidean') %>%  # Here you can change the secon argument again, meaning you change the distance.
+    ggplot(
+        aes(
+            x = xstart + xduration / 2, 
+            width = xduration,
+            y = ystart + yduration / 2,
+            height = yduration,
+            fill = d)) + 
+    geom_tile() +
+    coord_fixed() +
+    scale_fill_viridis_c(option = 'B', guide = 'none') +
+    theme_classic() +
+    labs(title="Timbre SSM",x = 'Time (s)', y = 'Time (s)')+
+  scale_x_continuous(
+    breaks = c(0,60,100,130,190,244,305), minor_breaks=NULL) +
+  scale_y_continuous(
+    breaks = c(0,60,100,130,190,244,305),minor_breaks=NULL)
+
+ggplotly(brain_active)
+
+```
+
+*** 
+
+Here we see the SSM of Timbre again, but as an interactive plot.
+
+### Different Distances for Timbre
+
+```{r}
+Brainstorm_Timbre %>%  # Timbre self similairity matrix
+    compmus_self_similarity(timbre, 'euclidean') %>%  # Here you can change the secon argument again, meaning you change the distance.
+    ggplot(
+        aes(
+            x = xstart + xduration / 2, 
+            width = xduration,
+            y = ystart + yduration / 2,
+            height = yduration,
+            fill = d)) + 
+    geom_tile() +
+    coord_fixed() +
+    scale_fill_viridis_c(option = 'B', guide = 'none') +
+    theme_classic() +
+    labs(title="Timbre SSM Using Euclidean Distance",x = 'Time (s)', y = 'Time (s)')+
+  scale_x_continuous(
+    breaks = c(0,60,100,130,190,244,305), minor_breaks=NULL) +
+  scale_y_continuous(
+    breaks = c(0,60,100,130,190,244,305),minor_breaks=NULL)
+
+ 
+# Cosine as distance: You can see small differences better.
+Brainstorm_Timbre %>%  # Timbre self similairity matrix
+    compmus_self_similarity(timbre, 'cosine') %>%  # Here you can change the secon argument again, meaning you change the distance.
+    ggplot(
+        aes(
+            x = xstart + xduration / 2, 
+            width = xduration,
+            y = ystart + yduration / 2,
+            height = yduration,
+            fill = d)) + 
+    geom_tile() +
+    coord_fixed() +
+    scale_fill_viridis_c(option = 'B', guide = 'none') +
+    theme_classic() +
+    labs(title="Timbre SSM Using Cosine Distance",x = 'Time (s)', y = 'Time (s)')+
+  scale_x_continuous(
+    breaks = c(0,60,100,130,190,244,305), minor_breaks=NULL) +
+  scale_y_continuous(
+    breaks = c(0,60,100,130,190,244,305),minor_breaks=NULL)
+```
+
+***
+
+
+Using Cosine as the distance for the timbre SSM, we get more structure into the plot, however the very obvious changes we mentioned before become less obvious. But differences between certain blocks become more obvious, depending on what you want to show people you can make a choice.
+
+
 ### Will my Discover Weekly transform into Alex? {data-commentary-width=300}
 
 ```{r}
@@ -104,16 +322,18 @@ playlists_sample %>%
     size="Tempo"
   ) + scale_color_viridis( option = "D")
 
+
+
 # Second plot
-ggplot(playlists_sample, aes(energy, danceability, col=playlist))+
-  geom_jitter(alpha=0.5)+ 
-  geom_smooth() +
-  labs(
-    title = "Energy & Danceability Per Playlist",
-    x = "Energy",
-    y = "Danceability",
-    col="Playlist"
-  ) 
+ ggplot(playlists_sample, aes(energy, danceability, col=playlist))+
+   geom_jitter(alpha=0.5)+ 
+   geom_smooth() +
+   labs(
+     title = "Energy & Danceability Per Playlist",
+     x = "Energy",
+     y = "Danceability",
+     col="Playlist"
+   ) 
   
 ```
 
@@ -126,7 +346,7 @@ I will perform an experiment where I will listen __ONLY__ to my boyfriends playl
 
 The most interesting features to me seem to be Danceability, Energy, Instrumentalness and Tempo.
 
-On the left we see a plot for the Energy, Danceability and Instrumentalness for each playlist, where we use the data of week 1 for discover weekly. The plot wasn't very interpretable when using all the data from Alex's and my playlist, as they have so many songs. Thus, I have sampled 500 songs from Alex's and my Favorites, to make it more clear-cut. Also we can observe that my Favorite's has some more songs which are less danceable than Alex's playlist and discover weekly. And that in general, discover weakly has less of a spread for danceability and energy.
+On the left we see a plot for the Energy, Danceability and Instrumentalness for each playlist, where we use the data of week 1 for discover weekly. The plot wasn't very interpretable when using all the data from Alex's and my playlist, as they have so many songs. Thus, I have randomly sampled 500 songs from Alex's and my Favorites, to make it more clear-cut. Also we can observe that my Favorite's has some more songs which are less danceable than Alex's playlist and discover weekly. And that in general, discover weakly has less of a spread for danceability and energy.
 
 The left plot however is hard to interpret, therefore we could look for instance just at the danceability and energy of each playlist. This is what we see on the right.
 This shows us very clearly that spotify weekly's data isn't very spread. For instance, looking at the green line, we can see that the danceability nor the energy go below 0.3 for discover weekly. However, these two plots don't show us that well how any of the variables are distributed. THus we will look at some histograms per feature.
@@ -159,8 +379,9 @@ playlists %>%
   )+
   labs(color='Playlist', title='Energy per Playlist') +
   xlab('Energy') +
-  ylab("Count")+
-  theme_get()
+  ylab("Count")
+
+
 
 playlists %>%
 ggplot(aes(x = tempo,  col=playlist)) +
@@ -189,7 +410,6 @@ xlab('Danceability') +
 ylab("Count")+
 theme_get()
 
-
 playlists %>%
 ggplot(aes(x = instrumentalness, col=playlist)) +
 geom_histogram() +
@@ -202,7 +422,6 @@ labs(color='Playlist', title='Instrumentalness per Playlist') +
 xlab('Instumentalness') +
 ylab("Count")+
 theme_get()
-
 
 
 
@@ -286,8 +505,9 @@ This Plot shows us the changes over the 3 weeks for each feature. The values sho
 
 ### More plots of mean changes
 
-```{r}
 
+```{r}
+week_numbers=c(1,2,3,4)
 
 ggplot(means_all, aes(week, danceability, col=instrumentalness, size=energy))+
   geom_point()+
@@ -298,24 +518,23 @@ ggplot(means_all, aes(week, danceability, col=instrumentalness, size=energy))+
     size="Energy")  +
     scale_x_continuous(          # Fine-tune the x axis.
     breaks = c(6,7,8,9),  # Use grid-lines for quadrants only.
-    minor_breaks = NULL      # Remove 'minor' grid-lines.
+    minor_breaks = NULL,      # Remove 'minor' grid-lines.
+    labels=week_numbers
   )
   
 
 
-
 ```
 
-   
-  
 ***
 
-Another visualisation here showing the Energy in size, the instrumentalness in color and the Danceability on the y-axis. Where the weeks are given as the week number of the year. Where week 6 equals week 1 of this experiment.
+Another visualisation here showing the Energy in size, the instrumentalness in color and the Danceability on the y-axis. Where the weeks are given on the x-axis.
 
 
 ### Changes of the absolute values
 
-```{R}
+
+```{r}
 ggplot(discover_weekly1, aes(energy, danceability, col=instrumentalness, size=tempo))+
   geom_point()+
   labs(title='Discover Weekly 1',                       
@@ -326,9 +545,10 @@ ggplot(discover_weekly1, aes(energy, danceability, col=instrumentalness, size=te
   scale_color_viridis( option = "D")
 
 
-ggplot(discover_weekly3, aes(energy, danceability, col=instrumentalness, size=tempo))+
+
+ggplot(discover_weekly4, aes(energy, danceability, col=instrumentalness, size=tempo))+
   geom_point()+
-  labs(title='Discover Weekly 3',                       
+  labs(title='Discover Weekly 4',                       
     x = "Energy",
     y = "Danceability",
     colour = "Instrumentalness",
@@ -338,9 +558,10 @@ ggplot(discover_weekly3, aes(energy, danceability, col=instrumentalness, size=te
 
 ```
 
+
 ***
 
-These plot respresent week 1 and week 3 of discover weekly, showing the distribution of all 4 features.
+These plot respresent week 1 and week 4 of discover weekly, showing the distribution of all 4 features.
 
 
 ### The Chroma of Alex's least Danceable Song
@@ -421,51 +642,8 @@ compmus_long_distance(
 
 Now we can use Dynamic Time Warping to compute the most optimal alignment between the two features sequences. As hroma norm and distance measure manhattan was chosen, the other options did not seem to work well for this data. We can see the black line diagonally, expressing the optimal warping path.
 
-### Week 9: Timbre
-
-```{r}
-
-lacrimosa <- 
-    get_tidy_audio_analysis("1UvaZaHkh3D9AkmBrrnbFg") %>% 
-    compmus_align(bars, segments) %>% # aligns everything at a higher lvl of the spotify fpi, he first argument of compmus align can be bars, beats or section.
-    select(bars) %>% unnest(bars) %>% 
-    mutate(
-        pitches = # gives pitch information
-            map(segments, 
-                compmus_summarise, pitches, 
-                method = 'rms', norm = 'euclidean')) %>% # You can change the method to rms, mean, max and so on, see table (method summary). You can also change the norm again, see table
-    mutate(
-        timbre = #gives timbre information
-            map(segments, 
-                compmus_summarise, timbre, 
-                method = 'mean')) # You can change the method again.
-
-lacrimosa %>% 
-    compmus_gather_timbre %>% # You can leave this alon, you don't need to change anything here.
-    ggplot(
-        aes(
-            x = start + duration / 2, 
-            width = duration, 
-            y = basis, 
-            fill = value)) + 
-    geom_tile() +
-    labs(x = 'Time (s)', y = NULL, fill = 'Magnitude') +
-    scale_fill_viridis_c(option = 'E') + # You can change this color, this one is very nice.
-    theme_classic()
 
 
-lacrimosa %>%  # Timbre self similairity matrix
-    compmus_self_similarity(timbre, 'cosine') %>%  # Here you can change the secon argument again, meaning you change the distance.
-    ggplot(
-        aes(
-            x = xstart + xduration / 2, 
-            width = xduration,
-            y = ystart + yduration / 2,
-            height = yduration,
-            fill = d)) + 
-    geom_tile() +
-    coord_fixed() +
-    scale_fill_viridis_c(option = 'E', guide = 'none') +
-    theme_classic() +
-    labs(x = '', y = '')
-```
+
+
+
