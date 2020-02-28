@@ -21,7 +21,7 @@ library(CGPfunctions)
 library(viridis)
 ```
 
-### Chroma plots don't work well for Techno/Breakbeat songs. Timbre  to the rescue, showing us the breakdown of the song!
+### Chroma plots don't work well for Techno/Breakbeat songs. Timbre to the rescue, showing us the breakdown of the song!
 
 ```{r}
 
