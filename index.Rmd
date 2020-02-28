@@ -194,6 +194,14 @@ Here we see the SSM of Timbre again, but as an interactive plot.
 
 Take a look at the file again to check the specific moments.
 
+- Slow buildup 0 sec
+- Bass block 60 sec (1:00)
+- Bass block + High Heads 100 sec (1:40)
+- Piano block 130 sec (2:10)
+- Bass block + High Heads 190 sec (3:08)
+- Piano block 244 sec (4:05), where the one weird vocal sentence starts at 4:03
+- Autro block 305 sec (5:02)
+
 <html>
 <audio controls>
   <source src="Brainstorm Special Request.mp3" type="audio/mpeg">
