@@ -192,6 +192,15 @@ ggplotly(brain_active)
 
 Here we see the SSM of Timbre again, but as an interactive plot.
 
+Take a look at the file again to check the specific moments.
+
+<html>
+<audio controls>
+  <source src="Brainstorm Special Request.mp3" type="audio/mpeg">
+</audio>
+</html>
+
+
 ### Different Distances for Timbre
 
 ```{r}
