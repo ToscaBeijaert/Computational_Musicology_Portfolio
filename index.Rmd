@@ -152,9 +152,7 @@ Brainstorm_Timbre %>%  # Timbre self similairity matrix
 
 The chroma plot did not give us much information, however the Chroma SSM gives us loads of info.
 On the x-axis and the y-axis we can see the names describing the __start__ of a new music block. For instance, the song starts with a slow buildup at 0 sec untill around 60 sec (1:00), here a new block starts with some heavy bass, then at 100 sec (1:40) the block is still the same as before, but the high heads kick in. At 130 sec (2:10) the Piano block starts, where at 190 sec (3:08) the Bass block with high heads is repeated. Then at 244 sec (4:05) the Piano block is repeated and at 305 sec (5:02) the autro block starts.
-
-Listen to the file to find out!
-
+Listen to the [song](https://www.youtube.com/watch?v=DvJianRCqZk) to find out!
 ![Brainstorm Special Request](Brainstorm Special Request.mp3)
 
 If we look at the Timbre SSM again we see the breakdown at 60 seconds, this time even more clearly. As the song starts with some bass, high heads and some low vocals all of a sudden at 60 seconds a lot of low bass is added and this is easy to see by the yellow line at 60 seconds. Also we see a clear change at 244 seconds (4:02-4:05). This is because of that one weird vocal sample that is only played here.
