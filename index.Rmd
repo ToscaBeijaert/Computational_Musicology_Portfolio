@@ -5,7 +5,7 @@ date:   'February--March 2020'
 output: 
     flexdashboard::flex_dashboard:
         storyboard: true
-        theme: flatly
+        theme: united
 ---
 
 ```{r setup}
@@ -19,6 +19,8 @@ library(compmus)
 source('spotify.R')
 library(CGPfunctions)
 library(viridis)
+
+
 ```
 
 ### Chroma plots don't work well for Techno/Breakbeat songs. Timbre to the rescue, showing us the breakdown of the song!
@@ -45,7 +47,6 @@ Brainstorm_Chroma%>%
     scale_fill_viridis_c(option = 'A') + # You can change this color, this one is very nice.
     theme_classic() 
 
-moments=c("Buildup","Bass Block", "Bass Block + High Heads", "Piano", "Bass Block + High Heads", "Piano", "Outro")
 
 # The timbre plots of Brainstorm Special Request, which has a big difference at 60 seconds, 100sec,130sec (piano), 145 (vocal), repeat brainstorm, 244 (vocal again), 304 (new thing).We can also see that around 130 second a new block starts (2:10), this is were the piano comes in. At like 190sec (3:08) the same part is repeated that starts at 60 seconds! Listen to the file to find out!
 
@@ -94,6 +95,10 @@ The timbre shows a little bit better what's going on. The song starts with a slo
 ```{r}
 # The SSM of the Chroma
 
+moments_y=c("Buildup-0 sec","Bass Block-60 sec", "Bass Block + High Heads-100 sec", "Piano-130 sec", "Bass Block + High Heads-190 sec", "Piano-244 sec", "Outro-305 sec") # Vector with label for the x-axis
+
+moments_x=c("Buildup - 0s","Bass Block - 60s", "Bass Block + HH - 100s", "Piano - 130s", "Bass Block + HH - 190s", "Piano - 244s", "Outro - 305s") # Vector with label for the x-axis
+
 SSM_Chroma=Brainstorm_Chroma %>%  
     compmus_self_similarity(pitches, 'cosine') %>%  # Here you can change the secon argument again, meaning you change the distance.
     ggplot(
@@ -109,18 +114,18 @@ SSM_Chroma=Brainstorm_Chroma %>%
       theme_classic() +
   scale_x_continuous(
     breaks = c(0,60,100,130,190,244,305),  # Use grid-lines for quadrants only.
-    labels=moments,
+    labels=moments_x,
     minor_breaks = NULL      # Remove 'minor' grid-lines.
     ) +
   scale_y_continuous(          # Fine-tune the y axis in the same way.
     breaks = c(0,60,100,130,190,244,305),
-    labels=moments,
+    labels=moments_y,
     minor_breaks = NULL
   ) +
   labs(title='Chroma SSM', x="", y="") 
 
 
-SSM_Chroma + theme(axis.text.x= element_text(face="plain" ,angle=45))
+SSM_Chroma + theme(axis.text.x= element_text(face="plain" ,angle=45, hjust=1))
 
 # Euclidean as distance: You can see the big change at 60 seconds very well.
 
