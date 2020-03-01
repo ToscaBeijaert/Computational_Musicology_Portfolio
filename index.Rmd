@@ -637,6 +637,22 @@ lacrimosa2 %>%
 
 After doing some research, I found out that Alex's least danceable song is Lacrimosa, from Amadeus Mozart, which is quite funny as it is one of our favorite classical music songs, which we sing all the time. Looking at the chroma plots, where we can sort of see that this song is played in d minor, which consists of D, E, F, G, A, B♭, and C.Luckily for me, I also have this song in my playlist, a slightly different version from the Choir of King's College, meaning there might be some more polyphonic parts in this version. However you can clearly see the similarities of the two chroma plots.
 
+Alex's Lacrimosa by Lisa Beckley
+
+<html>
+<audio controls>
+  <source src="Lacrimosa_Alex.mp3" type="audio/mpeg">
+</audio>
+</html>
+
+
+My Lacrimosa from the Choir of Kings college
+
+<html>
+<audio controls>
+  <source src="Lacrimosa_Tosca.mp3" type="audio/mpeg">
+</audio>
+</html>
 
 ### Dynamic Time Warping Lacrimosa?
 
