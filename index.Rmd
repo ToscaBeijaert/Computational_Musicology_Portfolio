@@ -23,6 +23,336 @@ library(viridis)
 
 ```
 
+### The Key of our Playlists
+
+```{r, fig.width=10, fig.height=7}
+
+# My Spotify Favorites
+favorites=get_playlist_audio_features("Tosca Beijaert","16OAuKPZYr8YM4a9n1V6kf")
+
+
+# Because there were local files in the list, spotify added extra columns, which i removed as the other
+# playlists don't have these comments, so it will be useless for compariosn.
+favorites=favorites[-c(59:63)]
+
+# We also have to remove the local files, as i cannot  compare them as there is no analysis for these tracks.
+favorites=subset(favorites, track.is_local==FALSE) # we delete the local files
+
+
+
+# Alex favorites 
+alex=get_playlist_audio_features("Alexander Keijser","59c8tug3WdwODj6gV0ierq")
+
+# Discover weekly Favorites week 1
+discover_weekly1=get_playlist_audio_features("Tosca Beijaert","1RGiBzoNLHf0GkTYRxDhpY")
+
+# Discover weekly favorites week 2
+
+discover_weekly2=get_playlist_audio_features("Tosca Beijaert", "24kpxnb8oyQykp71Gn3sge")
+
+discover_weekly3=get_playlist_audio_features("Tosca Beijaert","1vOSG6EzDsKLNlvRFEhcjF")
+
+discover_weekly4=get_playlist_audio_features("Tosca Beijaert","2XhLwoBvdUK38ROYUwR1Mg")
+
+discover_weekly5=get_playlist_audio_features("Tosca Beijaert","7okC2wt4u0QtdddWp3Li7Q")
+
+
+# Discover weekly 1 & 2 combined (combined playlists)
+
+# discover_weekly_combined_week2=merge(discover_weekly1[6:16],discover_weekly2.1[6:16])
+#View(discover_weekly_combined_week2) # WHY DOES THIS NOT WORK???A
+
+
+# Discover Weekly Archive
+
+discover_weekly_archive=get_playlist_audio_features("Tosca Beijaert", "4jLB65Tpbt91Ta2QrypTFV")
+
+
+
+# We make the Key histograms
+playlists_end=
+  alex %>% mutate(playlist = "Alex") %>%
+  bind_rows(favorites %>% mutate(playlist = "Favorites")) %>%
+  bind_rows(discover_weekly5%>% mutate(playlist = "Discover Weekly 5")) 
+
+key_x=c("C","C#|Db", "D","D#|Eb" ,"E", "F", "F#|Gb", "G", "G#|Ab", "A", "A#|Bb", "B" ) # Vector with label for the x-axis
+
+key_per_playlist=
+  playlists_end %>%
+  ggplot(aes(x = key, col=playlist)) +
+  geom_bar() +
+  facet_wrap(~ playlist, scales="free_y")+
+  labs(color='Playlist', title='Key per Playlist') +
+  xlab('Key') +
+  ylab("Count")+
+  scale_x_continuous( 
+    labels= key_x,
+    breaks = c(0,1,2,3,4,5,6,7,8,9,10,11)         # Fine-tune the x axis.
+     # Use grid-lines for quadrants only.      # Remove 'minor' grid-lines.
+  )
+
+key_per_playlist + theme(axis.text.x= element_text(face="plain" ,angle=45, hjust=1))
+
+
+```
+
+***
+
+Here we see the distributions of the keys per playlist. You can see that for every playlist, a lot of the songs are in the key of C. However, there are also a lot for C#|Db, G & A.
+
+
+### Alex's least Danceable Song: Lacrimosa
+
+
+```{r}
+library(png)
+library(grid)
+img <- readPNG("lacrimosa.png")
+ grid.raster(img)
+```
+
+
+
+***
+
+After doing some research, I found out that Alex's least danceable song is Lacrimosa, from Amadeus Mozart, which is quite funny as it is one of our favorite classical music songs, which we sing all the time. Now i know that Lacrimosa is played in d-minor, which will help us later on. THe songs has some very particular Harmonic orders, for instance for the first few beats: I-II-V-I-II-V. This can also be seen in the picture.
+
+An explanation used of the harmonics & emotions of this song can be found in this [video!](https://www.youtube.com/watch?v=D8SD3ToKDsw). Please watch it, even if you only look at it for 2 seconds, it's really interesting!
+
+
+### Lacrimosa seems hard to analyze?
+
+
+```{r}
+
+circshift <- function(v, n) {if (n == 0) v else c(tail(v, n), head(v, -n))}
+                                    
+    # C     C#    D     Eb    E     F     F#    G     Ab    A     Bb    B 
+major_chord <- 
+    c(1,    0,    0,    0,    1,    0,    0,    1,    0,    0,    0,    0)
+minor_chord <- 
+    c(1,    0,    0,    1,    0,    0,    0,    1,    0,    0,    0,    0)
+seventh_chord <- 
+    c(1,    0,    0,    0,    1,    0,    0,    1,    0,    0,    1,    0)
+
+major_key <- 
+    c(6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29, 2.88)
+minor_key <-
+    c(6.33, 2.68, 3.52, 5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17)
+
+chord_templates <-
+    tribble(
+        ~name  , ~template,
+        'Gb:7'  , circshift(seventh_chord,  6),
+        'Gb:maj', circshift(major_chord,    6),
+        'Bb:min', circshift(minor_chord,   10),
+        'Db:maj', circshift(major_chord,    1),
+        'F:min' , circshift(minor_chord,    5),
+        'Ab:7'  , circshift(seventh_chord,  8),
+        'Ab:maj', circshift(major_chord,    8),
+        'C:min' , circshift(minor_chord,    0),
+        'Eb:7'  , circshift(seventh_chord,  3),
+        'Eb:maj', circshift(major_chord,    3),
+        'G:min' , circshift(minor_chord,    7),
+        'Bb:7'  , circshift(seventh_chord, 10),
+        'Bb:maj', circshift(major_chord,   10),
+        'D:min' , circshift(minor_chord,    2),
+        'F:7'   , circshift(seventh_chord,  5),
+        'F:maj' , circshift(major_chord,    5),
+        'A:min' , circshift(minor_chord,    9),
+        'C:7'   , circshift(seventh_chord,  0),
+        'C:maj' , circshift(major_chord,    0),
+        'E:min' , circshift(minor_chord,    4),
+        'G:7'   , circshift(seventh_chord,  7),
+        'G:maj' , circshift(major_chord,    7),
+        'B:min' , circshift(minor_chord,   11),
+        'D:7'   , circshift(seventh_chord,  2),
+        'D:maj' , circshift(major_chord,    2),
+        'F#:min', circshift(minor_chord,    6),
+        'A:7'   , circshift(seventh_chord,  9),
+        'A:maj' , circshift(major_chord,    9),
+        'C#:min', circshift(minor_chord,    1),
+        'E:7'   , circshift(seventh_chord,  4),
+        'E:maj' , circshift(major_chord,    4),
+        'G#:min', circshift(minor_chord,    8),
+        'B:7'   , circshift(seventh_chord, 11),
+        'B:maj' , circshift(major_chord,   11),
+        'D#:min', circshift(minor_chord,    3))
+
+key_templates <-
+    tribble(
+        ~name    , ~template,
+        'Gb:maj', circshift(major_key,  6),
+        'Bb:min', circshift(minor_key, 10),
+        'Db:maj', circshift(major_key,  1),
+        'F:min' , circshift(minor_key,  5),
+        'Ab:maj', circshift(major_key,  8),
+        'C:min' , circshift(minor_key,  0),
+        'Eb:maj', circshift(major_key,  3),
+        'G:min' , circshift(minor_key,  7),
+        'Bb:maj', circshift(major_key, 10),
+        'D:min' , circshift(minor_key,  2),
+        'F:maj' , circshift(major_key,  5),
+        'A:min' , circshift(minor_key,  9),
+        'C:maj' , circshift(major_key,  0),
+        'E:min' , circshift(minor_key,  4),
+        'G:maj' , circshift(major_key,  7),
+        'B:min' , circshift(minor_key, 11),
+        'D:maj' , circshift(major_key,  2),
+        'F#:min', circshift(minor_key,  6),
+        'A:maj' , circshift(major_key,  9),
+        'C#:min', circshift(minor_key,  1),
+        'E:maj' , circshift(major_key,  4),
+        'G#:min', circshift(minor_key,  8),
+        'B:maj' , circshift(major_key, 11),
+        'D#:min', circshift(minor_key,  3))
+
+lacrimosa = 
+    get_tidy_audio_analysis("1UvaZaHkh3D9AkmBrrnbFg") %>% 
+    select(segments) %>% unnest(segments) %>% 
+    select(start, duration, pitches)
+
+lacrimosa2 =
+    get_tidy_audio_analysis("3oHSL6pt9LpNrQZuQGu9wL") %>% 
+    select(segments) %>% unnest(segments) %>% 
+    select(start, duration, pitches)
+
+lacrimosa %>% 
+    mutate(pitches = map(pitches, compmus_normalise, 'euclidean')) %>% # Change Euclidean to something you want: manhattan, euclidean or chebyshev
+    compmus_gather_chroma %>% 
+    ggplot(
+        aes(
+            x = start + duration / 2, 
+            width = duration, 
+            y = pitch_class, 
+            fill = value)) + 
+  scale_fill_viridis_c(option = 'C', guide = ) +
+    geom_tile() +
+    labs(title= "Chromaplot: Alex's Lacrimosa",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
+    theme_classic()
+
+lacrimosa2 %>% 
+    mutate(pitches = map(pitches, compmus_normalise, 'euclidean')) %>% # Change Euclidean to something you want: manhattan, euclidean or chebyshev
+    compmus_gather_chroma %>% 
+    ggplot(
+        aes(
+            x = start + duration / 2, 
+            width = duration, 
+            y = pitch_class, 
+            fill = value)) + 
+    scale_fill_viridis_c(option = 'C', guide = ) +
+    geom_tile() +
+    labs(title= "Chromaplot: My Lacrimosa",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
+    theme_classic()
+
+lacrimosa_key <- 
+    get_tidy_audio_analysis('1UvaZaHkh3D9AkmBrrnbFg') %>% 
+    compmus_align(sections, segments) %>% 
+    select(sections) %>% unnest(sections) %>% 
+    mutate(
+        pitches = 
+            map(segments, 
+                compmus_summarise, pitches, 
+                method = 'mean', norm = 'manhattan'))
+
+lacrimosa_key2 <- 
+    get_tidy_audio_analysis('3oHSL6pt9LpNrQZuQGu9wL') %>% 
+    compmus_align(sections, segments) %>% 
+    select(sections) %>% unnest(sections) %>% 
+    mutate(
+        pitches = 
+            map(segments, 
+                compmus_summarise, pitches, 
+                method = 'mean', norm = 'manhattan'))
+
+
+lacrimosa_key %>% 
+    compmus_match_pitch_template(key_templates, 'cosine', 'euclidean') %>% 
+    ggplot(
+        aes(x = start + duration / 2, width = duration, y = name, fill = d)) +
+    geom_tile() +
+    scale_fill_viridis_c(option = 'D') +
+    labs(title= "Key-Plot: Alex's Lacrimosa",x = 'Time (s)', y = NULL, fill = 'Magnitude')+
+    theme_minimal() +
+    labs(x = 'Time (s)', y = '')
+
+lacrimosa_key2 %>% 
+    compmus_match_pitch_template(key_templates, 'cosine', 'euclidean') %>% 
+    ggplot(
+        aes(x = start + duration / 2, width = duration, y = name, fill = d)) +
+    geom_tile() +
+    labs(title= "Key-Plot: My Lacrimosa",x = 'Time (s)', y = NULL, fill = 'Magnitude')+
+    scale_fill_viridis_c(option = 'D') +
+    theme_minimal() +
+    labs(x = 'Time (s)', y = '')
+
+
+```
+
+
+
+***
+
+Luckily for me, I also have Lacrimosa in my playlist, however mine is a slightly different version from the Choir of King's College, meaning there might be some more polyphonic parts in this version. Also for my version the tempo is a little bit higher and the tuning seems to be a bit tuned down. 
+
+Looking at the chroma plots we can sort of see that this song is played in d minor, which consists of D, E, F, G, A, B♭, and C. But the plot is not very easy to read, changing the normalisation or the colors also did not make the chroma plots much clearer.
+
+For Alex's Lacrimosa we see some activity around A & D. My Lacrimosa has some activity around A, D & Db. The fact that both D & Db are showing on the plot might have something to do with the tuning of the song.
+
+
+
+Alex's Lacrimosa by Lisa Beckley
+
+<html>
+<audio controls>
+  <source src="Lacrimosa_Alex.mp3" type="audio/mpeg">
+</audio>
+</html>
+
+
+My Lacrimosa from the Choir of Kings college
+
+<html>
+<audio controls>
+  <source src="Lacrimosa_Tosca.mp3" type="audio/mpeg">
+</audio>
+</html>
+
+
+The key-plots are again not very easy to read. One weird thing would be around 170 seconds (2:50) for Alex's Lacrimosa and around 155 seconds (2:35) for my Lacrimosa. In both songs this is the same moment ofcourse, the time difference is only because my version of Lacrimosa has a higher tempo. This moment seems to be around a part where the vocals are a bit softer compared to the rest of the song, and also it's a part that's new, so it hasn't happened before in the song. It's part that first buildsup softly and then goes down again.
+
+### Dynamic Time Warping Lacrimosa?
+
+
+```{r}
+
+compmus_long_distance(
+    lacrimosa %>% mutate(pitches = map(pitches, compmus_normalise, 'manhattan')), # You only need to change the names of your trakcs, so in this case the tallis and chapelle. Also change your norm to what you want, bv euclidean and change the distances (method)
+    lacrimosa2 %>% mutate(pitches = map(pitches, compmus_normalise, 'manhattan')),
+    feature = pitches,
+    method = 'manhattan') %>% 
+    ggplot(
+        aes(
+            x = xstart + xduration / 2, 
+            width = xduration,
+            y = ystart + yduration / 2,
+            height = yduration,
+            fill = d)) + 
+    geom_tile() +
+    scale_fill_continuous(type = 'viridis', guide = 'none') +
+    labs(title= "Dynamic Time Warp",x = 'Alex his Lacrimosa', y = 'My Lacrimosa') +
+    theme_classic() # The diagnoal line represent the dynamic time warp.
+
+```
+
+***
+
+
+Now we can use Dynamic Time Warping to compute the most optimal alignment between the two features sequences. As chroma norm and distance measure manhattan was chosen, the other options did not seem to work well for this data. We can see the black line diagonally, expressing the optimal warping path.
+
+
+
+
 ### Chroma plots don't work well for Techno/Breakbeat songs. Timbre to the rescue, showing us the breakdown of the song!
 
 ```{r}
@@ -269,41 +599,6 @@ Using Cosine as the distance for the timbre SSM, we get more structure into the 
 ```{r}
 
 
-# My Spotify Favorites
-favorites=get_playlist_audio_features("Tosca Beijaert","16OAuKPZYr8YM4a9n1V6kf")
-
-# Because there were local files in the list, spotify added extra columns, which i removed as the other
-# playlists don't have these comments, so it will be useless for compariosn.
-favorites=favorites[-c(59:63)]
-
-# We also have to remove the local files, as i cannot  compare them as there is no analysis for these tracks.
-favorites=subset(favorites, track.is_local==FALSE) # we delete the local files
-
-
-
-# Alex favorites 
-alex=get_playlist_audio_features("Alexander Keijser","59c8tug3WdwODj6gV0ierq")
-
-# Discover weekly Favorites week 1
-discover_weekly1=get_playlist_audio_features("Tosca Beijaert","1RGiBzoNLHf0GkTYRxDhpY")
-
-# Discover weekly favorites week 2
-
-discover_weekly2=get_playlist_audio_features("Tosca Beijaert", "24kpxnb8oyQykp71Gn3sge")
-
-discover_weekly3=get_playlist_audio_features("Tosca Beijaert","1vOSG6EzDsKLNlvRFEhcjF")
-
-discover_weekly4=get_playlist_audio_features("Tosca Beijaert","2XhLwoBvdUK38ROYUwR1Mg")
-
-# Discover weekly 1 & 2 combined (combined playlists)
-
-# discover_weekly_combined_week2=merge(discover_weekly1[6:16],discover_weekly2.1[6:16])
-#View(discover_weekly_combined_week2) # WHY DOES THIS NOT WORK???A
-
-
-# Discover Weekly Archive
-
-discover_weekly_archive=get_playlist_audio_features("Tosca Beijaert", "4jLB65Tpbt91Ta2QrypTFV")
 
 playlists=
   alex %>% mutate(playlist = "Alex") %>%
@@ -462,7 +757,7 @@ We now see that only information on the mean of the data, does not give us enoug
 
 ### The transformation so far?! {data-commentary-width=300}
 
-```{r fig.height=10, fig.width=10}
+```{r fig.height=10, fig.width=7}
 
 library(lubridate)
 discover_weekly_archive$week=isoweek(discover_weekly_archive$added_at)
@@ -477,6 +772,8 @@ discover_weekly_archive_features=discover_weekly_archive[c(6,7,13,16,62)]
 
 means_all=aggregate(x=discover_weekly_archive_features, by=list(discover_weekly_archive_features$week), FUN =mean)
 
+median_all=aggregate(x=discover_weekly_archive_features, by=list(discover_weekly_archive_features$week), FUN =median)
+
 
 # without tempo
 means_all_2=means_all[-5]
@@ -485,12 +782,18 @@ means_all_2=means_all[-5]
 means_all_3=means_all
 means_all_3$tempo=means_all_3$tempo/100
 
+median_all$tempo=median_all$tempo/100
+
+
 
 # Orignial
 features_longer=pivot_longer(means_all,c(danceability,instrumentalness,tempo,energy), names_to = "feature")
+median_longer=pivot_longer(median_all,c(danceability,instrumentalness,tempo,energy), names_to = "feature")
+
 
 # Without tempo
 features_longer_2=pivot_longer(means_all,c(danceability,instrumentalness,energy), names_to = "feature")
+
 
 # Tempo/100
 features_longer_3=pivot_longer(means_all_3,c(danceability,instrumentalness,energy, tempo), names_to = "feature")
@@ -501,8 +804,13 @@ features_longer_2$week=as.character(features_longer_2$week)
 features_longer_3$week=as.character(features_longer_3$week)
 features_longer_3$value=round(features_longer_3$value,2)
 
-features_longer_3$week <- factor(features_longer_3$week, levels = c("6","7","8","9"), labels = c("Week 1","Week 2","Week 3","Week 4"))
+features_longer_3$week <- factor(features_longer_3$week, levels = c("6","7","8","9","10"), labels = c("Week 1","Week 2","Week 3","Week 4", "Week 5"))
 
+
+# For the median
+median_longer$week=as.character(median_longer$week)
+median_longer$value=round(median_longer$value,2)
+median_longer$week <- factor(median_longer$week, levels = c("6","7","8","9","10"), labels = c("Week 1","Week 2","Week 3","Week 4", "Week 5"))
 require(dplyr)
 library(CGPfunctions)
 
@@ -513,10 +821,12 @@ library(CGPfunctions)
 # Tempo eruit getyft
 # Plot voor als je tempo eruit wilt: newggslopegraph(dataframe=features_longer_2, Times=week, Measurement = value, Grouping = feature)
 
-# Tempo/100
+# Tempo/100 for the MEAN
 newggslopegraph(dataframe=features_longer_3, Times=week, Measurement = value, Grouping = feature, Title= "Mean Changes per Week", SubTitle = NULL, WiderLabels = TRUE, YTextSize = 4, DataTextSize = 4, DataLabelPadding = 0.0001, LineThickness = 2)
 
 
+# tempo/100 for the MEDIAN
+newggslopegraph(dataframe=median_longer, Times=week, Measurement = value, Grouping = feature, Title= "Median Changes per Week", SubTitle = NULL, WiderLabels = TRUE, YTextSize = 4, DataTextSize = 4, DataLabelPadding = 0.0001, LineThickness = 2)
 # HOW TO FIX THIS IN GODS NAME...
 
 
@@ -525,14 +835,18 @@ newggslopegraph(dataframe=features_longer_3, Times=week, Measurement = value, Gr
 ***
 
 
-This Plot shows us the changes over the 3 weeks for each feature. The values shown are the means of the absolute. The tempo values are devided by 100, else they wouldn't fit on the plot. Thus tempo= 1.16 equals tempo=116 (am still figuring out how to solve this). The first thing to notice is the big increase in instrumentalness. Whereas the other variables are still fluctuating a lot over time. However, these values only show us the mean values and we have seen before that the distribution of the data might be skewed, therefore we should look at other measures, like the median (I have not had time for this yet, will work on it the coming week).
+These Plot shows us the changes over the 5 weeks for each feature. The values shown are the means of the absolute values. The tempo values are devided by 100, else they wouldn't fit on the plot. Thus tempo= 1.16 equals tempo=116 (am still figuring out how to solve this). 
+
+On the left we have the mean values and on the right the median values. The first thing to notice when looking at the left Plot of the mean values is the big increase in instrumentalness for week one, which than starts to drop continuously untill it's lower in week 5, than the value we started with. Whereas the other variables are still fluctuating a lot over time, we can see that in general energy, danceability and tempo have gone up slightly.
+
+However, these values only show us the mean values and we have seen before that the distribution of the data might be skewed, therefore we should look at other measures, like the median, which can be seen on the right. This plot shows us similar results.
 
 
 ### More plots of mean changes
 
 
 ```{r}
-week_numbers=c(1,2,3,4)
+week_numbers=c(1,2,3,4,5)
 
 ggplot(means_all, aes(week, danceability, col=instrumentalness, size=energy))+
   geom_point()+
@@ -542,7 +856,7 @@ ggplot(means_all, aes(week, danceability, col=instrumentalness, size=energy))+
     colour = "Instrumentalness",
     size="Energy")  +
     scale_x_continuous(          # Fine-tune the x axis.
-    breaks = c(6,7,8,9),  # Use grid-lines for quadrants only.
+    breaks = c(6,7,8,9,10),  # Use grid-lines for quadrants only.
     minor_breaks = NULL,      # Remove 'minor' grid-lines.
     labels=week_numbers
   )
@@ -571,9 +885,9 @@ ggplot(discover_weekly1, aes(energy, danceability, col=instrumentalness, size=te
 
 
 
-ggplot(discover_weekly4, aes(energy, danceability, col=instrumentalness, size=tempo))+
+ggplot(discover_weekly5, aes(energy, danceability, col=instrumentalness, size=tempo))+
   geom_point()+
-  labs(title='Discover Weekly 4',                       
+  labs(title='Discover Weekly 5',                       
     x = "Energy",
     y = "Danceability",
     colour = "Instrumentalness",
@@ -586,102 +900,7 @@ ggplot(discover_weekly4, aes(energy, danceability, col=instrumentalness, size=te
 
 ***
 
-These plot respresent week 1 and week 4 of discover weekly, showing the distribution of all 4 features.
-
-
-### The Chroma of Alex's least Danceable Song
-
-
-```{r}
-
-lacrimosa = 
-    get_tidy_audio_analysis("1UvaZaHkh3D9AkmBrrnbFg") %>% 
-    select(segments) %>% unnest(segments) %>% 
-    select(start, duration, pitches)
-
-lacrimosa2 =
-    get_tidy_audio_analysis("3oHSL6pt9LpNrQZuQGu9wL") %>% 
-    select(segments) %>% unnest(segments) %>% 
-    select(start, duration, pitches)
-
-lacrimosa %>% 
-    mutate(pitches = map(pitches, compmus_normalise, 'euclidean')) %>% # Change Euclidean to something you want: manhattan, euclidean or chebyshev
-    compmus_gather_chroma %>% 
-    ggplot(
-        aes(
-            x = start + duration / 2, 
-            width = duration, 
-            y = pitch_class, 
-            fill = value)) + 
-    geom_tile() +
-    labs(title= "Alex's Lacrimosa",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
-    theme_classic()
-
-lacrimosa2 %>% 
-    mutate(pitches = map(pitches, compmus_normalise, 'euclidean')) %>% # Change Euclidean to something you want: manhattan, euclidean or chebyshev
-    compmus_gather_chroma %>% 
-    ggplot(
-        aes(
-            x = start + duration / 2, 
-            width = duration, 
-            y = pitch_class, 
-            fill = value)) + 
-    geom_tile() +
-    labs(title= "My Lacrimosa",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
-    theme_classic()
-```
-
-
-
-***
-
-After doing some research, I found out that Alex's least danceable song is Lacrimosa, from Amadeus Mozart, which is quite funny as it is one of our favorite classical music songs, which we sing all the time. Looking at the chroma plots, where we can sort of see that this song is played in d minor, which consists of D, E, F, G, A, B♭, and C.Luckily for me, I also have this song in my playlist, a slightly different version from the Choir of King's College, meaning there might be some more polyphonic parts in this version. However you can clearly see the similarities of the two chroma plots.
-
-Alex's Lacrimosa by Lisa Beckley
-
-<html>
-<audio controls>
-  <source src="Lacrimosa_Alex.mp3" type="audio/mpeg">
-</audio>
-</html>
-
-
-My Lacrimosa from the Choir of Kings college
-
-<html>
-<audio controls>
-  <source src="Lacrimosa_Tosca.mp3" type="audio/mpeg">
-</audio>
-</html>
-
-### Dynamic Time Warping Lacrimosa?
-
-
-```{r}
-
-compmus_long_distance(
-    lacrimosa %>% mutate(pitches = map(pitches, compmus_normalise, 'manhattan')), # You only need to change the names of your trakcs, so in this case the tallis and chapelle. Also change your norm to what you want, bv euclidean and change the distances (method)
-    lacrimosa2 %>% mutate(pitches = map(pitches, compmus_normalise, 'manhattan')),
-    feature = pitches,
-    method = 'manhattan') %>% 
-    ggplot(
-        aes(
-            x = xstart + xduration / 2, 
-            width = xduration,
-            y = ystart + yduration / 2,
-            height = yduration,
-            fill = d)) + 
-    geom_tile() +
-    scale_fill_continuous(type = 'viridis', guide = 'none') +
-    labs(title= "Dynamic Time Warp",x = 'Alex his Lacrimosa', y = 'My Lacrimosa') +
-    theme_classic() # The diagnoal line represent the dynamic time warp.
-
-```
-
-***
-
-
-Now we can use Dynamic Time Warping to compute the most optimal alignment between the two features sequences. As hroma norm and distance measure manhattan was chosen, the other options did not seem to work well for this data. We can see the black line diagonally, expressing the optimal warping path.
+These plot respresent week 1 and week 5 of discover weekly, showing the distribution of all 4 features.
 
 
 
