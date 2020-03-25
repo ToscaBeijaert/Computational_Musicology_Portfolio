@@ -32,7 +32,7 @@ library(heatmaply)
 ```
 
 
-### **Will my Discover Weekly transform into Alex? Differences for Danceability, Energy, Tempo and Instrumentalness**{data-commentary-width=360}
+### **Will my Discover Weekly transform into Alex? Differences for Danceability, Energy, Tempo and Instrumentalness**{data-commentary-width=280}
 
 ```{r chunk10}
 
@@ -159,7 +159,7 @@ On the left we see a plot for the Energy, Danceability and Instrumentalness for 
 The left plot however is hard to interpret, therefore we could look for instance just at the danceability and energy of each playlist. This is what we see on the right.
 This shows us very clearly that spotify weekly's data isn't very spread. For instance, looking at the green line, we can see that the danceability nor the energy go below 0.3 for discover weekly. However, these two plots don't show us that well how any of the variables are distributed. THus we will look at some histograms per feature.
 
-### **The Baseline differences: the distributions of the features**{data-commentary-width=530}
+### **The Baseline differences: the distributions of the features**{data-commentary-width=300}
 
 ```{r chunk11}
 
@@ -292,7 +292,7 @@ These tables don't show much difference in the mean values, however the histogra
 
 
 
-###**The Key of our Playlists**
+### **The Key of our Playlists**
 
 ```{r chunk2, fig.width=10, fig.height=7}
 
@@ -352,7 +352,7 @@ An explanation used of the harmonics & emotions of this song can be found in thi
 Luckily for me, I also have Lacrimosa in my playlist, however mine is a slightly different version from the Choir of King's College, meaning there might be some more polyphonic parts in this version. Also for my version the tempo is a little bit higher and the tuning seems to be a bit tuned down.
 
 
-### **The Chroma of Lacrimosa seems hard to analyze?**{data-commentary-width=500}
+### **The Chroma of Lacrimosa seems hard to analyze?**{data-commentary-width=290}
 
 ```{r chunk4}
 
@@ -651,7 +651,7 @@ This can be seen from the chroma plot. On the x-axis we have the time and on the
 
 The timbre shows a little bit better what's going on. The song starts with a slow buildup with some high heads and some minimal vocals (Kicking up in the brainstorm), which you can see in the beginning. Then you can see a very big change around 60 seconds, this is where a very heavy bass kicks in. It also shows a single weird moment around 240 seconds, this is because here there is 1 small sample of a vocal which has not been in the song before and is only played here.
 
-### **SSM matrixes Showing us what's actually going on.**{data-commentary-width=480}
+### **SSM matrixes Showing us what's actually going on.**{data-commentary-width=295}
 
 ```{r Langzamechunk7}
 # The SSM of the Chroma
@@ -932,7 +932,7 @@ For Lacrimosa it's not very inconsistent, the first novelty plot show the first 
 The second novelty plot start from round 27s till 52 seconds, here you get a slow buildup with some vocals, where it's also hard for the novelty function to work. I guess that it's not surprising as this song doesnt have any percussion or an obvios beat. It is mostly string music and vocals.
 
 
-### **Tempograms: Lacrimosa stays unclear!**{data-commentary-width=500}
+### **Tempograms: Lacrimosa stays unclear!**{data-commentary-width=298}
 
 ```{r Langzame Chunk}
 
