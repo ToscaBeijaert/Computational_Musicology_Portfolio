@@ -27,6 +27,8 @@ library(tidymodels)
 library(protoclust)
 library(ggdendro)
 library(heatmaply)
+library(dplyr)
+library(egg)
 
 
 ```
@@ -850,71 +852,76 @@ lacrimosa_novelty %>%
     theme_minimal() +
     labs(x = 'Time (s)', y = 'Novelty', title="Lacrimosa Novelty Function From 26s: Vocal Buildup")
 
-brain%>% # These are just deltas
-    mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>%
-    arrange(start) %>%
-    mutate(pitches = map2(pitches, lag(pitches), `-`)) %>%
-    compmus_gather_chroma %>%
-    ggplot(
-        aes(
-            x = start + duration / 2,
-            width = duration,
-            y = pitch_class,
-            fill = pmax(0, value))) +
-    geom_tile() +
-    scale_fill_viridis_c(option = 'E', guide = 'none') +
-    xlim(0, 30) +
-    labs(x = 'Time (s)', y = NULL, fill = 'Magnitude',  title="Brainstorm Delta-Chroma") +
-    theme_classic()
+# brain%>% # These are just deltas
+#     mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>%
+#     arrange(start) %>%
+#     mutate(pitches = map2(pitches, lag(pitches), `-`)) %>%
+#     compmus_gather_chroma %>%
+#     ggplot(
+#         aes(
+#             x = start + duration / 2,
+#             width = duration,
+#             y = pitch_class,
+#             fill = pmax(0, value))) +
+#     geom_tile() +
+#     scale_fill_viridis_c(option = 'E', guide = 'none') +
+#     xlim(0, 30) +
+#     labs(x = 'Time (s)', y = NULL, fill = 'Magnitude',  title="Brainstorm Delta-Chroma") +
+#     theme_classic()
+# 
+# lacrimosa_novelty%>% # These are just deltas
+#     mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>%
+#     arrange(start) %>%
+#     mutate(pitches = map2(pitches, lag(pitches), `-`)) %>%
+#     compmus_gather_chroma %>%
+#     ggplot(
+#         aes(
+#             x = start + duration / 2,
+#             width = duration,
+#             y = pitch_class,
+#             fill = pmax(0, value))) +
+#     geom_tile() +
+#     scale_fill_viridis_c(option = 'E', guide = 'none') +
+#     xlim(0, 30) +
+#     labs(x = 'Time (s)', y = NULL, fill = 'Magnitude',  title="Lacrimosa Delta-Chroma") +
+#     theme_classic()
+# 
+# brain %>%  # These are delta deltaas: To get delta deltas je change the lag in the 3d rule.
+#     arrange(start) %>%
+#     mutate(timbre = map2(timbre, lag(timbre), `-`)) %>%
+#     compmus_gather_timbre %>%
+#     ggplot(
+#         aes(
+#             x = start + duration / 2,
+#             width = duration,
+#             y = basis,
+#             fill = pmax(0, value))) +
+#     geom_tile() +
+#     scale_fill_viridis_c(option = 'E', guide = 'none') +
+#     xlim(0, 30) +
+#     labs(x = 'Time (s)', y = NULL, fill = 'Magnitude',  title="Brainstorm Delta-Delta-Timbre") +
+#     theme_classic()
+# 
+# lacrimosa_novelty %>%  # These are delta deltaas: To get delta deltas je change the lag in the 3d rule.
+#     arrange(start) %>%
+#     mutate(timbre = map2(timbre, lag(timbre), `-`)) %>%
+#     compmus_gather_timbre %>%
+#     ggplot(
+#         aes(
+#             x = start + duration / 2,
+#             width = duration,
+#             y = basis,
+#             fill = pmax(0, value))) +
+#     geom_tile() +
+#     scale_fill_viridis_c(option = 'E', guide = 'none') +
+#     xlim(0, 30) +
+#     labs(x = 'Time (s)', y = NULL, fill = 'Magnitude', title="Lacrimosa Delta-Delta-Timbre") +
+#     theme_classic()
 
-lacrimosa_novelty%>% # These are just deltas
-    mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>%
-    arrange(start) %>%
-    mutate(pitches = map2(pitches, lag(pitches), `-`)) %>%
-    compmus_gather_chroma %>%
-    ggplot(
-        aes(
-            x = start + duration / 2,
-            width = duration,
-            y = pitch_class,
-            fill = pmax(0, value))) +
-    geom_tile() +
-    scale_fill_viridis_c(option = 'E', guide = 'none') +
-    xlim(0, 30) +
-    labs(x = 'Time (s)', y = NULL, fill = 'Magnitude',  title="Lacrimosa Delta-Chroma") +
-    theme_classic()
+# The Delta Chromagram for Brainstorm doesn't show very obvious patterns, which isn't weird as the song consist of a lot of bass. The Lacrimosa Chromagram shows high activity around B. This song is in D minorL: D - E - F - G - A - B??? - C - D, so there shouldn't even be a B in here, it should be a Bb. Thus this chromagram doesn't look very well. This might be because of the tuning.
 
-brain %>%  # These are delta deltaas: To get delta deltas je change the lag in the 3d rule.
-    arrange(start) %>%
-    mutate(timbre = map2(timbre, lag(timbre), `-`)) %>%
-    compmus_gather_timbre %>%
-    ggplot(
-        aes(
-            x = start + duration / 2,
-            width = duration,
-            y = basis,
-            fill = pmax(0, value))) +
-    geom_tile() +
-    scale_fill_viridis_c(option = 'E', guide = 'none') +
-    xlim(0, 30) +
-    labs(x = 'Time (s)', y = NULL, fill = 'Magnitude',  title="Brainstorm Delta-Delta-Timbre") +
-    theme_classic()
+# The delta-delta TimbreGram for Brainstorm shows us some activity around c04 and the delta-delta Timbregram for Lacrimosa also shows us some activity around c04. Meaning that the change of the change is most active around c04.
 
-lacrimosa_novelty %>%  # These are delta deltaas: To get delta deltas je change the lag in the 3d rule.
-    arrange(start) %>%
-    mutate(timbre = map2(timbre, lag(timbre), `-`)) %>%
-    compmus_gather_timbre %>%
-    ggplot(
-        aes(
-            x = start + duration / 2,
-            width = duration,
-            y = basis,
-            fill = pmax(0, value))) +
-    geom_tile() +
-    scale_fill_viridis_c(option = 'E', guide = 'none') +
-    xlim(0, 30) +
-    labs(x = 'Time (s)', y = NULL, fill = 'Magnitude', title="Lacrimosa Delta-Delta-Timbre") +
-    theme_classic()
 
 
 
@@ -925,9 +932,9 @@ lacrimosa_novelty %>%  # These are delta deltaas: To get delta deltas je change 
 
 We can see that the novelty function for Braisntorm is working quite well. The first novelty plot shows that there is a very regular beat and at 30 second, the bass of the beat becomes even louder and more obvious which we can see in the plot. There are also some high heads, which are the smaller peaks we see in the plot.
 
-The second novelty function shows the song from 60s. At this part the beat completely dissapears and some low bassy sounds are coming through, but quite beatless. This can also be seen from the novelty function, as it doesn't really get what's going on. Fro around 70s untill 101s the beat slowly builds up again, as we can see from the novelty function, as it's realizing what to do again.
+The second novelty function shows the song from 60s. At this part the beat completely dissapears and some low bassy sounds are coming through, but quite beatless. This can also be seen from the novelty function, as it doesn't really get what's going on. From around 70s untill 101s the beat slowly builds up again, as we can see from the novelty function, as it's realizing what to do again.
 
-For Lacrimosa it's not very inconsistent, the first novelty plot show the first 30s, which start with 10s of only violin and then the vocals come in.
+For Lacrimosa it's not very consistent, the first novelty plot show the first 30s, which start with 10s of only violin and then the vocals come in.
 
 The second novelty plot start from round 27s till 52 seconds, here you get a slow buildup with some vocals, where it's also hard for the novelty function to work. I guess that it's not surprising as this song doesnt have any percussion or an obvios beat. It is mostly string music and vocals.
 
@@ -982,9 +989,6 @@ We see two very interesting things here. On the left we have the Fourier & Cycli
 
 The Lacrimosa song is a whole different story. We can see that for both the Fourier Tempogram and the Cyclic Tempogram the algorithm has absolutely no idea what's going on. Lacrimosa's bpm is quite slow, if I recall correctly this version (Alex's version, from Lisa Beckley) is around 95 BPM. The Fourier Tempogram shows us absolutely nothing, and looking at the Cyclic Tempogram it looks like it's actually suggesting higer BPM's of around 150 BPM, however we know that this is false.
 
-The Delta Chromagram for Brainstorm doesn't show very obvious patterns, which isn't weird as the song consist of a lot of bass. The Lacrimosa Chromagram shows high activity around B. This song is in D minorL: D - E - F - G - A - B??? - C - D, so there shouldn't even be a B in here, it should be a Bb. Thus this chromagram doesn't look very well. This might be because of the tuning.
-
-The delta-delta TimbreGram for Brainstorm shows us some activity around c04 and the delta-delta Timbregram for Lacrimosa also shows us some activity around c04. Meaning that the change of the change is most active around c04.
 
 
 ### **The Transformation of Discover Weekly has occured!** {data-commentary-width=290}
@@ -1362,19 +1366,14 @@ Playlists_cv %>%
     conf_mat(truth = playlist, estimate = .pred_class) %>%
     autoplot(type = 'mosaic')
 
-Playlists_cv %>%
-    mutate(pred = map(splits, Playlists_predict_multinom)) %>% unnest(pred) %>%
-    conf_mat(truth = playlist, estimate = .pred_class) %>%
-    autoplot(type = 'heatmap')
-
 
 ```
 
 ***
 
-On the left we see the accuracy for 1: K-nearest neighbour, 2: Multinomial regression, 3:Decision Trees, 4:Random Forest and 5:K-nearest neighbour with important features. This shows us that multinomial regresion does a way better job than k-nearest neighbour, second best is Random Forest, then decision trees, and lastly k-nearest neighbour, Which improves after using only the important features. In general, it's easiest to correctly predict which songs belong to my favorites.
+On the left we see the accuracy for 1: K-nearest neighbour, 2: Multinomial regression, 3:Decision Trees, 4:Random Forest and 5:K-nearest neighbour with important features. The accuracy shows us that k-nearest neighbour doesn't do that well. All the others perform about the same. However we do see that k-nearest neighbour improves after only the important features from the multinomial regression are used. In general, it's easiest to correctly predict which songs belong to my favorites.
 
-Underneath those tables there are two plots showing the confusion matrix for the Multinomial Regression, as this was our best working algorithm. Which is weird, as I though Random Forests would do better, but appareantly not. These clearly show that it's best at correctly classifying songs from my favorites.
+Underneath those tables there is a plot showing the confusion matrix for the Multinomial Regression, as we will later use the most meaningfull feaatures according to the multinomial regression to look at clusters in the Discover Weekly 8 playlist. This plot clearly show that it's best at correctly classifying songs from my favorites.
 
 The tables below this text show the confusion matrixes, where we can see the amount of wrong and correct predictions for my favourites, alex's favoroutes and the discover weekly week 8 playlist. We started out with an k-nearest neighbour classification, before looking at important features.
 
@@ -1540,133 +1539,104 @@ The second table shows us the choices that the decision tree has made. Their pre
 
 
 
-<!-- ### **Clustering 30 songs of Alex's Favorites VS Discover Weekly 8** -->
-
-<!-- ```{r} -->
-<!-- Discoverweekly8 <- -->
-<!--     get_playlist_audio_features("Tosca Beijaert","4GhJfgljCrnaIbJ30qIabQ") %>% -->
-<!--     add_audio_analysis %>% -->
-<!--     mutate( -->
-<!--         segments = -->
-<!--             map2(segments, key, compmus_c_transpose)) %>% -->
-<!--     mutate( -->
-<!--         pitches = -->
-<!--             map(segments, -->
-<!--                 compmus_summarise, pitches, -->
-<!--                 method = 'mean', norm = 'manhattan'), -->
-<!--         timbre = -->
-<!--             map( -->
-<!--                 segments, -->
-<!--                 compmus_summarise, timbre, -->
-<!--                 method = 'mean')) %>% -->
-<!--     mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>% -->
-<!--     mutate_at(vars(pitches, timbre), map, bind_rows) %>% -->
-<!--     unnest(cols = c(pitches, timbre)) -->
-
-<!-- alex= -->
-<!--   get_playlist_audio_features("Alexander Keijser","59c8tug3WdwODj6gV0ierq") %>% -->
-<!--     add_audio_analysis %>% -->
-<!--     mutate( -->
-<!--         segments = -->
-<!--             map2(segments, key, compmus_c_transpose)) %>% -->
-<!--     mutate( -->
-<!--         pitches = -->
-<!--             map(segments, -->
-<!--                 compmus_summarise, pitches, -->
-<!--                 method = 'mean', norm = 'manhattan'), -->
-<!--         timbre = -->
-<!--             map( -->
-<!--                 segments, -->
-<!--                 compmus_summarise, timbre, -->
-<!--                 method = 'mean')) %>% -->
-<!--     mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>% -->
-<!--     mutate_at(vars(pitches, timbre), map, bind_rows) %>% -->
-<!--     unnest(cols = c(pitches, timbre)) -->
-
-<!-- Discoverweekly8_juice <- -->
-<!--     recipe(track.name ~ -->
-<!--                danceability + -->
-<!--                energy + -->
-<!--                loudness + -->
-<!--                speechiness + -->
-<!--                acousticness + -->
-<!--                instrumentalness + -->
-<!--                liveness + -->
-<!--                valence + -->
-<!--                tempo + -->
-<!--                duration + -->
-<!--                C + `C#|Db` + D + `D#|Eb` + -->
-<!--                E + `F` + `F#|Gb` + G + -->
-<!--                `G#|Ab` + A + `A#|Bb` + B + -->
-<!--                c01 + c02 + c03 + c04 + c05 + c06 + -->
-<!--                c07 + c08 + c09 + c10 + c11 + c12, -->
-<!--            data = Discoverweekly8) %>% -->
-<!--     step_center(all_predictors()) %>% -->
-<!--     step_scale(all_predictors()) %>% -->
-<!--     # step_range(all_predictors()) %>% -->
-<!--     prep(Discoverweekly8 %>% mutate(track.name = str_trunc(track.name, 20))) %>% -->
-<!--     juice %>% -->
-<!--     column_to_rownames('track.name') -->
-
-<!-- alex_juice <- -->
-<!--     recipe(track.name ~ -->
-<!--                danceability + -->
-<!--                energy + -->
-<!--                loudness + -->
-<!--                speechiness + -->
-<!--                acousticness + -->
-<!--                instrumentalness + -->
-<!--                liveness + -->
-<!--                valence + -->
-<!--                tempo + -->
-<!--                duration + -->
-<!--                C + `C#|Db` + D + `D#|Eb` + -->
-<!--                E + `F` + `F#|Gb` + G + -->
-<!--                `G#|Ab` + A + `A#|Bb` + B + -->
-<!--                c01 + c02 + c03 + c04 + c05 + c06 + -->
-<!--                c07 + c08 + c09 + c10 + c11 + c12, -->
-<!--            data = alex) %>% -->
-<!--     step_center(all_predictors()) %>% -->
-<!--     step_scale(all_predictors()) %>% -->
-<!--     # step_range(all_predictors()) %>% -->
-<!--     prep(alex %>% mutate(track.name = str_trunc(track.name, 20))) %>% -->
-<!--     juice %>% -->
-<!--     column_to_rownames('track.name') -->
-
-<!-- Discoverweekly8_dist <- dist(Discoverweekly8_juice, method = 'euclidean') -->
-<!-- alex_dist <- dist(alex_juice, method = 'euclidean') -->
+### **Using GLM selected features shows us Clusters!** {data-commentary-width=700}
 
 
-<!-- hclust(Discoverweekly8_dist, method = 'single') %>% dendro_data %>% ggdendrogram -->
-<!-- hclust(alex_dist, method = 'single') %>% dendro_data %>% ggdendrogram -->
+```{r}
+
+Discoverweekly8 <-
+    get_playlist_audio_features("Tosca Beijaert","4GhJfgljCrnaIbJ30qIabQ") %>%
+    add_audio_analysis %>%
+    mutate(
+        segments =
+            map2(segments, key, compmus_c_transpose)) %>%
+    mutate(
+        pitches =
+            map(segments,
+                compmus_summarise, pitches,
+                method = 'mean', norm = 'manhattan'),
+        timbre =
+            map(
+                segments,
+                compmus_summarise, timbre,
+                method = 'mean')) %>%
+    mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>%
+    mutate_at(vars(pitches, timbre), map, bind_rows) %>%
+    unnest(cols = c(pitches, timbre))
 
 
-<!-- protoclust(Discoverweekly8_dist) %>% dendro_data %>% ggdendrogram -->
-<!-- protoclust(alex_dist) %>% dendro_data %>% ggdendrogram -->
+Discoverweekly8_multinom_juice <-
+    recipe(track.name ~
+               # danceability +
+               # energy +
+               loudness +
+               # speechiness +
+               acousticness +
+               # instrumentalness +
+               # liveness +
+               valence +
+               # tempo +
+               # duration +
+               # C + `C#|Db` + D + `D#|Eb` +
+                E +
+             #`F` + `F#|Gb` + G +
+               # `G#|Ab` + A + `A#|Bb` + B +
+               # c01 + 
+             # c02 + c03 +
+              # c04+
+           # + c05 + c06 +
+           #     c07 + c08 + 
+             c09 ,
+           # + c10 + c11 + c12,
+           data = Discoverweekly8) %>%
+    step_center(all_predictors()) %>%
+    step_scale(all_predictors()) %>%
+    # step_range(all_predictors()) %>%
+    prep(Discoverweekly8 %>% mutate(track.name = str_trunc(track.name, 20))) %>%
+    juice %>%
+    column_to_rownames('track.name')
 
-<!-- grDevices::dev.size("px") -->
-
-<!-- heatmaply( -->
-<!--     Discoverweekly8_juice, -->
-<!--     hclustfun = hclust, -->
-<!--     # hclustfun = protoclust, -->
-<!--     # Comment out the hclust_method line when using protoclust. -->
-<!--     hclust_method = 'average', -->
-<!--     dist_method = 'euclidean') -->
-
-<!-- heatmaply( -->
-<!--     alex_juice, -->
-<!--     hclustfun = hclust, -->
-<!--     # hclustfun = protoclust, -->
-<!--     # Comment out the hclust_method line when using protoclust. -->
-<!--     hclust_method = 'average', -->
-<!--     dist_method = 'euclidean') -->
+Discoverweekly8_multinom_dist<- dist(Discoverweekly8_multinom_juice, method = 'euclidean')
 
 
-<!-- ``` -->
+dev.new()
+heatmaply(
+    Discoverweekly8_multinom_juice,
+    main = "Selected Features",
+    # hclustfun = hclust,
+    hclustfun = protoclust,
+    # Comment out the hclust_method line when using protoclust.
+    # hclust_method = 'average',
+    dist_method = 'euclidean'
+    )%>% 
+  layout(autosize = F, width = 800, height = 500)
+
+```
+
+***
+
+```{r dendogram,fig.height=4, fig.width=8}
+
+protoclust(Discoverweekly8_multinom_dist) %>% dendro_data %>% ggdendrogram # using all features
+```
+
+In the previous section it was found out using a multinomial regression which features contribute the most for which playlist. For our discover weekly 8 playlist the top features were: Accousticnesss (-30), E (22), Loudness (-18), Valence (-17) and c09 (-15). When looking at all features there were no clusters to be found in the heatmap nor did the denodogram make any sense, thus these plots will not be shown nor looked at. Instead, we will use only the important features that we found in the multinomial regression for finding clusters.
 
 
+Looking at the __Dendogram__, we see a small amound of clusters. There are a few things to notice:
 
-<!-- *** -->
+- We can see one song all the way on the left, Milles Away, which is a very slow jazzy song. My guess is that it's looking at the instrumentalness here. 
 
+- Two other songs that are at the end of a cluster together are: Kids Play & Cola bottle baby. These two songs are both quite funky and sound very much alike. Which feature it's using I'm not sure. The heatmaps will give us more answers.
 
+Looking at the __Heatmap__, we can notice some thing:
+
+- We see a very clear cluster for accousticness, which makes sense as this was our strongest predictor accoridng to GLM. 
+
+- We can also see very clearly that one song we noticed in the dendogram, Miles Away, is all on it's own, having a high value for accousticness (yellow).
+
+- The other two songs we looked at in the dendogram, Kids Play & Cola bottle baby, can also be found quite easily. When looking at valence, we see that they both have a value of around 2.
+
+- We can also see a cluster for low values of c09 at the top left, which is some kind of timbre component. When listening to these songs, Parley, Carino, Knuf and Street life, I couldn't figure out what would make them different from the other songs. However we can also see this cluster in the dendogram.
+
+- And we notice that the song Luechtoorn, which is also on it's own in the dendogram, has quite a high value for E, which seperates it from the other songs.
