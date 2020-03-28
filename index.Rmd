@@ -1302,6 +1302,11 @@ Playlists_cv %>% # This just shows you the accuracy: how often does it get it ri
 
 # These matrices `autoplot` in two forms.
 
+Playlists_cv %>%
+    mutate(pred = map(splits, Playlists_predict_multinom)) %>% unnest(pred) %>%
+    conf_mat(truth = playlist, estimate = .pred_class) %>%
+    autoplot(type = 'mosaic')
+
 Playlists_multinom <-
     multinom_reg(mode = 'classification', penalty = 0.1) %>%
     set_engine('glmnet')
@@ -1361,10 +1366,7 @@ Playlists_cv %>%
     mutate(pred = map(splits, predict_knn_reduced)) %>% unnest(pred) %>%
     metric_set(accuracy, kap, j_index)(truth = playlist, estimate = .pred_class)
 
-Playlists_cv %>%
-    mutate(pred = map(splits, Playlists_predict_multinom)) %>% unnest(pred) %>%
-    conf_mat(truth = playlist, estimate = .pred_class) %>%
-    autoplot(type = 'mosaic')
+
 
 
 ```
@@ -1539,7 +1541,7 @@ The second table shows us the choices that the decision tree has made. Their pre
 
 
 
-### **Using GLM selected features shows us Clusters!** {data-commentary-width=700}
+### **Using GLM selected features shows us Clusters!** {data-commentary-width=750}
 
 
 ```{r}
