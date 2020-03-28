@@ -480,6 +480,27 @@ Lacrimosa_Chroma %>%
     labs(title= "Chroma-plot: Lacrimosa by Mozart",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
     theme_classic()
 
+
+Brainstorm_Chroma=
+    get_tidy_audio_analysis("4GdOWNJzpTWoKdA4LEbXDa") %>%
+    select(segments) %>% unnest(segments) %>%
+    select(start, duration, pitches)
+
+# Chroma using Euclidean: Werkt
+Brainstorm_Chroma%>%
+    mutate(pitches = map(pitches, compmus_normalise, 'euclidean')) %>% # Change Euclidean to something you want: manhattan, euclidean or chebyshev
+    compmus_gather_chroma %>%
+    ggplot(
+        aes(
+            x = start + duration / 2,
+            width = duration,
+            y = pitch_class,
+            fill = value)) +
+    geom_tile() +
+    labs(title= "Chroma-plot: Brainstorm by Special Request",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
+    scale_fill_viridis_c(option = 'C') + # You can change this color, this one is very nice.
+    theme_classic()
+
 Lacrimosa_Timbre <-
     get_tidy_audio_analysis('1UvaZaHkh3D9AkmBrrnbFg') %>%
     compmus_align(bars,segments) %>% # aligns everything at a higher lvl of the spotify fpi, he first argument of compmus align can be bars, beats or section.
@@ -522,6 +543,37 @@ Lacrimosa_Timbre %>%
 #     labs(title= "Chromaplot: My Lacrimosa",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
 #     theme_classic()
 
+
+
+
+Brainstorm_Timbre <-
+    get_tidy_audio_analysis('4GdOWNJzpTWoKdA4LEbXDa') %>%
+    compmus_align(bars,segments) %>% # aligns everything at a higher lvl of the spotify fpi, he first argument of compmus align can be bars, beats or section.
+    select(bars) %>% unnest(bars) %>%
+    mutate(
+        pitches = # gives pitch information
+            map(segments,
+                compmus_summarise, pitches,
+                method = 'mean', norm ='euclidean' )) %>% # You can change the method to rms, mean, max and so on, see table (method summary). You can also change the norm again, see table
+    mutate(
+        timbre = #gives timbre information
+            map(segments,
+                compmus_summarise, timbre,
+                method = 'rms')) # You can change the method again.
+
+Brainstorm_Timbre %>%
+    compmus_gather_timbre %>% # You can leave this alone, you don't need to change anything here.
+    ggplot(
+        aes(
+            x = start + duration / 2,
+            width = duration,
+            y = basis,
+            fill = value)) +
+    geom_tile() +
+    labs(title="Timbre-plot: Brainstorm by Special Request Chroma",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
+    scale_fill_viridis_c(option = 'A') + # You can change this color, this one is very nice.
+    theme_classic()
+
 lacrimosa_key <-
     get_tidy_audio_analysis('1UvaZaHkh3D9AkmBrrnbFg') %>%
     compmus_align(sections, segments) %>%
@@ -563,54 +615,6 @@ lacrimosa_key %>%
 #     theme_minimal() +
 #     labs(x = 'Time (s)', y = '')
 
-
-Brainstorm_Chroma=
-    get_tidy_audio_analysis("4GdOWNJzpTWoKdA4LEbXDa") %>%
-    select(segments) %>% unnest(segments) %>%
-    select(start, duration, pitches)
-
-# Chroma using Euclidean: Werkt
-Brainstorm_Chroma%>%
-    mutate(pitches = map(pitches, compmus_normalise, 'euclidean')) %>% # Change Euclidean to something you want: manhattan, euclidean or chebyshev
-    compmus_gather_chroma %>%
-    ggplot(
-        aes(
-            x = start + duration / 2,
-            width = duration,
-            y = pitch_class,
-            fill = value)) +
-    geom_tile() +
-    labs(title= "Chroma-plot: Brainstorm by Special Request",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
-    scale_fill_viridis_c(option = 'C') + # You can change this color, this one is very nice.
-    theme_classic()
-
-Brainstorm_Timbre <-
-    get_tidy_audio_analysis('4GdOWNJzpTWoKdA4LEbXDa') %>%
-    compmus_align(bars,segments) %>% # aligns everything at a higher lvl of the spotify fpi, he first argument of compmus align can be bars, beats or section.
-    select(bars) %>% unnest(bars) %>%
-    mutate(
-        pitches = # gives pitch information
-            map(segments,
-                compmus_summarise, pitches,
-                method = 'mean', norm ='euclidean' )) %>% # You can change the method to rms, mean, max and so on, see table (method summary). You can also change the norm again, see table
-    mutate(
-        timbre = #gives timbre information
-            map(segments,
-                compmus_summarise, timbre,
-                method = 'rms')) # You can change the method again.
-
-Brainstorm_Timbre %>%
-    compmus_gather_timbre %>% # You can leave this alone, you don't need to change anything here.
-    ggplot(
-        aes(
-            x = start + duration / 2,
-            width = duration,
-            y = basis,
-            fill = value)) +
-    geom_tile() +
-    labs(title="Timbre-plot: Brainstorm by Special Request Chroma",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
-    scale_fill_viridis_c(option = 'A') + # You can change this color, this one is very nice.
-    theme_classic()
 
 Brainstorm_key <-
     get_tidy_audio_analysis("4GdOWNJzpTWoKdA4LEbXDa") %>%
@@ -686,6 +690,7 @@ compmus_long_distance(
 
 
 Luckily for me, I also have Lacrimosa in my playlist, however mine is a slightly different version from the Choir of King's College, meaning there might be some more polyphonic parts in this version. Also for my version the tempo is a little bit higher and the tuning seems to be a bit tuned down.
+
 __Alex's Lacrimosa by Lisa Beckley:__
 
 <html>
@@ -693,6 +698,7 @@ __Alex's Lacrimosa by Lisa Beckley:__
   <source src="Lacrimosa_Alex.mp3" type="audio/mpeg">
 </audio>
 </html>
+
 
 __My Lacrimosa from the Choir of Kings college:__
 
@@ -946,6 +952,17 @@ lacrimosa_novelty <-
     get_tidy_audio_analysis("1UvaZaHkh3D9AkmBrrnbFg") %>%
     select(segments) %>% unnest(segments)
 
+lacrimosa_novelty %>%
+    mutate(loudness_max_time = start + loudness_max_time) %>%
+    arrange(loudness_max_time) %>%
+    mutate(delta_loudness = loudness_max - lag(loudness_max)) %>%
+    ggplot(aes(x = loudness_max_time, y = pmax(0, delta_loudness))) +
+    geom_line() +
+    xlim(0, 30) + # You can change the x limit, to change the section of the song where you want to look at.
+    theme_minimal() +
+    labs(x = 'Time (s)', y = 'Novelty', title="Lacrimosa Novelty Function Until 30s")
+
+
 brain %>%
     mutate(loudness_max_time = start + loudness_max_time) %>%
     arrange(loudness_max_time) %>%
@@ -962,9 +979,9 @@ lacrimosa_novelty %>%
     mutate(delta_loudness = loudness_max - lag(loudness_max)) %>%
     ggplot(aes(x = loudness_max_time, y = pmax(0, delta_loudness))) +
     geom_line() +
-    xlim(0, 30) + # You can change the x limit, to change the section of the song where you want to look at.
+    xlim(26, 52) + # You can change the x limit, to change the section of the song where you want to look at.
     theme_minimal() +
-    labs(x = 'Time (s)', y = 'Novelty', title="Lacrimosa Novelty Function Until 30s")
+    labs(x = 'Time (s)', y = 'Novelty', title="Lacrimosa Novelty Function From 26s: Vocal Buildup")
 
 brain %>%
     mutate(loudness_max_time = start + loudness_max_time) %>%
@@ -976,15 +993,6 @@ brain %>%
     theme_minimal() +
     labs(x = 'Time (s)', y = 'Novelty', title="Brainstorm Novelty Function From 60s: Buildup")
 
-lacrimosa_novelty %>%
-    mutate(loudness_max_time = start + loudness_max_time) %>%
-    arrange(loudness_max_time) %>%
-    mutate(delta_loudness = loudness_max - lag(loudness_max)) %>%
-    ggplot(aes(x = loudness_max_time, y = pmax(0, delta_loudness))) +
-    geom_line() +
-    xlim(26, 52) + # You can change the x limit, to change the section of the song where you want to look at.
-    theme_minimal() +
-    labs(x = 'Time (s)', y = 'Novelty', title="Lacrimosa Novelty Function From 26s: Vocal Buildup")
 
 # brain%>% # These are just deltas
 #     mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>%
@@ -1064,13 +1072,13 @@ lacrimosa_novelty %>%
 
 ***
 
-We can see that the novelty function for Braisntorm is working quite well. The first novelty plot shows that there is a very regular beat and at 30 second, the bass of the beat becomes even louder and more obvious which we can see in the plot. There are also some high heads, which are the smaller peaks we see in the plot.
-
-The second novelty function shows the song from 60s. At this part the beat completely dissapears and some low bassy sounds are coming through, but quite beatless. This can also be seen from the novelty function, as it doesn't really get what's going on. From around 70s untill 101s the beat slowly builds up again, as we can see from the novelty function, as it's realizing what to do again.
-
 For Lacrimosa it's not very consistent, the first novelty plot show the first 30s, which start with 10s of only violin and then the vocals come in.
 
 The second novelty plot start from round 27s till 52 seconds, here you get a slow buildup with some vocals, where it's also hard for the novelty function to work. I guess that it's not surprising as this song doesnt have any percussion or an obvios beat. It is mostly string music and vocals.
+
+We can see that the novelty function for Braisntorm is working quite well. The first novelty plot shows that there is a very regular beat and at 30 second, the bass of the beat becomes even louder and more obvious which we can see in the plot. There are also some high heads, which are the smaller peaks we see in the plot.
+
+The second novelty function shows the song from 60s. At this part the beat completely dissapears and some low bassy sounds are coming through, but quite beatless. This can also be seen from the novelty function, as it doesn't really get what's going on. From around 70s untill 101s the beat slowly builds up again, as we can see from the novelty function, as it's realizing what to do again.
 
 
 ### **Tempograms: Lacrimosa stays unclear!**{data-commentary-width=298}
@@ -1081,15 +1089,6 @@ brain <- get_tidy_audio_analysis("4GdOWNJzpTWoKdA4LEbXDa")
 lacrimosa_novelty <- get_tidy_audio_analysis("1UvaZaHkh3D9AkmBrrnbFg")
 
 # Check hier hoe het is voor de song feel real van x-coast
-brain %>% # The BM it shows us is not correct at all, it gives bout 520, but its not. THe actual bpm is around 132.
-    tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) %>% # window s
-    ggplot(aes(x = time, y = bpm, fill = power)) +
-    geom_raster() +
-    scale_fill_viridis_c(guide = 'none') +
-    labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Brainstorm Fourier Tempogram") +
-    theme_classic()
-
-# Check hier hoe het is voor de song feel real van x-coast
 lacrimosa_novelty %>% # The BM it shows us is not correct at all, it gives bout 520, but its not. THe actual bpm is around 132.
     tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) %>% # window s
     ggplot(aes(x = time, y = bpm, fill = power)) +
@@ -1098,12 +1097,13 @@ lacrimosa_novelty %>% # The BM it shows us is not correct at all, it gives bout 
     labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Lacrimosa Fourier Tempogram") +
     theme_classic()
 
-brain %>%  # Here it does give the correct bpm of round 132.
-    tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) %>%
+# Check hier hoe het is voor de song feel real van x-coast
+brain %>% # The BM it shows us is not correct at all, it gives bout 520, but its not. THe actual bpm is around 132.
+    tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) %>% # window s
     ggplot(aes(x = time, y = bpm, fill = power)) +
     geom_raster() +
     scale_fill_viridis_c(guide = 'none') +
-    labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Brainstorm Cyclic Tempogram") +
+    labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Brainstorm Fourier Tempogram") +
     theme_classic()
 
 lacrimosa_novelty %>%  # Here it does give the correct bpm of round 132.
@@ -1115,13 +1115,25 @@ lacrimosa_novelty %>%  # Here it does give the correct bpm of round 132.
     theme_classic()
 
 
+brain %>%  # Here it does give the correct bpm of round 132.
+    tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) %>%
+    ggplot(aes(x = time, y = bpm, fill = power)) +
+    geom_raster() +
+    scale_fill_viridis_c(guide = 'none') +
+    labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Brainstorm Cyclic Tempogram") +
+    theme_classic()
+
+
+
 ```
 
 ***
 
-We see two very interesting things here. On the left we have the Fourier & Cyclic tempograms for Brainstorm. We can see that the Fourier does not work, because it's suggesting a tempo of around 520 and I know the tempo of this song is around 132. This must be because of the tempo harmonics. We can see that the Cyclic tempogram is showing us the correct resultss. The cyclic Tempogram works around the harmmonics and shows us the true tempo of around 132. It's not very surprising that the tempogram works so wel, as this song has a very obvious beat throughout the whole song.
-
 The Lacrimosa song is a whole different story. We can see that for both the Fourier Tempogram and the Cyclic Tempogram the algorithm has absolutely no idea what's going on. Lacrimosa's bpm is quite slow, if I recall correctly this version (Alex's version, from Lisa Beckley) is around 95 BPM. The Fourier Tempogram shows us absolutely nothing, and looking at the Cyclic Tempogram it looks like it's actually suggesting higer BPM's of around 150 BPM, however we know that this is false.
+
+We see two very interesting things here. On the right we have the Fourier & Cyclic tempograms for Brainstorm. We can see that the Fourier does not work, because it's suggesting a tempo of around 520 and I know the tempo of this song is around 132. This must be because of the tempo harmonics. We can see that the Cyclic tempogram is showing us the correct resultss. The cyclic Tempogram works around the harmmonics and shows us the true tempo of around 132. It's not very surprising that the tempogram works so wel, as this song has a very obvious beat throughout the whole song.
+
+
 
 
 
