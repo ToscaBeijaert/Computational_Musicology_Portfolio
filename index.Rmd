@@ -35,7 +35,7 @@ library(egg)
 ```
 
 
-### **Will my Discover Weekly transform into Alex? Differences for Danceability, Energy, Tempo and Instrumentalness**{data-commentary-width=305}
+### **Will my Discover Weekly evolve into Alex? Feature differeneces between My Favorites, Alex's Favorites and Discover Weekly**{data-commentary-width=305}
 
 ```{r chunk10}
 
@@ -159,7 +159,7 @@ On the left we see a plot for Energy, Danceability and Instrumentalness for each
 
 The left plot however is hard to interpret, therefore we could look at just the danceability and energy, seen in the right plot. This shows very clearly that spotify weekly's data isn't very spread. For instance, looking at the green line, we can see that the danceability nor the energy go below 0.3 for discover weekly. However, these two plots don't show us that well how any of the variables are distributed. Thus the next slide will look at histograms showing the distribution per feature.
 
-### **The Baseline differences: the distributions of the features**{data-commentary-width=300}
+### **The Baseline differences: Distributions of the features**{data-commentary-width=300}
 
 ```{r chunk11}
 
@@ -243,7 +243,7 @@ Here we look at the distributions of the features. For every plot you get a spec
 
 - The means per feature (see tables below) show that all values except instrumentalness are lower for discover weekly than for alex's favorites. Therefore it would make sense for these values to increase as we listen more and more to Alex's playlist. What happens to instrumentalness is unclear, as the histograms show that this feature is distributed very differntly from Alex's playlist. Thus the means of the features do not give enough information. The means might not always differ that much, but looking at the distributions, differences can easily be seen. 
 
-Looking at the plots (slide 1) and histograms it is noticed that the playlists are distributed differently. Thus the folling hypothis were made regarding the changes in the discover weekly playlist over 8 weeks time (further explanation can be found below the tables):
+Looking at the plots (slide 1) and histograms it is noticed that the playlists are distributed differently. Thus the following hypothis were made regarding the changes in the discover weekly playlist over 8 weeks time (further explanation can be found below the tables):
 
 |  Hypothesis | Discover Weekly After 8 Weeks  |
 |---|---|
@@ -252,7 +252,7 @@ Looking at the plots (slide 1) and histograms it is noticed that the playlists a
 |  Danceability | Will go up  |
 | Instrumentalness  | ?  |
 
-
+__MEAN VALUES__
 
 **My Favourites**
 
@@ -284,7 +284,8 @@ Looking at the plots (slide 1) and histograms it is noticed that the playlists a
 | Tempo  |  121 | 19.8   |
 
 
-__Argumentation__
+__Argumentation__:
+
 From the histograms we can tell that most of Alex's songs are high in energy, therefore we hypothesize that discover weekly will go up in energy. Looking at the histograms, we can see that Alex's favorites have more songs with a higher tempo than discover weekly, therefore we hypothesize this value to go up. Even though by looking at the histograms, the danceability of discover weekly and alex's favorites look about the same, tempo and danceability are highly correlated, therefore we also expect danceability to go up in value. We cannot see big changes in the instrumentalness between discover weekly and alex's playlist, however, I know that alex's playlist has a lot of techno songs, thus a high instrumentalness, therefore we might hypothesize instrumentalness will go up.
 
 
@@ -302,6 +303,8 @@ include_graphics("brainstorm.jpg")
 
 
 ***
+
+Before looking at the changes of Disover weekly we will compare these two songs, as they represent Alex's playlist very well, in the sense that a lot of different genres are compiled in his playlist. As they are completely different genres, we will see how different kind of feature analyses will work for the two songs.
 
 After doing some research, I found out that Alex's least danceable song is Lacrimosa, from Amadeus Mozart, which is quite funny as it is one of our favorite classical music songs, which we sing all the time.
 
@@ -321,7 +324,7 @@ The other song is called Brainstorm by Special Request. Which is a techno/breakb
 </audio>
 </html>
 
-In this project we will continuously compare these two songs, as they represent Alex's playlist very well, in the sense that a lot of different genres are compiled in his playlist. As they are completely different genres, we will see how different kind of feature analyses will work for the two songs.
+
 
 ### **Dynamic Time Warping Two Lacrimosa's. That seems to work!**{data-commentary-width=400}
 
@@ -402,7 +405,7 @@ Lacrimosa_Chroma %>%
     coord_fixed() +
     scale_fill_viridis_c(option = 'B', guide = 'none') +
       theme_classic()+
-  labs(title='Lacrimosa Chroma SSM', x="", y="")
+  labs(title='Lacrimosa Chroma SSM Using Cosine Distance', x="", y="")
 
 Brainstorm_Chroma=
     get_tidy_audio_analysis("4GdOWNJzpTWoKdA4LEbXDa") %>%
@@ -432,7 +435,7 @@ SSM_Chroma=Brainstorm_Chroma %>%
     labels=moments_y,
     minor_breaks = NULL
   ) +
-  labs(title='Brainstorm Chroma SSM', x="", y="")
+  labs(title='Brainstorm Chroma SSM Using Cosine Distance', x="", y="")
 
 
 SSM_Chroma + theme(axis.text.x= element_text(face="plain" ,angle=45, hjust=1))
@@ -455,7 +458,7 @@ Lacrimosa_Timbre <-
                 method = 'rms')) # You can change the method again.
 
 Lacrimosa_Timbre %>%  # Timbre self similairity matrix
-    compmus_self_similarity(timbre, 'cosine') %>%  # Here you can change the secon argument again, meaning you change the distance.
+    compmus_self_similarity(timbre, 'euclidean') %>%  # Here you can change the secon argument again, meaning you change the distance.
     ggplot(
         aes(
             x = xstart + xduration / 2,
@@ -467,7 +470,7 @@ Lacrimosa_Timbre %>%  # Timbre self similairity matrix
     coord_fixed() +
     scale_fill_viridis_c(option = 'B', guide = 'none') +
     theme_classic() +
-    labs(title="Lacrimosa Timbre SSM Using Cosine Distance",x = 'Time (s)', y = 'Time (s)')
+    labs(title="Lacrimosa Timbre SSM Using Euclidean Distance",x = 'Time (s)', y = 'Time (s)')
 
 Brainstorm_Timbre <-
     get_tidy_audio_analysis('4GdOWNJzpTWoKdA4LEbXDa') %>%
@@ -487,7 +490,7 @@ Brainstorm_Timbre <-
 
 # Cosine as distance: You can see small differences better.
 Brainstorm_Timbre %>%  # Timbre self similairity matrix
-    compmus_self_similarity(timbre, 'cosine') %>%  # Here you can change the secon argument again, meaning you change the distance.
+    compmus_self_similarity(timbre, 'euclidean') %>%  # Here you can change the secon argument again, meaning you change the distance.
     ggplot(
         aes(
             x = xstart + xduration / 2,
@@ -499,7 +502,7 @@ Brainstorm_Timbre %>%  # Timbre self similairity matrix
     coord_fixed() +
     scale_fill_viridis_c(option = 'B', guide = 'none') +
     theme_classic() +
-    labs(title="Brainstorm Timbre SSM Using Cosine Distance",x = 'Time (s)', y = 'Time (s)')+
+    labs(title="Brainstorm Timbre SSM Using Euclidean Distance",x = 'Time (s)', y = 'Time (s)')+
   scale_x_continuous(
     breaks = c(0,60,100,130,190,244,305), minor_breaks=NULL) +
   scale_y_continuous(
@@ -521,7 +524,8 @@ The timbre and chroma SSM's show slight differences, but in general are very sim
 </audio>
 </html>
 
-__Brainstorm__:
+__Brainstorm__
+
 On the x-axis and the y-axis we can see the names describing the __start__ of a new music block. For instance, the song starts with a slow buildup at 0 sec untill around 60 sec (1:00), here a new block starts with some heavy bass, then at 100 sec (1:40) the block is still the same as before, but the high heads kick in. At 130 sec (2:10) the Piano block starts, where at 190 sec (3:08) the Bass block with high heads is repeated. Then at 244 sec (4:05) the Piano block is repeated and at 305 sec (5:02) the autro block starts. Listen to the song to find out!
 
 <html>
@@ -530,15 +534,15 @@ On the x-axis and the y-axis we can see the names describing the __start__ of a 
 </audio>
 </html>
 
-If we look at the Timbre SSM  we see the breakdown at 60 seconds, this time even more clearly. As the song starts with some bass, high heads and some low vocals all of a sudden at 60 seconds a lot of low bass is added and this is easy to see by the yellow line at 60 seconds. Also we see a clear change at 244 seconds (4:02-4:05). This is because of that one weird vocal sample that is only played here.
+If we look at the Timbre SSM we see some smaller patterns. As the song starts with some bass, high heads and some low vocals all of a sudden at 60 seconds a lot of low bass is added and this is easy to see by the yellow line, showing up clearer for timbre than chroma. Also we see a change at 244 seconds (4:02-4:05). This is because a weird vocal sample that is only played here in the song.
 
-### **Interactive Timbre SSM**
+### **Interactive Timbre SSM shows all the changes of Brainstorm**
 
 ```{r chunk8}
 
 
 brain_active=Brainstorm_Timbre %>%  # Timbre self similairity matrix
-    compmus_self_similarity(timbre, 'euclidean') %>%  # Here you can change the secon argument again, meaning you change the distance.
+    compmus_self_similarity(timbre, 'cosine') %>%  # Here you can change the secon argument again, meaning you change the distance.
     ggplot(
         aes(
             x = xstart + xduration / 2,
@@ -550,7 +554,7 @@ brain_active=Brainstorm_Timbre %>%  # Timbre self similairity matrix
     coord_fixed() +
     scale_fill_viridis_c(option = 'B', guide = 'none') +
     theme_classic() +
-    labs(title="Timbre SSM Using Euclidean Distance",x = 'Time (s)', y = 'Time (s)')+
+    labs(title="Timbre SSM Using Cosine Distance",x = 'Time (s)', y = 'Time (s)')+
   scale_x_continuous(
     breaks = c(0,60,100,130,190,244,305), minor_breaks=NULL) +
   scale_y_continuous(
@@ -562,7 +566,7 @@ ggplotly(brain_active)
 
 ***
 
-Using Cosine as the distance for the timbre SSM, more structure is obtained, however some very big changes become less obvious, therefore an interactive timbre plot using Euclidean distance is shown here.
+When using Euclidean as distance for the timbre SSM, some structure is lost, however some very big changes show better, like the one at 60 seconds. Therefore an interactive timbre plot using Cosine distance is shown here displaying smaller changes.
 
 Take a look at the file again to check the specific moments.
 
@@ -659,11 +663,13 @@ brain %>%  # Here it does give the correct bpm of round 132.
 ***
 
 __Lacrimosa__:
+
 - __Novelty Function__: The novelty plot shows the first 30s, which start with 10s of only violin and then the vocals come in. We can see that it's not very consistent.
 
 - __Tempogram__: As expected from the novelty function, we can see that for both the Fourier Tempogram and the Cyclic Tempogram the algorithm has absolutely no idea what's going on. Lacrimosa's bpm is quite slow with a BPM of 95 (Alex's version, from Lisa Beckley). The Fourier Tempogram shows us absolutely nothing, and looking at the Cyclic Tempogram it looks like it's actually suggesting higer BPM's of around 150 BPM, however we know that this is false.
 
 __Brainstorm__:
+
 - __Novelty Function__: The novelty plot seems to work well and shows that there is a very regular beat. At 30 seconds, the bass of the beat becomes even louder and becomes more obvious which we can see in the plot. There are also some high heads, which are the smaller peaks we see in the plot.
 
 - __Tempogram__:
@@ -1065,10 +1071,10 @@ Underneath these plots we can see a table showing the features that contribute t
 - We can see that for Discover weekly 8: Accousticness, E and Valence were important for prediction.
 - We can see that for My favorites: Danceability, c05 and G#|Ab are important for prediction.
 
-In the Additional Analyses, the results of the various analyses can be found. Showing the confusion matrixes and the accuracy tables. From these analysis it was found out that every algorithm is the best at correctly predicting songs that belong to my favorites. Why this is the case, I'm not sure.
+In the Additional Results IV, the results of the various analyses can be found. Showing the confusion matrixes and the accuracy tables. From these analysis it was found out that every algorithm is the best at correctly predicting songs that belong to my favorites. Why this is the case, I'm not sure.
 
 
-### **Using Multinomial selected features shows us Clusters!** {data-commentary-width=711}
+### **Using Multinomial selected features shows us Clusters in Discover Weekly 8!** {data-commentary-width=711}
 
 
 ```{r}
@@ -1131,7 +1137,7 @@ Discoverweekly8_multinom_dist<- dist(Discoverweekly8_multinom_juice, method = 'e
 dev.new()
 heatmaply(
     Discoverweekly8_multinom_juice,
-    main = "Selected Features",
+    main = "Discover Weekly 8 Clusters Using Selected Features",
     # hclustfun = hclust,
     hclustfun = protoclust,
     # Comment out the hclust_method line when using protoclust.
@@ -1170,7 +1176,7 @@ Looking at the __Heatmap__, we can notice some thing:
 
 - And we notice that the song Luechtoorn, which is also on it's own in the dendogram, has quite a high value for E, which seperates it from the other songs.
 
-### **ADDITIONAL RESULTS:** The following appendixes show various analyses of playlists en Lacrimosa VS Brainstorm (If you have time, take a look) **I: The Key of our Playlists** 
+### **ADDITIONAL RESULTS:** The following appendixes show various analyses of the 3 Playlists and theLacrimosa VS Brainstorm topic (If you have time, take a look) **I: The Key of our Playlists** 
 
 ```{r chunk2, fig.width=10, fig.height=7}
 
