@@ -584,7 +584,7 @@ Take a look at the file again to check the specific moments.
 
 
 
-### **Novelty functions and Tempograms for Lacrimosa & Brainstorm. Can the beats be derived?**{data-commentary-width=310}
+### **Novelty functions and Tempograms for Lacrimosa & Brainstorm. Can the beats be derived?**{data-commentary-width=298}
 
 ```{r}
 
@@ -669,58 +669,6 @@ __Tempograms__:
 The Lacrimosa song is a whole different story. We can see that for both the Fourier Tempogram and the Cyclic Tempogram the algorithm has absolutely no idea what's going on. Lacrimosa's bpm is quite slow, if I recall correctly this version (Alex's version, from Lisa Beckley) is around 95 BPM. The Fourier Tempogram shows us absolutely nothing, and looking at the Cyclic Tempogram it looks like it's actually suggesting higer BPM's of around 150 BPM, however we know that this is false.
 
 We see two very interesting things here. On the right we have the Fourier & Cyclic tempograms for Brainstorm. We can see that the Fourier does not work, because it's suggesting a tempo of around 520 and I know the tempo of this song is around 132. This must be because of the tempo harmonics. We can see that the Cyclic tempogram is showing us the correct resultss. The cyclic Tempogram works around the harmmonics and shows us the true tempo of around 132. It's not very surprising that the tempogram works so wel, as this song has a very obvious beat throughout the whole song.
-
-
-### **Tempograms: Lacrimosa stays unclear!**{data-commentary-width=298}
-
-```{r Langzame Chunk}
-
-brain <- get_tidy_audio_analysis("4GdOWNJzpTWoKdA4LEbXDa")
-lacrimosa_novelty <- get_tidy_audio_analysis("1UvaZaHkh3D9AkmBrrnbFg")
-
-# Check hier hoe het is voor de song feel real van x-coast
-lacrimosa_novelty %>% # The BM it shows us is not correct at all, it gives bout 520, but its not. THe actual bpm is around 132.
-    tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) %>% # window s
-    ggplot(aes(x = time, y = bpm, fill = power)) +
-    geom_raster() +
-    scale_fill_viridis_c(guide = 'none') +
-    labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Lacrimosa Fourier Tempogram") +
-    theme_classic()
-
-# Check hier hoe het is voor de song feel real van x-coast
-brain %>% # The BM it shows us is not correct at all, it gives bout 520, but its not. THe actual bpm is around 132.
-    tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) %>% # window s
-    ggplot(aes(x = time, y = bpm, fill = power)) +
-    geom_raster() +
-    scale_fill_viridis_c(guide = 'none') +
-    labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Brainstorm Fourier Tempogram") +
-    theme_classic()
-
-lacrimosa_novelty %>%  # Here it does give the correct bpm of round 132.
-    tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) %>%
-    ggplot(aes(x = time, y = bpm, fill = power)) +
-    geom_raster() +
-    scale_fill_viridis_c(guide = 'none') +
-    labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Lacrimosa Cyclic Tempogram") +
-    theme_classic()
-
-
-brain %>%  # Here it does give the correct bpm of round 132.
-    tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) %>%
-    ggplot(aes(x = time, y = bpm, fill = power)) +
-    geom_raster() +
-    scale_fill_viridis_c(guide = 'none') +
-    labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Brainstorm Cyclic Tempogram") +
-    theme_classic()
-
-
-
-```
-
-***
-
-
-
 
 
 ### **The Transformation of Discover Weekly has occured!** {data-commentary-width=290}
@@ -839,7 +787,7 @@ Now what happened here was actually a big accident, but which turned out to be v
 
 It was hypothesized that all of the four features would go up in value. We can see that all the means indeed did go up! Also looking at the median values, these all went up. What is quite noticable is that the tempo and danceability went up quite a bit, but the energy didn't change that much. Which is weird, as I though these variables were highly correlated. If it hadn't been for my mistake in week 6, the changes at week 8 might have been even bigger.
 
-### **Plotting the Mean & Median changes of Week 1 VS Week 8. Differences can be found!**
+### **Distributions, Means and Median changes per week. Big changes for Danceability and Tempo!**
 
 
 ```{r chunk13, fig.width=9, fig.height=6.5}
@@ -911,38 +859,6 @@ gridExtra::grid.arrange(plot1, plot2, plot3, plot4, ncol = 2, nrow = 2)
 As an addition to the previous plot, the plots at the top show the mean changes and the median changes per week. Showing the Energy in size, the instrumentalness in color and the Danceability on the y-axis. Where the weeks are given on the x-axis. For both plots we can see that all features go up, and the little accident happening at week 6.
 
 The bottom two plots respresent week 1 and week 8 of discover weekly, showing the distribution of the absolute values for all 4 features. We can clearly see that the danceability of the songs is quite high and less spread than in week 1. The spread of the energy doesn't show very different from this plot compared to week 1. There seem to be more yellow dots, meaning a higher instrumentalness. Also in general, the dots are larger, meaning a higher tempo.
-
-### **The Distribution of the Songs for Week 1 VS Week 8 show big changes in Danceability and Tempo**
-
-
-```{r chunk14}
-ggplot(discover_weekly1, aes(energy, danceability, col=instrumentalness, size=tempo))+
-  geom_point()+
-  labs(title='Discover Weekly 1',
-    x = "Energy",
-    y = "Danceability",
-    colour = "Instrumentalness",
-    size="Tempo")+
-  scale_color_viridis( option = "D")
-
-
-
-ggplot(discover_weekly8, aes(energy, danceability, col=instrumentalness, size=tempo))+
-  geom_point()+
-  labs(title='Discover Weekly 8',
-    x = "Energy",
-    y = "Danceability",
-    colour = "Instrumentalness",
-    size="Tempo")  +
-  scale_color_viridis( option = "D")
-
-
-```
-
-
-***
-
-These plot respresent week 1 and week 8 of discover weekly, showing the distribution of the absolute values for all 4 features. We can clearly see that the danceability of the songs is quite high and less spread than in week 1. The spread of the energy doesn't show very different from this plot compared to week 1. There seem to be more yellow dots, meaning a higher instrumentalness. Also in general, the dots are larger, meaning a higher tempo.
 
 ### **Classification with  Multinomial Regression. What features are important for what playlist?** {data-commentary-width=305}
 
@@ -1261,7 +1177,7 @@ Looking at the __Heatmap__, we can notice some thing:
 
 - And we notice that the song Luechtoorn, which is also on it's own in the dendogram, has quite a high value for E, which seperates it from the other songs.
 
-### Appendix A: **The Key of our Playlists** The following appendixes show various analyses of playlists en Lacrimosa VS Brainstorm
+### Additional Results: The following appendixes show various analyses of playlists en Lacrimosa VS Brainstorm **I: The Key of our Playlists** 
 
 ```{r chunk2, fig.width=10, fig.height=7}
 
@@ -1298,7 +1214,7 @@ key_per_playlist + theme(axis.text.x= element_text(face="plain" ,angle=45, hjust
 
 Here we see the distributions of the keys per playlist at the baseline. You can see that for every playlist, a lot of the songs are in the key of C. However, there are also a lot for C#|Db, G & A. Alex told me that he really like the key of Db, giving us an explanation for why that occurs so often in his playlist. We see that for discover weekly 1, G occurs most often. This makes sense as the key of G is quite popular and spotify weekly in general recommends songs that are popular. I do not have an explanation for my Favorites, I don't have a particular preference. Which you can see a little bit, as multiple keys occur with a high frequency, e.g. C, D, G and A.
 
-### Appendix B: **Chroma, Timbre & Key plots for Lacrimosa & Brainstorm**{data-commentary-width=290}
+### **II: Chroma, Timbre & Key plots for Lacrimosa & Brainstorm**{data-commentary-width=290}
 
 ```{r chunk4}
 
@@ -1542,6 +1458,7 @@ lacrimosa_key %>%
 #     scale_fill_viridis_c(option = 'D') +
 #     theme_minimal() +
 #     labs(x = 'Time (s)', y = '')
+# fjdsajkll
 
 
 Brainstorm_key <-
@@ -1591,7 +1508,7 @@ This can be seen from the chroma plot. On the x-axis we have the time and on the
 The timbre shows a little bit better what's going on. The song starts with a slow buildup with some high heads and some minimal vocals (Kicking up in the brainstorm), which you can see in the beginning. Then you can see a very big change around 60 seconds, this is where a very heavy bass kicks in. It also shows a single weird moment around 240 seconds, this is because here there is 1 small sample of a vocal which has not been in the song before and is only played here.
 
 
-### Appendix C: **Looking at important Features using Decision Trees & Random Forests**{data-commentary-width=300}
+### **III: Looking at important Features using Decision Trees & Random Forests**{data-commentary-width=300}
 
 ```{r}
 
@@ -1692,7 +1609,7 @@ The second plot shows how these important features are distributed for every pla
 
 The table underneath shows us the choices that the decision tree has made. Their prediction quality is not that good, however we can use them to get a better view at how the decisions for the predictions were made. For instance, we can see that danceability plays a very big role for this prediction. Also, for instance we see that when F <= 1.134423 you have a high chance of belonging to My Favorites.
 
-### Appendix D: **Accuracy of classification with k-Nearest Neighbour, Multinomial Regression, Decision Trees and Random forest:**{data-commentary-width=800}
+### **IV: Accuracy of classification with k-Nearest Neighbour, Multinomial Regression, Decision Trees and Random forest:**{data-commentary-width=800}
 
 
 ```{r}
@@ -1945,7 +1862,7 @@ The tables below this text show the confusion matrixes, where we can see the amo
 |            | My Favorites | <span style="color:red">7</span>   | <span style="color:red">4</span>  | <span style="color:green">19</span> |
 
 
-### Appendix E: **Novelty functions, Delta-Chroma and Delta-Delta-Timbre for Lacrimosa & Brainstorm.**
+### **V: Novelty functions, Delta-Chroma and Delta-Delta-Timbre for Lacrimosa & Brainstorm.**
 
 ```{r}
 
