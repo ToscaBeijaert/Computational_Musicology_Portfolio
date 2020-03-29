@@ -9,6 +9,7 @@ output:
 ---
 
 ```{r chunk1, setup}
+
 # In order to use these packages, we need to install flexdashboard, plotly, and Cairo.
 library(scales)
 library(kknn)
@@ -161,173 +162,173 @@ On the left we see a plot for the Energy, Danceability and Instrumentalness for 
 The left plot however is hard to interpret, therefore we could look for instance just at the danceability and energy of each playlist. This is what we see on the right.
 This shows us very clearly that spotify weekly's data isn't very spread. For instance, looking at the green line, we can see that the danceability nor the energy go below 0.3 for discover weekly. However, these two plots don't show us that well how any of the variables are distributed. THus we will look at some histograms per feature.
 
-<!-- ### **The Baseline differences: the distributions of the features**{data-commentary-width=300} -->
+### **The Baseline differences: the distributions of the features**{data-commentary-width=300}
 
-<!-- ```{r chunk11} -->
-
-
-
-<!-- # MAKING PLOTS. -->
-
-<!-- # We will now start making plots. We want 1 plot that compares the 3 playlists & 1 plot that compares the -->
-<!-- # discover weekly playlists over time. -->
-
-<!-- # Comparing the 3 playlists. -->
-<!-- # we combine the 3 data sets favorites, alex and discover weekly archive. -->
+```{r chunk11}
 
 
 
-<!-- # 1. We start with the baseline differences for alex's favourties, my faovrites and discover weekly week 1. -->
+# MAKING PLOTS.
 
-<!-- playlists %>% -->
-<!--   ggplot(aes(x = energy, col=playlist)) + -->
-<!--   geom_histogram() + -->
-<!--   facet_wrap(~ playlist, scales="free_y")+ -->
-<!--   scale_x_continuous( -->
-<!--     limits=c(0,1), -->
-<!--     breaks=c(0,0.5,1) -->
-<!--   )+ -->
-<!--   labs(color='Playlist', title='Energy per Playlist') + -->
-<!--   xlab('Energy') + -->
-<!--   ylab("Count") -->
+# We will now start making plots. We want 1 plot that compares the 3 playlists & 1 plot that compares the
+# discover weekly playlists over time.
+
+# Comparing the 3 playlists.
+# we combine the 3 data sets favorites, alex and discover weekly archive.
 
 
 
-<!-- playlists %>% -->
-<!-- ggplot(aes(x = tempo,  col=playlist)) + -->
-<!-- geom_histogram() + -->
-<!-- facet_wrap(~ playlist, scales="free_y")+ -->
-<!-- scale_x_continuous( -->
-<!-- limits=c(0,250), -->
-<!-- breaks=c(0,125,250) -->
-<!-- )+ -->
-<!-- labs(color='Playlist', title='Tempo per Playlist') + -->
-<!-- xlab('Tempo')+ -->
-<!-- ylab("Count")+ -->
-<!-- theme_get() -->
+# 1. We start with the baseline differences for alex's favourties, my faovrites and discover weekly week 1.
 
-
-<!-- playlists %>% -->
-<!-- ggplot(aes(x = danceability, col=playlist)) + -->
-<!-- geom_histogram() + -->
-<!-- facet_wrap(~ playlist, scales="free_y")+ -->
-<!-- scale_x_continuous( -->
-<!-- limits=c(0,1), -->
-<!-- breaks=c(0,0.5,1) -->
-<!-- )+ -->
-<!-- labs(color='Playlist', title='Danceability per Playlist') + -->
-<!-- xlab('Danceability') + -->
-<!-- ylab("Count")+ -->
-<!-- theme_get() -->
-
-<!-- playlists %>% -->
-<!-- ggplot(aes(x = instrumentalness, col=playlist)) + -->
-<!-- geom_histogram() + -->
-<!-- facet_wrap(~ playlist, scales="free_y")+ -->
-<!-- scale_x_continuous( -->
-<!-- limits=c(0,1), -->
-<!-- breaks=c(0,0.5,1) -->
-<!-- )+ -->
-<!-- labs(color='Playlist', title='Instrumentalness per Playlist') + -->
-<!-- xlab('Instumentalness') + -->
-<!-- ylab("Count")+ -->
-<!-- theme_get() -->
+playlists %>%
+  ggplot(aes(x = energy, col=playlist)) +
+  geom_histogram() +
+  facet_wrap(~ playlist, scales="free_y")+
+  scale_x_continuous(
+    limits=c(0,1),
+    breaks=c(0,0.5,1)
+  )+
+  labs(color='Playlist', title='Energy per Playlist') +
+  xlab('Energy') +
+  ylab("Count")
 
 
 
-<!-- ``` -->
-
-<!-- *** -->
-
-<!-- Here we look at some baseline comparisons, as these are important to look at them later on again. For every plot you get a specific feature on the x-axis and the amount on the y-axis. Note that the values of the y-axes differ for the playlists, as discover weekly only has 30 songs and the other 2 have around 3000 songs. These plots clearly show the differences of how the songs are distributed for the different playlists. -->
-
-<!-- For instance, Discover weekly has less energetic songs than the other two. The tempo mostly lies around 125 bmp, whereas the other 2 are more spread. -->
-
-<!-- We now see that only information on the mean of the data, does not give us enough. The means might not always lie that far apart, but if we look at the distributions, we can easily see the differences. -->
-
-
-<!-- Looking at the plots and histograms we noticed that the playlists are distributed differently. We hypothesize a few things about the changes in the discover weekly playlist over 8 weeks time: -->
-
-
-<!-- |  Hypothesis | Discover Weekly After 8 Weeks  | -->
-<!-- |---|---| -->
-<!-- | Energy  | Will go up  | -->
-<!-- |  Tempo |  Will go up | -->
-<!-- |  Danceability | Will go up  | -->
-<!-- | Instrumentalness  | Will go up  | -->
+playlists %>%
+ggplot(aes(x = tempo,  col=playlist)) +
+geom_histogram() +
+facet_wrap(~ playlist, scales="free_y")+
+scale_x_continuous(
+limits=c(0,250),
+breaks=c(0,125,250)
+)+
+labs(color='Playlist', title='Tempo per Playlist') +
+xlab('Tempo')+
+ylab("Count")+
+theme_get()
 
 
+playlists %>%
+ggplot(aes(x = danceability, col=playlist)) +
+geom_histogram() +
+facet_wrap(~ playlist, scales="free_y")+
+scale_x_continuous(
+limits=c(0,1),
+breaks=c(0,0.5,1)
+)+
+labs(color='Playlist', title='Danceability per Playlist') +
+xlab('Danceability') +
+ylab("Count")+
+theme_get()
 
-<!-- From the histograms we can tell that most of Alex's songs are high in energy, therefore we hypothesize that discover weekly will go up in energy. Looking at the histograms, we can see that Alex's favorites have more songs with a higher tempo than discover weekly, therefore we hypothesize this value to go up. Even though by looking at the histograms, the danceability of discover weekly and alex's favorites look about the same, tempo and danceability are highly correlated, therefore we also expect danceability to go up in value. We cannot see big changes in the instrumentalness between discover weekly and alex's playlist, however, I know that alex's playlist has a lot of techno songs, thus a high instrumentalness, therefore we hypothesize instrumentalness will go up. -->
-
-<!-- These tables don't show much difference in the mean values, however the histograms showed us very clear differences. This shows once again that you shouldn't look only at the average values. -->
-
-<!-- **My Favourites** -->
-
-<!-- |Feature   |Mean   |SD   | -->
-<!-- |---|---|---| -->
-<!-- | Danceability  | 0.567  |0.184   | -->
-<!-- | Energy  | 0.635  |  0.265  | -->
-<!-- | Instrumentalness  | 0.329   | 0.373  | -->
-<!-- | Tempo  |  124  | 31  | -->
-
-
-<!-- **Alex's Favourites** -->
-
-<!-- | Feature  |Mean   |SD   | -->
-<!-- |---|---|---| -->
-<!-- | Danceability  | 0.693   |0.125   | -->
-<!-- | Energy  | 0.664   |  0.167  | -->
-<!-- | Instrumentalness  | 0.530    | 0.351  | -->
-<!-- | Tempo  |   116   | 16   | -->
-
-
-<!-- **Discover Weekly 1** -->
-
-<!-- |Feature   |Mean   |SD   | -->
-<!-- |---|---|---| -->
-<!-- | Danceability  | 0.717   |0.138   | -->
-<!-- | Energy  | 0.681  |  0.184  | -->
-<!-- | Instrumentalness  | 0.505  | 0.391  | -->
-<!-- | Tempo  |  121 | 19.8   | -->
+playlists %>%
+ggplot(aes(x = instrumentalness, col=playlist)) +
+geom_histogram() +
+facet_wrap(~ playlist, scales="free_y")+
+scale_x_continuous(
+limits=c(0,1),
+breaks=c(0,0.5,1)
+)+
+labs(color='Playlist', title='Instrumentalness per Playlist') +
+xlab('Instumentalness') +
+ylab("Count")+
+theme_get()
 
 
 
-<!-- ### **Alex's least Danceable Song VS Alex's most danceable Song: Larimosa VS Brainstorm!** -->
+```
+
+***
+
+Here we look at some baseline comparisons, as these are important to look at them later on again. For every plot you get a specific feature on the x-axis and the amount on the y-axis. Note that the values of the y-axes differ for the playlists, as discover weekly only has 30 songs and the other 2 have around 3000 songs. These plots clearly show the differences of how the songs are distributed for the different playlists.
+
+For instance, Discover weekly has less energetic songs than the other two. The tempo mostly lies around 125 bmp, whereas the other 2 are more spread.
+
+We now see that only information on the mean of the data, does not give us enough. The means might not always lie that far apart, but if we look at the distributions, we can easily see the differences.
 
 
-<!-- ```{r chunk3} -->
-<!-- # library(png) -->
-<!-- # library(grid) -->
-<!-- # img <- readPNG("lacrimosa.png") -->
-<!-- # grid.raster(img) -->
-<!-- library(knitr) -->
-<!-- include_graphics("lacrimosa.png") -->
-<!-- include_graphics("brainstorm.jpg") -->
-<!-- ``` -->
+Looking at the plots and histograms we noticed that the playlists are distributed differently. We hypothesize a few things about the changes in the discover weekly playlist over 8 weeks time:
 
 
-<!-- *** -->
+|  Hypothesis | Discover Weekly After 8 Weeks  |
+|---|---|
+| Energy  | Will go up  |
+|  Tempo |  Will go up |
+|  Danceability | Will go up  |
+| Instrumentalness  | Will go up  |
 
-<!-- After doing some research, I found out that Alex's least danceable song is Lacrimosa, from Amadeus Mozart, which is quite funny as it is one of our favorite classical music songs, which we sing all the time. -->
 
-<!-- <html> -->
-<!-- <audio controls> -->
-<!--   <source src="Lacrimosa_Alex.mp3" type="audio/mpeg"> -->
-<!-- </audio> -->
-<!-- </html> -->
 
-<!-- Now I know that Lacrimosa is played in d-minor, which will help us later on. THe songs has some very particular Harmonic orders, for instance for the first few beats: I-II-V-I-II-V. This can also be seen in the picture. -->
+From the histograms we can tell that most of Alex's songs are high in energy, therefore we hypothesize that discover weekly will go up in energy. Looking at the histograms, we can see that Alex's favorites have more songs with a higher tempo than discover weekly, therefore we hypothesize this value to go up. Even though by looking at the histograms, the danceability of discover weekly and alex's favorites look about the same, tempo and danceability are highly correlated, therefore we also expect danceability to go up in value. We cannot see big changes in the instrumentalness between discover weekly and alex's playlist, however, I know that alex's playlist has a lot of techno songs, thus a high instrumentalness, therefore we hypothesize instrumentalness will go up.
 
-<!-- An explanation used of the harmonics & emotions of this song can be found in this [video!](https://www.youtube.com/watch?v=D8SD3ToKDsw). Please watch it, even if you only look at it for 2 seconds, it's really interesting! -->
+These tables don't show much difference in the mean values, however the histograms showed us very clear differences. This shows once again that you shouldn't look only at the average values.
 
-<!-- The other song is called Brainstorm by Special Request. Which is a techno/breakbeat song. -->
+**My Favourites**
 
-<!-- <html> -->
-<!-- <audio controls> -->
-<!--   <source src="Brainstorm Special Request.mp3" type="audio/mpeg"> -->
-<!-- </audio> -->
-<!-- </html> -->
+|Feature   |Mean   |SD   |
+|---|---|---|
+| Danceability  | 0.567  |0.184   |
+| Energy  | 0.635  |  0.265  |
+| Instrumentalness  | 0.329   | 0.373  |
+| Tempo  |  124  | 31  |
+
+
+**Alex's Favourites**
+
+| Feature  |Mean   |SD   |
+|---|---|---|
+| Danceability  | 0.693   |0.125   |
+| Energy  | 0.664   |  0.167  |
+| Instrumentalness  | 0.530    | 0.351  |
+| Tempo  |   116   | 16   |
+
+
+**Discover Weekly 1**
+
+|Feature   |Mean   |SD   |
+|---|---|---|
+| Danceability  | 0.717   |0.138   |
+| Energy  | 0.681  |  0.184  |
+| Instrumentalness  | 0.505  | 0.391  |
+| Tempo  |  121 | 19.8   |
+
+
+
+### **Alex's least Danceable Song VS Alex's most danceable Song: Larimosa VS Brainstorm!**
+
+
+```{r chunk3}
+# library(png)
+# library(grid)
+# img <- readPNG("lacrimosa.png")
+# grid.raster(img)
+library(knitr)
+include_graphics("lacrimosa.png")
+include_graphics("brainstorm.jpg")
+```
+
+
+***
+
+After doing some research, I found out that Alex's least danceable song is Lacrimosa, from Amadeus Mozart, which is quite funny as it is one of our favorite classical music songs, which we sing all the time.
+
+<html>
+<audio controls>
+  <source src="Lacrimosa_Alex.mp3" type="audio/mpeg">
+</audio>
+</html>
+
+Now I know that Lacrimosa is played in d-minor, which will help us later on. THe songs has some very particular Harmonic orders, for instance for the first few beats: I-II-V-I-II-V. This can also be seen in the picture.
+
+An explanation used of the harmonics & emotions of this song can be found in this [video!](https://www.youtube.com/watch?v=D8SD3ToKDsw). Please watch it, even if you only look at it for 2 seconds, it's really interesting!
+
+The other song is called Brainstorm by Special Request. Which is a techno/breakbeat song.
+
+<html>
+<audio controls>
+  <source src="Brainstorm Special Request.mp3" type="audio/mpeg">
+</audio>
+</html>
 
 
 
@@ -389,7 +390,7 @@ __My Lacrimosa from the Choir of Kings college:__
 Now we can use Dynamic Time Warping to compute the most optimal alignment between the two features sequences. As chroma norm and distance measure manhattan was chosen, the other options did not seem to work well for this data. We can see the black line diagonally, expressing the optimal warping path. Meaning that it is possible to align these two different versions.
 
 
-### **SSM matrixes Showing us what's actually going on.**{data-commentary-width=310}
+### **SSM matrixes Showing us what's actually going on.**{data-commentary-width=307}
 
 ```{r Langzamechunk7}
 # The SSM of the Chroma
@@ -533,53 +534,53 @@ Listen to the [song](https://www.youtube.com/watch?v=DvJianRCqZk) to find out!
 
 If we look at the Timbre SSM again we see the breakdown at 60 seconds, this time even more clearly. As the song starts with some bass, high heads and some low vocals all of a sudden at 60 seconds a lot of low bass is added and this is easy to see by the yellow line at 60 seconds. Also we see a clear change at 244 seconds (4:02-4:05). This is because of that one weird vocal sample that is only played here.
 
-<!-- ### **Interactive Timbre SSM** -->
+### **Interactive Timbre SSM**
 
-<!-- ```{r chunk8} -->
+```{r chunk8}
 
 
-<!-- brain_active=Brainstorm_Timbre %>%  # Timbre self similairity matrix -->
-<!--     compmus_self_similarity(timbre, 'euclidean') %>%  # Here you can change the secon argument again, meaning you change the distance. -->
-<!--     ggplot( -->
-<!--         aes( -->
-<!--             x = xstart + xduration / 2, -->
-<!--             width = xduration, -->
-<!--             y = ystart + yduration / 2, -->
-<!--             height = yduration, -->
-<!--             fill = d)) + -->
-<!--     geom_tile() + -->
-<!--     coord_fixed() + -->
-<!--     scale_fill_viridis_c(option = 'B', guide = 'none') + -->
-<!--     theme_classic() + -->
-<!--     labs(title="Timbre SSM Using Euclidean Distance",x = 'Time (s)', y = 'Time (s)')+ -->
-<!--   scale_x_continuous( -->
-<!--     breaks = c(0,60,100,130,190,244,305), minor_breaks=NULL) + -->
-<!--   scale_y_continuous( -->
-<!--     breaks = c(0,60,100,130,190,244,305),minor_breaks=NULL) -->
+brain_active=Brainstorm_Timbre %>%  # Timbre self similairity matrix
+    compmus_self_similarity(timbre, 'euclidean') %>%  # Here you can change the secon argument again, meaning you change the distance.
+    ggplot(
+        aes(
+            x = xstart + xduration / 2,
+            width = xduration,
+            y = ystart + yduration / 2,
+            height = yduration,
+            fill = d)) +
+    geom_tile() +
+    coord_fixed() +
+    scale_fill_viridis_c(option = 'B', guide = 'none') +
+    theme_classic() +
+    labs(title="Timbre SSM Using Euclidean Distance",x = 'Time (s)', y = 'Time (s)')+
+  scale_x_continuous(
+    breaks = c(0,60,100,130,190,244,305), minor_breaks=NULL) +
+  scale_y_continuous(
+    breaks = c(0,60,100,130,190,244,305),minor_breaks=NULL)
 
-<!-- ggplotly(brain_active) -->
+ggplotly(brain_active)
 
-<!-- ``` -->
+```
 
-<!-- *** -->
+***
 
-<!-- Here we see the SSM of Timbre again, but as an interactive plot. -->
+Here we see the SSM of Timbre again, but as an interactive plot.
 
-<!-- Take a look at the file again to check the specific moments. -->
+Take a look at the file again to check the specific moments.
 
-<!-- - Slow buildup 0 sec -->
-<!-- - Bass block 60 sec (1:00) -->
-<!-- - Bass block + High Heads 100 sec (1:40) -->
-<!-- - Piano block 130 sec (2:10) -->
-<!-- - Bass block + High Heads 190 sec (3:08) -->
-<!-- - Piano block 244 sec (4:05), where the one weird vocal sentence starts at 4:03 -->
-<!-- - Autro block 305 sec (5:02) -->
+- Slow buildup 0 sec
+- Bass block 60 sec (1:00)
+- Bass block + High Heads 100 sec (1:40)
+- Piano block 130 sec (2:10)
+- Bass block + High Heads 190 sec (3:08)
+- Piano block 244 sec (4:05), where the one weird vocal sentence starts at 4:03
+- Autro block 305 sec (5:02)
 
-<!-- <html> -->
-<!-- <audio controls> -->
-<!--   <source src="Brainstorm Special Request.mp3" type="audio/mpeg"> -->
-<!-- </audio> -->
-<!-- </html> -->
+<html>
+<audio controls>
+  <source src="Brainstorm Special Request.mp3" type="audio/mpeg">
+</audio>
+</html>
 
 
 
@@ -588,7 +589,6 @@ If we look at the Timbre SSM again we see the breakdown at 60 seconds, this time
 ```{r}
 
 # Novelty functions
-
 brain <-
     get_tidy_audio_analysis("4GdOWNJzpTWoKdA4LEbXDa") %>%
     select(segments) %>% unnest(segments)
@@ -606,7 +606,6 @@ lacrimosa_novelty %>%
     xlim(0, 30) + # You can change the x limit, to change the section of the song where you want to look at.
     theme_minimal() +
     labs(x = 'Time (s)', y = 'Novelty', title="Lacrimosa Novelty Function Until 30s")
-
 
 brain %>%
     mutate(loudness_max_time = start + loudness_max_time) %>%
@@ -661,64 +660,64 @@ brain %>%  # Here it does give the correct bpm of round 132.
 
 ***
 
-__Novelty Functions__
+__Novelty Functions__:
 For Lacrimosa the novelty function is not very consistent, the first novelty plot show the first 30s, which start with 10s of only violin and then the vocals come in.
 
 We can see that the novelty function for Braisntorm is working quite well. The first novelty plot shows that there is a very regular beat and at 30 second, the bass of the beat becomes even louder and more obvious which we can see in the plot. There are also some high heads, which are the smaller peaks we see in the plot.
 
-__Tempograms__
+__Tempograms__:
 The Lacrimosa song is a whole different story. We can see that for both the Fourier Tempogram and the Cyclic Tempogram the algorithm has absolutely no idea what's going on. Lacrimosa's bpm is quite slow, if I recall correctly this version (Alex's version, from Lisa Beckley) is around 95 BPM. The Fourier Tempogram shows us absolutely nothing, and looking at the Cyclic Tempogram it looks like it's actually suggesting higer BPM's of around 150 BPM, however we know that this is false.
 
 We see two very interesting things here. On the right we have the Fourier & Cyclic tempograms for Brainstorm. We can see that the Fourier does not work, because it's suggesting a tempo of around 520 and I know the tempo of this song is around 132. This must be because of the tempo harmonics. We can see that the Cyclic tempogram is showing us the correct resultss. The cyclic Tempogram works around the harmmonics and shows us the true tempo of around 132. It's not very surprising that the tempogram works so wel, as this song has a very obvious beat throughout the whole song.
 
 
-<!-- ### **Tempograms: Lacrimosa stays unclear!**{data-commentary-width=298} -->
+### **Tempograms: Lacrimosa stays unclear!**{data-commentary-width=298}
 
-<!-- ```{r Langzame Chunk} -->
+```{r Langzame Chunk}
 
-<!-- brain <- get_tidy_audio_analysis("4GdOWNJzpTWoKdA4LEbXDa") -->
-<!-- lacrimosa_novelty <- get_tidy_audio_analysis("1UvaZaHkh3D9AkmBrrnbFg") -->
+brain <- get_tidy_audio_analysis("4GdOWNJzpTWoKdA4LEbXDa")
+lacrimosa_novelty <- get_tidy_audio_analysis("1UvaZaHkh3D9AkmBrrnbFg")
 
-<!-- # Check hier hoe het is voor de song feel real van x-coast -->
-<!-- lacrimosa_novelty %>% # The BM it shows us is not correct at all, it gives bout 520, but its not. THe actual bpm is around 132. -->
-<!--     tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) %>% # window s -->
-<!--     ggplot(aes(x = time, y = bpm, fill = power)) + -->
-<!--     geom_raster() + -->
-<!--     scale_fill_viridis_c(guide = 'none') + -->
-<!--     labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Lacrimosa Fourier Tempogram") + -->
-<!--     theme_classic() -->
+# Check hier hoe het is voor de song feel real van x-coast
+lacrimosa_novelty %>% # The BM it shows us is not correct at all, it gives bout 520, but its not. THe actual bpm is around 132.
+    tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) %>% # window s
+    ggplot(aes(x = time, y = bpm, fill = power)) +
+    geom_raster() +
+    scale_fill_viridis_c(guide = 'none') +
+    labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Lacrimosa Fourier Tempogram") +
+    theme_classic()
 
-<!-- # Check hier hoe het is voor de song feel real van x-coast -->
-<!-- brain %>% # The BM it shows us is not correct at all, it gives bout 520, but its not. THe actual bpm is around 132. -->
-<!--     tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) %>% # window s -->
-<!--     ggplot(aes(x = time, y = bpm, fill = power)) + -->
-<!--     geom_raster() + -->
-<!--     scale_fill_viridis_c(guide = 'none') + -->
-<!--     labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Brainstorm Fourier Tempogram") + -->
-<!--     theme_classic() -->
+# Check hier hoe het is voor de song feel real van x-coast
+brain %>% # The BM it shows us is not correct at all, it gives bout 520, but its not. THe actual bpm is around 132.
+    tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) %>% # window s
+    ggplot(aes(x = time, y = bpm, fill = power)) +
+    geom_raster() +
+    scale_fill_viridis_c(guide = 'none') +
+    labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Brainstorm Fourier Tempogram") +
+    theme_classic()
 
-<!-- lacrimosa_novelty %>%  # Here it does give the correct bpm of round 132. -->
-<!--     tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) %>% -->
-<!--     ggplot(aes(x = time, y = bpm, fill = power)) + -->
-<!--     geom_raster() + -->
-<!--     scale_fill_viridis_c(guide = 'none') + -->
-<!--     labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Lacrimosa Cyclic Tempogram") + -->
-<!--     theme_classic() -->
-
-
-<!-- brain %>%  # Here it does give the correct bpm of round 132. -->
-<!--     tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) %>% -->
-<!--     ggplot(aes(x = time, y = bpm, fill = power)) + -->
-<!--     geom_raster() + -->
-<!--     scale_fill_viridis_c(guide = 'none') + -->
-<!--     labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Brainstorm Cyclic Tempogram") + -->
-<!--     theme_classic() -->
+lacrimosa_novelty %>%  # Here it does give the correct bpm of round 132.
+    tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) %>%
+    ggplot(aes(x = time, y = bpm, fill = power)) +
+    geom_raster() +
+    scale_fill_viridis_c(guide = 'none') +
+    labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Lacrimosa Cyclic Tempogram") +
+    theme_classic()
 
 
+brain %>%  # Here it does give the correct bpm of round 132.
+    tempogram(window_size = 8, hop_size = 1, cyclic = TRUE) %>%
+    ggplot(aes(x = time, y = bpm, fill = power)) +
+    geom_raster() +
+    scale_fill_viridis_c(guide = 'none') +
+    labs(x = 'Time (s)', y = 'Tempo (BPM)',title="Brainstorm Cyclic Tempogram") +
+    theme_classic()
 
-<!-- ``` -->
 
-<!-- *** -->
+
+```
+
+***
 
 
 
@@ -843,7 +842,7 @@ It was hypothesized that all of the four features would go up in value. We can s
 ### **Plotting the Mean & Median changes of Week 1 VS Week 8. Differences can be found!**
 
 
-```{r chunk13}
+```{r chunk13, fig.width=9, fig.height=6.5}
 week_numbers=c(1,2,3,4,5,6,7,8)
 
 plot1=ggplot(means_all, aes(week, danceability, col=instrumentalness, size=energy))+
@@ -858,7 +857,7 @@ plot1=ggplot(means_all, aes(week, danceability, col=instrumentalness, size=energ
     minor_breaks = NULL,      # Remove 'minor' grid-lines.
     labels=week_numbers
   )+
-  lims(size=c(0.55,0.75))+
+    lims(size=c(0.55,0.75))+
    geom_smooth(show.legend = FALSE, se=FALSE)+
   scale_color_viridis( option = "D")
 
@@ -900,6 +899,7 @@ plot4=ggplot(discover_weekly8, aes(energy, danceability, col=instrumentalness, s
     y = "Danceability",
     colour = "Instrumentalness",
     size="Tempo")  +
+    lims(size=c(100,175))+
   scale_color_viridis( option = "D")
 
 gridExtra::grid.arrange(plot1, plot2, plot3, plot4, ncol = 2, nrow = 2)
@@ -908,42 +908,43 @@ gridExtra::grid.arrange(plot1, plot2, plot3, plot4, ncol = 2, nrow = 2)
 
 ***
 
-Another visualisation here showing the Energy in size, the instrumentalness in color and the Danceability on the y-axis. Where the weeks are given on the x-axis. For both plots we can see that all features go up, and the little accident happening at week 6.
+As an addition to the previous plot, the plots at the top show the mean changes and the median changes per week. Showing the Energy in size, the instrumentalness in color and the Danceability on the y-axis. Where the weeks are given on the x-axis. For both plots we can see that all features go up, and the little accident happening at week 6.
+
+The bottom two plots respresent week 1 and week 8 of discover weekly, showing the distribution of the absolute values for all 4 features. We can clearly see that the danceability of the songs is quite high and less spread than in week 1. The spread of the energy doesn't show very different from this plot compared to week 1. There seem to be more yellow dots, meaning a higher instrumentalness. Also in general, the dots are larger, meaning a higher tempo.
+
+### **The Distribution of the Songs for Week 1 VS Week 8 show big changes in Danceability and Tempo**
 
 
-<!-- ### **The Distribution of the Songs for Week 1 VS Week 8 show big changes in Danceability and Tempo** -->
-
-
-<!-- ```{r chunk14} -->
-<!-- ggplot(discover_weekly1, aes(energy, danceability, col=instrumentalness, size=tempo))+ -->
-<!--   geom_point()+ -->
-<!--   labs(title='Discover Weekly 1', -->
-<!--     x = "Energy", -->
-<!--     y = "Danceability", -->
-<!--     colour = "Instrumentalness", -->
-<!--     size="Tempo")+ -->
-<!--   scale_color_viridis( option = "D") -->
+```{r chunk14}
+ggplot(discover_weekly1, aes(energy, danceability, col=instrumentalness, size=tempo))+
+  geom_point()+
+  labs(title='Discover Weekly 1',
+    x = "Energy",
+    y = "Danceability",
+    colour = "Instrumentalness",
+    size="Tempo")+
+  scale_color_viridis( option = "D")
 
 
 
-<!-- ggplot(discover_weekly8, aes(energy, danceability, col=instrumentalness, size=tempo))+ -->
-<!--   geom_point()+ -->
-<!--   labs(title='Discover Weekly 8', -->
-<!--     x = "Energy", -->
-<!--     y = "Danceability", -->
-<!--     colour = "Instrumentalness", -->
-<!--     size="Tempo")  + -->
-<!--   scale_color_viridis( option = "D") -->
+ggplot(discover_weekly8, aes(energy, danceability, col=instrumentalness, size=tempo))+
+  geom_point()+
+  labs(title='Discover Weekly 8',
+    x = "Energy",
+    y = "Danceability",
+    colour = "Instrumentalness",
+    size="Tempo")  +
+  scale_color_viridis( option = "D")
 
 
-<!-- ``` -->
+```
 
 
-<!-- *** -->
+***
 
-<!-- These plot respresent week 1 and week 8 of discover weekly, showing the distribution of the absolute values for all 4 features. We can clearly see that the danceability of the songs is quite high and less spread than in week 1. The spread of the energy doesn't show very different from this plot compared to week 1. There seem to be more yellow dots, meaning a higher instrumentalness. Also in general, the dots are larger, meaning a higher tempo. -->
+These plot respresent week 1 and week 8 of discover weekly, showing the distribution of the absolute values for all 4 features. We can clearly see that the danceability of the songs is quite high and less spread than in week 1. The spread of the energy doesn't show very different from this plot compared to week 1. There seem to be more yellow dots, meaning a higher instrumentalness. Also in general, the dots are larger, meaning a higher tempo.
 
-### **Classification with  Multinomial Regression. What features are important for what playlist?**{data-commentary-width=345}
+### **Classification with  Multinomial Regression. What features are important for what playlist?** {data-commentary-width=305}
 
 
 ```{r}
@@ -1260,7 +1261,7 @@ Looking at the __Heatmap__, we can notice some thing:
 
 - And we notice that the song Luechtoorn, which is also on it's own in the dendogram, has quite a high value for E, which seperates it from the other songs.
 
-### Appendix A: **The Key of our Playlists**
+### Appendix A: **The Key of our Playlists** The following appendixes show various analyses of playlists en Lacrimosa VS Brainstorm
 
 ```{r chunk2, fig.width=10, fig.height=7}
 
@@ -1590,7 +1591,7 @@ This can be seen from the chroma plot. On the x-axis we have the time and on the
 The timbre shows a little bit better what's going on. The song starts with a slow buildup with some high heads and some minimal vocals (Kicking up in the brainstorm), which you can see in the beginning. Then you can see a very big change around 60 seconds, this is where a very heavy bass kicks in. It also shows a single weird moment around 240 seconds, this is because here there is 1 small sample of a vocal which has not been in the song before and is only played here.
 
 
-### Appendix C: **Looking at important Features using Multinomial Regression, Decision Trees & Random Forests**{data-commentary-width=300}
+### Appendix C: **Looking at important Features using Decision Trees & Random Forests**{data-commentary-width=300}
 
 ```{r}
 
@@ -1617,20 +1618,20 @@ Playlists %>%
 
 
 # Multinom important features
+# 
+# Playlists_class %>% # For alex: D#/Eb, c05, A#|Bb. for discover weekly 7:speechiness, instrumentalness, duration, for favorites: danceability, C
+#     fit(Playlists_multinom, playlist ~ ., data = .) %>%
+#     pluck('fit') %>%
+#     coef(s = 0)
 
-Playlists_class %>% # For alex: D#/Eb, c05, A#|Bb. for discover weekly 7:speechiness, instrumentalness, duration, for favorites: danceability, C
-    fit(Playlists_multinom, playlist ~ ., data = .) %>%
-    pluck('fit') %>%
-    coef(s = 0)
+Playlists_tree <-
+    decision_tree(mode = 'classification') %>%
+    set_engine('C5.0')
+predict_tree <- function(split)
+    fit(Playlists_tree, playlist ~ ., data = analysis(split)) %>%
+    predict(assessment(split), type = 'class') %>%
+    bind_cols(assessment(split))
 
-# Playlists_tree <-
-#     decision_tree(mode = 'classification') %>%
-#     set_engine('C5.0')
-# predict_tree <- function(split)
-#     fit(Playlists_tree, playlist ~ ., data = analysis(split)) %>%
-#     predict(assessment(split), type = 'class') %>%
-#     bind_cols(assessment(split))
-#
 # Playlists_cv %>%
 #     mutate(pred = map(splits, predict_tree)) %>% unnest(pred) %>%
 #     conf_mat(truth = playlist, estimate = .pred_class) %>%
@@ -1649,19 +1650,19 @@ Playlists_class %>%
     pluck('fit') %>%
     summary
 
-# These are the best! Will give you the best results.
-# Playlists_forest <-
-#     rand_forest(mode = 'classification') %>%
-#     set_engine('randomForest')
-# predict_forest <- function(split)
-#     fit(Playlists_forest, playlist ~ ., data = analysis(split)) %>%
-#     predict(assessment(split), type = 'class') %>%
-#     bind_cols(assessment(split))
-#
+
+Playlists_forest <-
+    rand_forest(mode = 'classification') %>%
+    set_engine('randomForest')
+predict_forest <- function(split)
+    fit(Playlists_forest, playlist ~ ., data = analysis(split)) %>%
+    predict(assessment(split), type = 'class') %>%
+    bind_cols(assessment(split))
+# 
 # Playlists_cv %>% # The name of your crossvalidation
 #     mutate(pred = map(splits, predict_forest)) %>% unnest(pred) %>%
 #     conf_mat(truth = playlist, estimate = .pred_class)
-#
+
 # Playlists_cv %>%
 #     mutate(pred = map(splits, predict_forest)) %>%
 #     unnest(pred) %>%
@@ -1689,15 +1690,9 @@ The first plot shows us the most important factors that we should look at accord
 
 The second plot shows how these important features are distributed for every playlist. You can see actually see the playlist are a little bit seperated when looking at only these features. E.g. Discover weekly is generally higher on c04 than my favorites are.
 
-The first table show the features that contribute the most according to multinomial regression. Where very high or very low values contribute the most to making the correct predictions.
+The table underneath shows us the choices that the decision tree has made. Their prediction quality is not that good, however we can use them to get a better view at how the decisions for the predictions were made. For instance, we can see that danceability plays a very big role for this prediction. Also, for instance we see that when F <= 1.134423 you have a high chance of belonging to My Favorites.
 
-* We can see that for Alex's favorites: Instrumentalness, C, and B are important for prediction.
-* We can see that for Discover weekly 8: Accousticness, E and Valence were important for prediction.
-* We can see that for My favorites: Danceability, c05 and G#|Ab are important for prediction.
-
-The second table shows us the choices that the decision tree has made. Their prediction quality is not that good, however we can use them to get a better view at how the decisions for the predictions were made. For instance, we can see that danceability plays a very big role for this prediction. Also, for instance we see that when F <= 1.134423 you have a high chance of belonging to My Favorites.
-
-### Appendix D: **Classification with k-Nearest Neighbour, Multinomial Regression, Decision Trees and Random forest**{data-commentary-width=700}
+### Appendix D: **Accuracy of classification with k-Nearest Neighbour, Multinomial Regression, Decision Trees and Random forest:**{data-commentary-width=800}
 
 
 ```{r}
@@ -1869,23 +1864,33 @@ predict_knn_reduced <- function(split)
 #     metric_set(accuracy, kap, j_index)(truth = playlist, estimate = .pred_class)
 
 
+Playlists_cv %>%
+    mutate(pred = map(splits, Playlists_predict_knn)) %>%
+    unnest(pred) %>%
+    metric_set(accuracy, kap, j_index)(truth = playlist, estimate = .pred_class)
+
+Playlists_cv %>%
+    mutate(pred = map(splits, Playlists_predict_multinom)) %>%
+    unnest(pred) %>%
+    metric_set(accuracy, kap, j_index)(truth = playlist, estimate = .pred_class)
+
+Playlists_cv %>%
+    mutate(pred = map(splits, predict_tree)) %>%
+    unnest(pred) %>%
+    metric_set(accuracy, kap, j_index)(truth = playlist, estimate = .pred_class)
+
+Playlists_cv %>%
+    mutate(pred = map(splits, predict_forest)) %>%
+    unnest(pred) %>%
+    metric_set(accuracy, kap, j_index)(truth = playlist, estimate = .pred_class)
 
 ```
 
 ***
 
-
-The accuracy of different predictions methods were looked at, finding out the following accuracies:
-
-- 1. K-nearest neighbour: 0.533
-- 2. Multinomial regression: 0.611
-- 3. Decision Trees: 0.605
-- 4. Random Forest: 0.700
-- 5. K-nearest neighbour using Random forest selected features: 0.591
+The first 4 tables show the accuracy of the different classification algorithms.
 
 The accuracy showedthat k-nearest neighbour doesn't do that well. All the others perform about the same, with Random forest doing slightly better. Also we saw that k-nearest neighbour improved after only the important features according to the random forest were used being: Danceability + c04 + duration + tempo + loudness
-
-On the left we see a a plot showing the confusion matrix for the Multinomial Regression, as we will later use the most meaningfull feaatures according to the multinomial regression to look at clusters in the Discover Weekly 8 playlist. This plot clearly show that it's best at correctly classifying songs from my favorites.
 
 The tables below this text show the confusion matrixes, where we can see the amount of wrong and correct predictions for my favourites, alex's favoroutes and the discover weekly week 8 playlist. Also from these tables we can see that every algorithm is the best at correctly predicting songs that belong to my favorites. Why this is the case, I'm not sure.
 
@@ -1940,76 +1945,7 @@ The tables below this text show the confusion matrixes, where we can see the amo
 |            | My Favorites | <span style="color:red">7</span>   | <span style="color:red">4</span>  | <span style="color:green">19</span> |
 
 
-
-### Appendix E: **What about techno/breakbeat songs? Introducing Brainstorm from Special Request! The Chroma does not say much, Timbre to the rescue!**
-
-
-```{r chunk6}
-
-Brainstorm_Chroma=
-    get_tidy_audio_analysis("4GdOWNJzpTWoKdA4LEbXDa") %>%
-    select(segments) %>% unnest(segments) %>%
-    select(start, duration, pitches)
-
-# Chroma using Euclidean: Werkt
-Brainstorm_Chroma%>%
-    mutate(pitches = map(pitches, compmus_normalise, 'euclidean')) %>% # Change Euclidean to something you want: manhattan, euclidean or chebyshev
-    compmus_gather_chroma %>%
-    ggplot(
-        aes(
-            x = start + duration / 2,
-            width = duration,
-            y = pitch_class,
-            fill = value)) +
-    geom_tile() +
-    labs(title= "Brainstorm by Special Request Chroma",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
-    scale_fill_viridis_c(option = 'A') + # You can change this color, this one is very nice.
-    theme_classic()
-
-
-# The timbre plots of Brainstorm Special Request, which has a big difference at 60 seconds, 100sec,130sec (piano), 145 (vocal), repeat brainstorm, 244 (vocal again), 304 (new thing).We can also see that around 130 second a new block starts (2:10), this is were the piano comes in. At like 190sec (3:08) the same part is repeated that starts at 60 seconds! Listen to the file to find out!
-
-Brainstorm_Timbre <-
-    get_tidy_audio_analysis('4GdOWNJzpTWoKdA4LEbXDa') %>%
-    compmus_align(bars,segments) %>% # aligns everything at a higher lvl of the spotify fpi, he first argument of compmus align can be bars, beats or section.
-    select(bars) %>% unnest(bars) %>%
-    mutate(
-        pitches = # gives pitch information
-            map(segments,
-                compmus_summarise, pitches,
-                method = 'mean', norm ='euclidean' )) %>% # You can change the method to rms, mean, max and so on, see table (method summary). You can also change the norm again, see table
-    mutate(
-        timbre = #gives timbre information
-            map(segments,
-                compmus_summarise, timbre,
-                method = 'rms')) # You can change the method again.
-
-Brainstorm_Timbre %>%
-    compmus_gather_timbre %>% # You can leave this alone, you don't need to change anything here.
-    ggplot(
-        aes(
-            x = start + duration / 2,
-            width = duration,
-            y = basis,
-            fill = value)) +
-    geom_tile() +
-    labs(title="Brainstorm by Special Request Timbre",x = 'Time (s)', y = NULL, fill = 'Magnitude') +
-    scale_fill_viridis_c(option = 'A') + # You can change this color, this one is very nice.
-    theme_classic()
-
-# Pairwise SImilarity Matrix: Werkt
-
-
-```
-
-***
-
-We are going to look at a song called Brainstorm from Special Request. This is an techno-like song which has a lot of changes troughout the song. There is some piano involved and some singing, however not troughout the whole song. Therefore it is difficult to see something out of the chroma plot, as it's not as easy as with classical music.
-This can be seen from the chroma plot. On the x-axis we have the time and on the y-axis the chroma. It's hard to conclude anything from this plot at all.
-
-The timbre shows a little bit better what's going on. The song starts with a slow buildup with some high heads and some minimal vocals (Kicking up in the brainstorm), which you can see in the beginning. Then you can see a very big change around 60 seconds, this is where a very heavy bass kicks in. It also shows a single weird moment around 240 seconds, this is because here there is 1 small sample of a vocal which has not been in the song before and is only played here.
-
-### Appendix F: **Novelty functions, Chromagrams and Delta-delta's for Lacrimosa & Brainstorm. Can the beats be derived?**
+### Appendix E: **Novelty functions, Delta-Chroma and Delta-Delta-Timbre for Lacrimosa & Brainstorm.**
 
 ```{r}
 
