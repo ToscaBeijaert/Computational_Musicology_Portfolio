@@ -53,7 +53,6 @@ favorites=favorites[-c(59:63)]
 favorites=subset(favorites, track.is_local==FALSE) # we delete the local files
 
 
-
 # Alex favorites
 alex=get_playlist_audio_features("Alexander Keijser","59c8tug3WdwODj6gV0ierq")
 
@@ -112,7 +111,7 @@ playlists_sample %>%
   geom_point() +
   geom_rug(size = 0.1)+
   facet_wrap(~ playlist)+
-  labs(title='Energy, Danceability, Instrumentalness and Tempo per Playlist') +
+  labs(title='Energy, Danceability & Instrumentalness per Playlist') +
   scale_x_continuous(          # Fine-tune the x axis.
     limits = c(0, 1),
     breaks = c(0, 0.50, 1),  # Use grid-lines for quadrants only.
@@ -138,7 +137,7 @@ playlists_sample %>%
    geom_jitter(alpha=0.5)+
    geom_smooth() +
    labs(
-     title = "Energy & Danceability Per Playlist",
+     title = "Energy & Danceability per Playlist",
      x = "Energy",
      y = "Danceability",
      col="Playlist"
@@ -151,16 +150,14 @@ playlists_sample %>%
 
 ***
 
-My Favourites playlist in Spotify, the playlist of my boyfriend Alex and my discover weekly differ quite a lot. Assuming that discover weekly adapts to what you listen to the most ( [this article](https://qz.com/571007/the-magic-that-makes-spotifys-discover-weekly-playlists-so-damn-good/)),
+This project will compare 3 Spotify playlists: My Favourites playlist, the playlist of my boyfriend Alex and my discover weekly. The following points will be examined: 
 
-I will perform an experiment where I will listen __ONLY__ to my boyfriends playlist for the coming 8 weeks, to see if my Discover Weekly will transform to look lilke my Boyfriends playlist.
+- 1. Analyses of these playlists show that they differ a lot (see next slide).
+- 2. Assuming that discover weekly adapts to what you listen to the most ( [according to this article](https://qz.com/571007/the-magic-that-makes-spotifys-discover-weekly-playlists-so-damn-good/) ), I will perform an experiment where I will listen __ONLY__ to my boyfriends playlist for the coming 8 weeks, to see if my Discover Weekly (and certain features) will start to look more like his playlist. The features that will be looked at are __Danceability__, __Energy__, __Instrumentalness__ and __Tempo__.
 
-The most interesting features to me seem to be Danceability, Energy, Instrumentalness and Tempo.
+On the left we see a plot for Energy, Danceability and Instrumentalness for each playlist, where we use the data of week 1 for discover weekly. The plot wasn't very interpretable when using all the data from Alex's and my playlist (+3000 songs). Thus, 500 songs were randomly sampled from those playlists, to make this plot more clear-cut. We can observe that my Favorite's has more songs which are less danceable than Alex's playlist and discover weekly. And that in general, discover weakly has less of a spread for danceability and energy.
 
-On the left we see a plot for the Energy, Danceability and Instrumentalness for each playlist, where we use the data of week 1 for discover weekly. The plot wasn't very interpretable when using all the data from Alex's and my playlist, as they have so many songs. Thus, I have randomly sampled 500 songs from Alex's and my Favorites, to make it more clear-cut. Also we can observe that my Favorite's has some more songs which are less danceable than Alex's playlist and discover weekly. And that in general, discover weakly has less of a spread for danceability and energy.
-
-The left plot however is hard to interpret, therefore we could look for instance just at the danceability and energy of each playlist. This is what we see on the right.
-This shows us very clearly that spotify weekly's data isn't very spread. For instance, looking at the green line, we can see that the danceability nor the energy go below 0.3 for discover weekly. However, these two plots don't show us that well how any of the variables are distributed. THus we will look at some histograms per feature.
+The left plot however is hard to interpret, therefore we could look at just the danceability and energy, seen in the right plot. This shows very clearly that spotify weekly's data isn't very spread. For instance, looking at the green line, we can see that the danceability nor the energy go below 0.3 for discover weekly. However, these two plots don't show us that well how any of the variables are distributed. Thus the next slide will look at histograms showing the distribution per feature.
 
 ### **The Baseline differences: the distributions of the features**{data-commentary-width=300}
 
@@ -240,40 +237,34 @@ theme_get()
 
 ***
 
-Here we look at some baseline comparisons, as these are important to look at them later on again. For every plot you get a specific feature on the x-axis and the amount on the y-axis. Note that the values of the y-axes differ for the playlists, as discover weekly only has 30 songs and the other 2 have around 3000 songs. These plots clearly show the differences of how the songs are distributed for the different playlists.
+Here we look at the distributions of the features. For every plot you get a specific feature on the x-axis and the amount on the y-axis. Note that the values of the y-axes differ for the playlists, as discover weekly only has 30 songs and the other 2 have around 3000 songs. These plots clearly show the differences of how the songs are distributed for the different playlists.
 
-For instance, Discover weekly has less energetic songs than the other two. The tempo mostly lies around 125 bmp, whereas the other 2 are more spread.
+- For instance, Discover weekly has less energetic songs than the other two. The tempo mostly lies around 125 bmp, whereas the other 2 are more spread.
 
-We now see that only information on the mean of the data, does not give us enough. The means might not always lie that far apart, but if we look at the distributions, we can easily see the differences.
+- The means per feature (see tables below) show that all values except instrumentalness are lower for discover weekly than for alex's favorites. Therefore it would make sense for these values to increase as we listen more and more to Alex's playlist. What happens to instrumentalness is unclear, as the histograms show that this feature is distributed very differntly from Alex's playlist. Thus the means of the features do not give enough information. The means might not always differ that much, but looking at the distributions, differences can easily be seen. 
 
-
-Looking at the plots and histograms we noticed that the playlists are distributed differently. We hypothesize a few things about the changes in the discover weekly playlist over 8 weeks time:
-
+Looking at the plots (slide 1) and histograms it is noticed that the playlists are distributed differently. Thus the folling hypothis were made regarding the changes in the discover weekly playlist over 8 weeks time (further explanation can be found below the tables):
 
 |  Hypothesis | Discover Weekly After 8 Weeks  |
 |---|---|
 | Energy  | Will go up  |
 |  Tempo |  Will go up |
 |  Danceability | Will go up  |
-| Instrumentalness  | Will go up  |
+| Instrumentalness  | ?  |
 
 
-
-From the histograms we can tell that most of Alex's songs are high in energy, therefore we hypothesize that discover weekly will go up in energy. Looking at the histograms, we can see that Alex's favorites have more songs with a higher tempo than discover weekly, therefore we hypothesize this value to go up. Even though by looking at the histograms, the danceability of discover weekly and alex's favorites look about the same, tempo and danceability are highly correlated, therefore we also expect danceability to go up in value. We cannot see big changes in the instrumentalness between discover weekly and alex's playlist, however, I know that alex's playlist has a lot of techno songs, thus a high instrumentalness, therefore we hypothesize instrumentalness will go up.
-
-These tables don't show much difference in the mean values, however the histograms showed us very clear differences. This shows once again that you shouldn't look only at the average values.
 
 **My Favourites**
 
 |Feature   |Mean   |SD   |
 |---|---|---|
 | Danceability  | 0.567  |0.184   |
-| Energy  | 0.635  |  0.265  |
+| Energy  | 0.636  |  0.265  |
 | Instrumentalness  | 0.329   | 0.373  |
 | Tempo  |  124  | 31  |
 
 
-**Alex's Favourites**
+**Discover Weekly 1**
 
 | Feature  |Mean   |SD   |
 |---|---|---|
@@ -283,7 +274,7 @@ These tables don't show much difference in the mean values, however the histogra
 | Tempo  |   116   | 16   |
 
 
-**Discover Weekly 1**
+**Alex's Favorites**
 
 |Feature   |Mean   |SD   |
 |---|---|---|
@@ -293,9 +284,11 @@ These tables don't show much difference in the mean values, however the histogra
 | Tempo  |  121 | 19.8   |
 
 
+__Argumentation__
+From the histograms we can tell that most of Alex's songs are high in energy, therefore we hypothesize that discover weekly will go up in energy. Looking at the histograms, we can see that Alex's favorites have more songs with a higher tempo than discover weekly, therefore we hypothesize this value to go up. Even though by looking at the histograms, the danceability of discover weekly and alex's favorites look about the same, tempo and danceability are highly correlated, therefore we also expect danceability to go up in value. We cannot see big changes in the instrumentalness between discover weekly and alex's playlist, however, I know that alex's playlist has a lot of techno songs, thus a high instrumentalness, therefore we might hypothesize instrumentalness will go up.
 
-### **Alex's least Danceable Song VS Alex's most danceable Song: Larimosa VS Brainstorm!**
 
+### **Zooming in on Alex's least Danceable Song VS Alex's most danceable Song: Larimosa VS Brainstorm!**
 
 ```{r chunk3}
 # library(png)
@@ -318,9 +311,7 @@ After doing some research, I found out that Alex's least danceable song is Lacri
 </audio>
 </html>
 
-Now I know that Lacrimosa is played in d-minor, which will help us later on. THe songs has some very particular Harmonic orders, for instance for the first few beats: I-II-V-I-II-V. This can also be seen in the picture.
-
-An explanation used of the harmonics & emotions of this song can be found in this [video!](https://www.youtube.com/watch?v=D8SD3ToKDsw). Please watch it, even if you only look at it for 2 seconds, it's really interesting!
+Now I know that Lacrimosa is played in d-minor, which will help us later on. Lacrimosa has some very particular Harmonic orders, for instance for the first few beats: I-II-V-I-II-V. This sequence and an explanation used of the harmonics & emotions of this song can be found in this [video!](https://www.youtube.com/watch?v=D8SD3ToKDsw). Please watch it, even if you only look at the first 6 seconds, it's really interesting!
 
 The other song is called Brainstorm by Special Request. Which is a techno/breakbeat song.
 
@@ -330,10 +321,9 @@ The other song is called Brainstorm by Special Request. Which is a techno/breakb
 </audio>
 </html>
 
+In this project we will continuously compare these two songs, as they represent Alex's playlist very well, in the sense that a lot of different genres are compiled in his playlist. As they are completely different genres, we will see how different kind of feature analyses will work for the two songs.
 
-
-### **Dynamic Time Warping the two Lacrimosa's. That seems to work!**{data-commentary-width=400}
-
+### **Dynamic Time Warping Two Lacrimosa's. That seems to work!**{data-commentary-width=400}
 
 ```{r chunk5}
 Lacrimosa_Chroma =
@@ -387,7 +377,7 @@ __My Lacrimosa from the Choir of Kings college:__
 </audio>
 </html>
 
-Now we can use Dynamic Time Warping to compute the most optimal alignment between the two features sequences. As chroma norm and distance measure manhattan was chosen, the other options did not seem to work well for this data. We can see the black line diagonally, expressing the optimal warping path. Meaning that it is possible to align these two different versions.
+Dynamic Time Warping will be used to compute the most optimal alignment between the two features sequences. As chroma norm and distance measure manhattan was chosen, the other options did not seem to work well for this data. We can see the black line diagonally, expressing the optimal warping path. Meaning that it is possible to align these two different versions, even with the differences in pitch and tempo.
 
 
 ### **SSM matrixes Showing us what's actually going on.**{data-commentary-width=307}
@@ -521,10 +511,18 @@ Brainstorm_Timbre %>%  # Timbre self similairity matrix
 
 ***
 
-The chroma plot did not give us much information, however the Chroma SSM gives us loads of info. Using Cosine as the distance for the timbre SSM, we get more structure into the plot, however the very obvious changes we mentioned before become less obvious. But differences between certain blocks become more obvious, depending on what you want to show people you can make a choice.
+__Lacrimosa__
 
-On the x-axis and the y-axis we can see the names describing the __start__ of a new music block. For instance, the song starts with a slow buildup at 0 sec untill around 60 sec (1:00), here a new block starts with some heavy bass, then at 100 sec (1:40) the block is still the same as before, but the high heads kick in. At 130 sec (2:10) the Piano block starts, where at 190 sec (3:08) the Bass block with high heads is repeated. Then at 244 sec (4:05) the Piano block is repeated and at 305 sec (5:02) the autro block starts.
-Listen to the [song](https://www.youtube.com/watch?v=DvJianRCqZk) to find out!
+The timbre and chroma SSM's show slight differences, but in general are very similair. They both show a section until 25 seconds, representing the first two measures. Then a straight line can be seen representing the vocal buildup starting at 25 seconds. At 50 seconds a new block starts again. The plots are a bit vague (didn't change when using different distances), probably indicating that due to the polynomials of the vocals this song is difficult to analyze.
+
+<html>
+<audio controls>
+  <source src="Lacrimosa_Alex.mp3" type="audio/mpeg">
+</audio>
+</html>
+
+__Brainstorm__:
+On the x-axis and the y-axis we can see the names describing the __start__ of a new music block. For instance, the song starts with a slow buildup at 0 sec untill around 60 sec (1:00), here a new block starts with some heavy bass, then at 100 sec (1:40) the block is still the same as before, but the high heads kick in. At 130 sec (2:10) the Piano block starts, where at 190 sec (3:08) the Bass block with high heads is repeated. Then at 244 sec (4:05) the Piano block is repeated and at 305 sec (5:02) the autro block starts. Listen to the song to find out!
 
 <html>
 <audio controls>
@@ -532,7 +530,7 @@ Listen to the [song](https://www.youtube.com/watch?v=DvJianRCqZk) to find out!
 </audio>
 </html>
 
-If we look at the Timbre SSM again we see the breakdown at 60 seconds, this time even more clearly. As the song starts with some bass, high heads and some low vocals all of a sudden at 60 seconds a lot of low bass is added and this is easy to see by the yellow line at 60 seconds. Also we see a clear change at 244 seconds (4:02-4:05). This is because of that one weird vocal sample that is only played here.
+If we look at the Timbre SSM  we see the breakdown at 60 seconds, this time even more clearly. As the song starts with some bass, high heads and some low vocals all of a sudden at 60 seconds a lot of low bass is added and this is easy to see by the yellow line at 60 seconds. Also we see a clear change at 244 seconds (4:02-4:05). This is because of that one weird vocal sample that is only played here.
 
 ### **Interactive Timbre SSM**
 
@@ -564,7 +562,7 @@ ggplotly(brain_active)
 
 ***
 
-Here we see the SSM of Timbre again, but as an interactive plot.
+Using Cosine as the distance for the timbre SSM, more structure is obtained, however some very big changes become less obvious, therefore an interactive timbre plot using Euclidean distance is shown here.
 
 Take a look at the file again to check the specific moments.
 
@@ -660,15 +658,16 @@ brain %>%  # Here it does give the correct bpm of round 132.
 
 ***
 
-__Novelty Functions__:
-For Lacrimosa the novelty function is not very consistent, the first novelty plot show the first 30s, which start with 10s of only violin and then the vocals come in.
+__Lacrimosa__:
+- __Novelty Function__: The novelty plot shows the first 30s, which start with 10s of only violin and then the vocals come in. We can see that it's not very consistent.
 
-We can see that the novelty function for Braisntorm is working quite well. The first novelty plot shows that there is a very regular beat and at 30 second, the bass of the beat becomes even louder and more obvious which we can see in the plot. There are also some high heads, which are the smaller peaks we see in the plot.
+- __Tempogram__: As expected from the novelty function, we can see that for both the Fourier Tempogram and the Cyclic Tempogram the algorithm has absolutely no idea what's going on. Lacrimosa's bpm is quite slow with a BPM of 95 (Alex's version, from Lisa Beckley). The Fourier Tempogram shows us absolutely nothing, and looking at the Cyclic Tempogram it looks like it's actually suggesting higer BPM's of around 150 BPM, however we know that this is false.
 
-__Tempograms__:
-The Lacrimosa song is a whole different story. We can see that for both the Fourier Tempogram and the Cyclic Tempogram the algorithm has absolutely no idea what's going on. Lacrimosa's bpm is quite slow, if I recall correctly this version (Alex's version, from Lisa Beckley) is around 95 BPM. The Fourier Tempogram shows us absolutely nothing, and looking at the Cyclic Tempogram it looks like it's actually suggesting higer BPM's of around 150 BPM, however we know that this is false.
+__Brainstorm__:
+- __Novelty Function__: The novelty plot seems to work well and shows that there is a very regular beat. At 30 seconds, the bass of the beat becomes even louder and becomes more obvious which we can see in the plot. There are also some high heads, which are the smaller peaks we see in the plot.
 
-We see two very interesting things here. On the right we have the Fourier & Cyclic tempograms for Brainstorm. We can see that the Fourier does not work, because it's suggesting a tempo of around 520 and I know the tempo of this song is around 132. This must be because of the tempo harmonics. We can see that the Cyclic tempogram is showing us the correct resultss. The cyclic Tempogram works around the harmmonics and shows us the true tempo of around 132. It's not very surprising that the tempogram works so wel, as this song has a very obvious beat throughout the whole song.
+- __Tempogram__:
+We see two very interesting things here. The Fourier analysis does not work, as it's suggesting a tempo of around 520 while we know that the tempo of this song is around 132. This must be because of the tempo harmonics. We can see that the Cyclic tempogram is showing us the correct resultss, as it works around the harmmonics and shows us the true tempo of around 132. It's not very surprising that the tempogram works so wel, as this song has a very obvious beat throughout the whole song.
 
 
 ### **The Transformation of Discover Weekly has occured!** {data-commentary-width=290}
@@ -741,7 +740,7 @@ library(CGPfunctions)
 graph=newggslopegraph(dataframe=features_longer_3, Times=week, Measurement = value, Grouping = feature, Title= "Mean Changes per Week", SubTitle = NULL, WiderLabels = TRUE, YTextSize = 4, DataTextSize = 4, DataLabelPadding = 0.0001, LineThickness = 2)+
   labs(title="Audio Features",
        subtitle="Change of Means",
-       caption="Red: > 0.5 Standard Deviation\nYellow: 0.2 - 0.5 Standard Deviation\nGrey: < 0.2 Standard Deviation", x = NULL) +
+       x = NULL) +
   theme_minimal()
 
 
@@ -756,7 +755,7 @@ graph
 graph2=newggslopegraph(dataframe=median_longer, Times=week, Measurement = value, Grouping = feature, Title= "Mean Changes per Week", SubTitle = NULL, WiderLabels = TRUE, YTextSize = 4, DataTextSize = 4, DataLabelPadding = 0.0001, LineThickness = 2)+
   labs(title="Audio Features",
        subtitle="Change of Medians",
-       caption="Red: > 0.5 Standard Deviation\nYellow: 0.2 - 0.5 Standard Deviation\nGrey: < 0.2 Standard Deviation", x = NULL) +
+       x = NULL) +
   theme_minimal()
 
 
@@ -768,12 +767,9 @@ graph2
 
 ***
 
+These Plots show the changes over the 8 weeks for each feature. The left plot shows the means and the right shows the medians of the values. They both show similair results. The tempo values are devided by 100, else they wouldn't fit on the plot. Thus tempo= 1.16 equals tempo=116.
 
-These Plots shows us the changes over the 8 weeks for each feature. The left plot shows us the means of the values. The right plot shows us the median of the values, to get some perspective. They both show similair results. The tempo values are devided by 100, else they wouldn't fit on the plot. Thus tempo= 1.16 equals tempo=116.
-
-On the left we have the mean values and on the right the median values. The first thing to notice when looking at the left Plot of the mean values is the big increase in instrumentalness for week one, which than starts to drop continuously untill in week 6 it rises all of a sudden, to drop once again in week 7 and 8. In general, tempo and dancebility seem to steadily, but slowly go up. What can be seen is that for all variables something weird is happening at week 6.
-
-Now what happened here was actually a big accident, but which turned out to be very usefull. A friend of mine put on an artist named khruangbin
+The first thing to notice when looking at the means is the big increase in instrumentalness for week one, which than starts to drop continuously untill in week 6 it rises all of a sudden, to drop once again in week 7 and 8. In general, tempo and dancebility seem to steadily, but slowly go up. What can be seen is that for all variables something weird is happening at week 6. Now what happened here was actually a big accident, but turned out to be very usefull. A friend of mine put on an artist named __khruangbin__,
 
 <html>
 <audio controls>
@@ -781,9 +777,7 @@ Now what happened here was actually a big accident, but which turned out to be v
 </audio>
 </html>
 
-,which is a very relaxed kind of chill out music. I had forgotten, for about 20 min, that my spotify wasn't on the function private session, thus my discover weekly was listening to my listening behavior. After 20 minutes I realised this and quickly changed it to a private session. However, it seems ike discover weekly quickly picked up on my changing behavior. And this is what we see for week 6.
-
-
+which is a very relaxed kind of chill out music. I had forgotten, that my spotify wasn't on the function private session (which allows you to listen to music without the spotify weekly algorithm listening in on you), thus my discover weekly was listening to my listening behavior. After 20 minutes I realised this and quickly changed it to a private session. However, it seems ike discover weekly quickly picked up on my changing behavior. And this is what we see for week 6.
 
 It was hypothesized that all of the four features would go up in value. We can see that all the means indeed did go up! Also looking at the median values, these all went up. What is quite noticable is that the tempo and danceability went up quite a bit, but the energy didn't change that much. Which is weird, as I though these variables were highly correlated. If it hadn't been for my mistake in week 6, the changes at week 8 might have been even bigger.
 
@@ -1061,7 +1055,7 @@ Different prediction algorithms were tested to find the algorithm with the highe
 - 4. Random Forest: 0.700
 - 5. K-nearest neighbour using Random forest selected features: 0.591
 
-The accuracy showedt hat k-nearest neighbour doesn't do that well. All the others perform about the same, with Random forest doing slightly better. Also we saw that k-nearest neighbour improved after only the important features according to the random forest were used being: Danceability + c04 + duration + tempo + loudness
+The accuracy showed that k-nearest neighbour didn't do that well. All the others perform about the same, with Random forest doing slightly better. Also we saw that k-nearest neighbour improved after only the important features according to the random forest were used being: Danceability + c04 + duration + tempo + loudness
 
 On the left we see two plots showing the confusion matrix for the Multinomial Regression, as we will later use the most meaningfull feaatures according to the multinomial regression to look at clusters in the Discover Weekly 8 playlist. This plot clearly show that it's best at correctly classifying songs from my favorites. 
 
@@ -1071,8 +1065,7 @@ Underneath these plots we can see a table showing the features that contribute t
 - We can see that for Discover weekly 8: Accousticness, E and Valence were important for prediction.
 - We can see that for My favorites: Danceability, c05 and G#|Ab are important for prediction.
 
-In Appendix D, the results of the various analyses can be found. Showing the confusion matrixes and the accuracy tables. From these analysis it was found out that every algorithm is the best at correctly predicting songs that belong to my favorites. Why this is the case, I'm not sure.
-
+In the Additional Analyses, the results of the various analyses can be found. Showing the confusion matrixes and the accuracy tables. From these analysis it was found out that every algorithm is the best at correctly predicting songs that belong to my favorites. Why this is the case, I'm not sure.
 
 
 ### **Using Multinomial selected features shows us Clusters!** {data-commentary-width=711}
@@ -1177,7 +1170,7 @@ Looking at the __Heatmap__, we can notice some thing:
 
 - And we notice that the song Luechtoorn, which is also on it's own in the dendogram, has quite a high value for E, which seperates it from the other songs.
 
-### Additional Results: The following appendixes show various analyses of playlists en Lacrimosa VS Brainstorm **I: The Key of our Playlists** 
+### **ADDITIONAL RESULTS:** The following appendixes show various analyses of playlists en Lacrimosa VS Brainstorm (If you have time, take a look) **I: The Key of our Playlists** 
 
 ```{r chunk2, fig.width=10, fig.height=7}
 
@@ -1488,10 +1481,8 @@ Brainstorm_key %>%
 ***
 
 
-__Lacrimosa__
-Looking at the chroma plots we can sort of see that this song is played in d minor, which consists of D, E, F, G, A, B???, and C. But the plot is not very easy to read, changing the normalisation or the colors also did not make the chroma plots much clearer.
-
-For Alex's Lacrimosa we see some activity around A & D. My Lacrimosa has some activity around A, D & Db. The fact that both D & Db are showing on the plot might have something to do with the tuning of the song.
+__Lacrimosa__:
+Looking at the chroma plot we can sort of see that this song is played in d minor, which consists of D, E, F, G, A, Bb, and C. But the plot is not very easy to read, changing the normalisation or the colors also did not make the chroma plots much clearer. 
 
 <html>
 <audio controls>
@@ -1499,13 +1490,17 @@ For Alex's Lacrimosa we see some activity around A & D. My Lacrimosa has some ac
 </audio>
 </html>
 
-The key-plots are again not very easy to read. One weird thing would be around 170 seconds (2:50) for Alex's Lacrimosa and around 155 seconds (2:35) for my Lacrimosa. In both songs this is the same moment ofcourse, the time difference is only because my version of Lacrimosa has a higher tempo. This moment seems to be around a part where the vocals are a bit softer compared to the rest of the song, and also it's a part that's new, so it hasn't happened before in the song. It's part that first buildsup softly and then goes down again.
+The timbre plot shows a high magnitude for component 2,3 and 5. However they are shown during the whole song, making it difficult to interpret.
+
+The key-plot is not very easy to read. One weird thing would be around 170 seconds (2:50). This moment seems to be around a part where the vocals are a bit softer compared to the rest of the song, and also it's a part that's new, so it hasn't happened before in the song. It's part that first buildsup softly and then goes down again. Basically the key detection has no clue whats going on.
 
 __Brainstorm__
 This is an techno-like song which has a lot of changes troughout the song. There is some piano involved and some singing, however not troughout the whole song. Therefore it is difficult to see something out of the chroma plot, as it's not as easy as with classical music.
 This can be seen from the chroma plot. On the x-axis we have the time and on the y-axis the chroma. It's hard to conclude anything from this plot at all.
 
 The timbre shows a little bit better what's going on. The song starts with a slow buildup with some high heads and some minimal vocals (Kicking up in the brainstorm), which you can see in the beginning. Then you can see a very big change around 60 seconds, this is where a very heavy bass kicks in. It also shows a single weird moment around 240 seconds, this is because here there is 1 small sample of a vocal which has not been in the song before and is only played here.
+
+The Key-plot shows some very weird high values around 60 seconds, which is where the bass kicks in. Besides that it's hard to conclude anything from this plot
 
 
 ### **III: Looking at important Features using Decision Trees & Random Forests**{data-commentary-width=300}
@@ -1805,7 +1800,7 @@ Playlists_cv %>%
 
 ***
 
-The first 4 tables show the accuracy of the different classification algorithms.
+The 4 tables on the left show the accuracy of the different classification algorithms.
 
 The accuracy showedthat k-nearest neighbour doesn't do that well. All the others perform about the same, with Random forest doing slightly better. Also we saw that k-nearest neighbour improved after only the important features according to the random forest were used being: Danceability + c04 + duration + tempo + loudness
 
@@ -1916,23 +1911,6 @@ brain %>%
     labs(x = 'Time (s)', y = 'Novelty', title="Brainstorm Novelty Function From 60s: Buildup")
 
 
-brain%>% # These are just deltas
-    mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>%
-    arrange(start) %>%
-    mutate(pitches = map2(pitches, lag(pitches), `-`)) %>%
-    compmus_gather_chroma %>%
-    ggplot(
-        aes(
-            x = start + duration / 2,
-            width = duration,
-            y = pitch_class,
-            fill = pmax(0, value))) +
-    geom_tile() +
-    scale_fill_viridis_c(option = 'E', guide = 'none') +
-    xlim(0, 30) +
-    labs(x = 'Time (s)', y = NULL, fill = 'Magnitude',  title="Brainstorm Delta-Chroma") +
-    theme_classic()
-
 lacrimosa_novelty%>% # These are just deltas
     mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>%
     arrange(start) %>%
@@ -1950,21 +1928,23 @@ lacrimosa_novelty%>% # These are just deltas
     labs(x = 'Time (s)', y = NULL, fill = 'Magnitude',  title="Lacrimosa Delta-Chroma") +
     theme_classic()
 
-brain %>%  # These are delta deltaas: To get delta deltas je change the lag in the 3d rule.
+brain%>% # These are just deltas
+    mutate(pitches = map(pitches, compmus_normalise, 'clr')) %>%
     arrange(start) %>%
-    mutate(timbre = map2(timbre, lag(timbre), `-`)) %>%
-    compmus_gather_timbre %>%
+    mutate(pitches = map2(pitches, lag(pitches), `-`)) %>%
+    compmus_gather_chroma %>%
     ggplot(
         aes(
             x = start + duration / 2,
             width = duration,
-            y = basis,
+            y = pitch_class,
             fill = pmax(0, value))) +
     geom_tile() +
     scale_fill_viridis_c(option = 'E', guide = 'none') +
     xlim(0, 30) +
-    labs(x = 'Time (s)', y = NULL, fill = 'Magnitude',  title="Brainstorm Delta-Delta-Timbre") +
+    labs(x = 'Time (s)', y = NULL, fill = 'Magnitude',  title="Brainstorm Delta-Chroma") +
     theme_classic()
+
 
 lacrimosa_novelty %>%  # These are delta deltaas: To get delta deltas je change the lag in the 3d rule.
     arrange(start) %>%
@@ -1983,7 +1963,21 @@ lacrimosa_novelty %>%  # These are delta deltaas: To get delta deltas je change 
     theme_classic()
 
 
-
+brain %>%  # These are delta deltaas: To get delta deltas je change the lag in the 3d rule.
+    arrange(start) %>%
+    mutate(timbre = map2(timbre, lag(timbre), `-`)) %>%
+    compmus_gather_timbre %>%
+    ggplot(
+        aes(
+            x = start + duration / 2,
+            width = duration,
+            y = basis,
+            fill = pmax(0, value))) +
+    geom_tile() +
+    scale_fill_viridis_c(option = 'E', guide = 'none') +
+    xlim(0, 30) +
+    labs(x = 'Time (s)', y = NULL, fill = 'Magnitude',  title="Brainstorm Delta-Delta-Timbre") +
+    theme_classic()
 
 
 
@@ -1991,15 +1985,23 @@ lacrimosa_novelty %>%  # These are delta deltaas: To get delta deltas je change 
 ```
 
 ***
+
+__Lacrimosa__:
 For Lacrimosa it's not very consistent, the first novelty plot show the first 30s, which start with 10s of only violin and then the vocals come in.
 
 The second novelty plot start from round 27s till 52 seconds, here you get a slow buildup with some vocals, where it's also hard for the novelty function to work. I guess that it's not surprising as this song doesnt have any percussion or an obvios beat. It is mostly string music and vocals.
 
+The delta chroma-gram shows activation for B, which is weird. As the song is in Dminor there shouldn't even be a B in here, it should be a Bb. This might be because of the mistuning. 
+
+The delta-delta timbre-gram shows only a change in component 4. Meaning that if we look at the change of the change, appareantly component 4 plays a big role.
+
+__Brainstorm__:
 We can see that the novelty function for Braisntorm is working quite well. The first novelty plot shows that there is a very regular beat and at 30 second, the bass of the beat becomes even louder and more obvious which we can see in the plot. There are also some high heads, which are the smaller peaks we see in the plot.
 
 The second novelty function shows the song from 60s. At this part the beat completely dissapears and some low bassy sounds are coming through, but quite beatless. This can also be seen from the novelty function, as it doesn't really get what's going on. From around 70s untill 101s the beat slowly builds up again, as we can see from the novelty function, as it's realizing what to do again.
 
 
-The Delta Chromagram for Brainstorm doesn't show very obvious patterns, which isn't weird as the song consist of a lot of bass. The Lacrimosa Chromagram shows high activity around B. This song is in D minorL: D - E - F - G - A - B??? - C - D, so there shouldn't even be a B in here, it should be a Bb. Thus this chromagram doesn't look very well. This might be because of the tuning.
+The Delta Chromagram for Brainstorm doesn't show very obvious patterns, which isn't weird as the song consist of a lot of bass. It basically shows nothing at all.
 
-The delta-delta TimbreGram for Brainstorm shows us some activity around c04 and the delta-delta Timbregram for Lacrimosa also shows us some activity around c04. Meaning that the change of the change is most active around c04.
+
+The delta-delta TimbreGram for Brainstorm shows us some activity around c04 and the delta-delta Timbregram Meaning that the change of the change is most active around c04.
